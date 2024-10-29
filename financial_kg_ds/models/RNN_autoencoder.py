@@ -55,6 +55,6 @@ if __name__ == "__main__":
     seq_len = 5
     batch_size = 2
 
-    model = LSTMAutoencoder(input_size, hidden_size, num_layers, seq_len)
+    model = LSTMAutoencoder(input_size, hidden_size, num_layers)
     input = torch.randn(batch_size, seq_len, input_size)
     decoded = model(input)
