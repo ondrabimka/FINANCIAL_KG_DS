@@ -40,3 +40,9 @@ docs/_build/
 
 # Env
 .env
+
+# ingore downloaded data
+financial_kg_ds/data/
+
+# Ignore pytest cache
+.pytest_cache/
