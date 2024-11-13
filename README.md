@@ -1,6 +1,6 @@
 # FINANCIAL_KG_DS
 
-Welcome to the FINANCIAL_KG_DS repository. This project focuses on creating and managing a financial knowledge graph and data science workflows.
+Welcome to the FINANCIAL_KG_DS repository. This project is an data science extension to https://github.com/ondrabimka/FINANCIAL_KG.
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -27,7 +27,7 @@ DATA_PATH=''
 ```
 
 The data should point to FINANCIAL_KG with specific date:
-example: ".../FINANCIAL_KG/data/data_2024-09-06"
+example: "../FINANCIAL_KG/data/data_2024-09-06"
 
 ## Usage
 Training scripts are currently located in [train location](financial_kg_ds/train/README.md) directory.
