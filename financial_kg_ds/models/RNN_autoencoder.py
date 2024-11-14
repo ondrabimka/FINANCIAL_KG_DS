@@ -29,10 +29,10 @@ class RNNDecoder(nn.Module):
         return out
 
 class LSTMAutoencoder(nn.Module):
-    def __init__(self, input_dim, hidden_dim, num_layers):
+    def __init__(self, input_dim, hidden_dim, num_layers, dropout):
         super(LSTMAutoencoder, self).__init__()
-        self.encoder = RNNEncoder(input_dim, hidden_dim, num_layers)
-        self.decoder = RNNDecoder(hidden_dim, input_dim, num_layers)
+        self.encoder = RNNEncoder(input_dim, hidden_dim, num_layers, dropout)
+        self.decoder = RNNDecoder(hidden_dim, input_dim, num_layers, dropout)
 
     def forward(self, x):
         # Encode
