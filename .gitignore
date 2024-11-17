@@ -36,13 +36,15 @@ docs/_build/
 
 # Vscode
 .vscode/
+
+# Data
 /data
 
 # Env
 .env
 
 # ingore downloaded data
-financial_kg_ds/data/
+financial_kg_ds/data/historical_prices
 
 # Ignore pytest cache
 .pytest_cache/
