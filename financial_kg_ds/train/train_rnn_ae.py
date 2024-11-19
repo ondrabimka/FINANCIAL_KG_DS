@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import os
 import optuna
-
+from datetime import date
 
 # %%
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -39,8 +39,8 @@ del data_df
 # %%
 def define_model(trial):
     lstm_layers = trial.suggest_int('lstm_layers', 1, 3)
-    hidden_size = trial.suggest_int('hidden_size', 6, 32)
-    dropout = trial.suggest_float('dropout', 0.1, 0.5)
+    hidden_size = trial.suggest_int('hidden_size', 6, 64)
+    dropout = trial.suggest_float('dropout', 0.01, 0.5)
     return LSTMAutoencoder(2, lstm_layers, hidden_size, dropout)
 
 def objective(trial):
@@ -52,7 +52,7 @@ def objective(trial):
     
     train_loss = float("inf")
 
-    for epoch in range(1000):
+    for epoch in range(5000):
         for X, _ in loader:
             optimizer.zero_grad()
             output = model(X)
@@ -78,5 +78,18 @@ study = optuna.create_study(direction='minimize')
 study.optimize(objective, n_trials=10, callbacks=[callback])
 
 # %%
+print("Best trial")
+print("  Value: ", study.best_trial.value)
+print("  Params: ")
+for key, value in study.best_trial.params.items():
+    print("    {}: {}".format(key, value))
+
+# %%
 best_model = study.best_trial.user_attrs['best_model']
-torch.save(best_model.state_dict(), 'financial_kg_ds/data/best_model.pth')
+
+hidden_size = study.best_trial.params['hidden_size']
+num_layers = study.best_trial.params['lstm_layers']
+today = date.today().strftime('%Y-%m-%d')
+
+torch.save(best_model.state_dict(), f'financial_kg_ds/data/best_model_{hidden_size}_{num_layers}_{today}.pth')
+# %%
