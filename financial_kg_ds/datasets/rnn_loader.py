@@ -3,6 +3,7 @@ from torch.utils.data import Dataset, DataLoader
 from typing import List
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 
 class TimeseriesDataset(Dataset):
 
@@ -42,7 +43,7 @@ class RNNLoader:
         return DataLoader(self.dataset, batch_size=self.batch_size, shuffle=self.shuffle)
         
     @classmethod
-    def ae_from_dataframe(cls, df: pd.DataFrame, window_size: int = 30, batch_size: int = 32, shuffle: bool = True, device = torch.device("cpu")) -> DataLoader:
+    def ae_from_dataframe(cls, df: pd.DataFrame, window_size: int = 30, batch_size: int = 32, shuffle: bool = True, device = torch.device("cpu"), scaler = MinMaxScaler()) -> DataLoader:
         """ Create a DataLoader from a dataframe for an autoencoder model
 
         Parameters
@@ -58,6 +59,12 @@ class RNNLoader:
 
         shuffle: bool
             Shuffle the data
+
+        device: torch.device
+            Device to use
+
+        scaler: MinMaxScaler
+            Scaler to use for the data. If None, no scaling is done. Default is MinMaxScaler(). Scaling is done in every window separately.
 
         Returns
         -------
@@ -93,9 +100,11 @@ class RNNLoader:
             ticker_df = df.filter(regex=f'_({ticker})$')
             ticker_df = cls._keep_cols_names(ticker_df)
             for i in range(len(ticker_df) - window_size + 1):
-                X.append(ticker_df.iloc[i:i + window_size].values)
+                if scaler:
+                    X.append(scaler.fit_transform(ticker_df.iloc[i:i + window_size].values))
+                else:
+                    X.append(ticker_df.iloc[i:i + window_size].values)
                 y.append([0]) # y is the same as X for an autoencoder
-            break
         X = torch.from_numpy(np.array(X)).float().to(device)
         y = torch.from_numpy(np.array(y)).float().to(device)
         return cls(X, y, batch_size=batch_size, shuffle=shuffle).get_loader()
