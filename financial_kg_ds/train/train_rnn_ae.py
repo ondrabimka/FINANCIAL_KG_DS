@@ -15,6 +15,7 @@ from datetime import date
 
 # %%
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cpu")
 
 # %% make historical data exist otherwise download it
 tickers = list(pd.read_csv(os.getenv('DATA_PATH') + '/ticker_info.csv', usecols=['ticker'])['ticker'])
@@ -32,6 +33,18 @@ window_size = 49
 batch_size = 32
 shuffle = True
 loader = RNNLoader.ae_from_dataframe(data_df, window_size, batch_size, shuffle, device)
+
+# %%
+# import matplotlib.pyplot as plt
+# 
+# def plot_tensor(tensor):
+#     fig, axs = plt.subplots(2)
+#     axs[0].scatter(range(tensor.shape[0]), tensor[:, 0])
+#     axs[1].hist(tensor[:, 1])
+#     plt.show()
+# 
+# X = next(iter(loader))
+# plot_tensor(X[0][0])
 
 # %%
 del data_df
@@ -52,7 +65,7 @@ def objective(trial):
     
     train_loss = float("inf")
 
-    for epoch in range(5000):
+    for epoch in range(20):
         for X, _ in loader:
             optimizer.zero_grad()
             output = model(X)
@@ -75,7 +88,7 @@ def callback(study, trial):
 
 # %%
 study = optuna.create_study(direction='minimize')
-study.optimize(objective, n_trials=10, callbacks=[callback])
+study.optimize(objective, n_trials=3, callbacks=[callback])
 
 # %%
 print("Best trial")
@@ -92,4 +105,25 @@ num_layers = study.best_trial.params['lstm_layers']
 today = date.today().strftime('%Y-%m-%d')
 
 torch.save(best_model.state_dict(), f'financial_kg_ds/data/best_model_{hidden_size}_{num_layers}_{today}.pth')
+# %% plot data
+import matplotlib.pyplot as plt
+
+def plot_data(data, model):
+    with torch.no_grad():
+        model.eval()
+        output = model(data)
+        plt.plot(data.cpu().numpy().flatten(), label='data')
+        plt.plot(output.cpu().numpy().flatten(), label='output')
+        plt.legend()
+        plt.show()
+
+# %%
+X = next(iter(loader))
+
+# %%
+X[0][0]
+
+# %%
+plot_data(X[0], best_model)
+
 # %%
