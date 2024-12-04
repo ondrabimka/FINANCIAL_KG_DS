@@ -2,6 +2,8 @@
 import torch
 import torch.nn as nn
 
+
+# TODO: #1 Implement bidirectional
 class RNNEncoder(nn.Module):
     def __init__(self, input_dim, hidden_dim, num_layers, dropout=0.5):
         super(RNNEncoder, self).__init__()
@@ -14,6 +16,7 @@ class RNNEncoder(nn.Module):
         c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size, device=x.device)
         out, (hidden, cell) = self.lstm(x, (h0, c0))
         return out, hidden, cell
+
 
 class RNNDecoder(nn.Module):
     def __init__(self, hidden_dim, output_dim, num_layers, dropout=0.5):
@@ -28,6 +31,7 @@ class RNNDecoder(nn.Module):
         out = self.fc(out)  # Project back to output dimension
         return out
 
+
 class LSTMAutoencoder(nn.Module):
     def __init__(self, input_dim, hidden_dim, num_layers, dropout):
         super(LSTMAutoencoder, self).__init__()
@@ -37,14 +41,15 @@ class LSTMAutoencoder(nn.Module):
     def forward(self, x):
         # Encode
         encoder_out, hidden, cell = self.encoder(x)
-        
+
         # Use encoder's output as decoder's input for the initial time step
         out = self.decoder(encoder_out, hidden, cell)
         return out
-    
+
     def get_embedding(self, x):
         out, _, _ = self.encoder(x)
         return out[:, -1, :]  # Last timestep's output for each batch
+
 
 #%%
 if __name__ == "__main__":

@@ -1,13 +1,15 @@
-import torch
-from torch.utils.data import Dataset, DataLoader
 from typing import List
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+import torch
 from sklearn.preprocessing import MinMaxScaler
+from torch.utils.data import DataLoader, Dataset
+
 
 class TimeseriesDataset(Dataset):
 
-    """ Custom pytorch Dataset class
+    """Custom pytorch Dataset class
 
     More information: https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
     """
@@ -30,10 +32,9 @@ class TimeseriesDataset(Dataset):
 
     def __getitem__(self, index):
         return (self.X[index], self.y[index])
-    
+
 
 class RNNLoader:
-
     def __init__(self, X, y, batch_size=32, shuffle=True):
         self.dataset = TimeseriesDataset(X, y)
         self.batch_size = batch_size
@@ -41,10 +42,18 @@ class RNNLoader:
 
     def get_loader(self):
         return DataLoader(self.dataset, batch_size=self.batch_size, shuffle=self.shuffle)
-        
+
     @classmethod
-    def ae_from_dataframe(cls, df: pd.DataFrame, window_size: int = 30, batch_size: int = 32, shuffle: bool = True, device = torch.device("cpu"), scaler = MinMaxScaler()) -> DataLoader:
-        """ Create a DataLoader from a dataframe for an autoencoder model
+    def ae_from_dataframe(
+        cls,
+        df: pd.DataFrame,
+        window_size: int = 30,
+        batch_size: int = 32,
+        shuffle: bool = True,
+        device=torch.device("cpu"),
+        scaler=MinMaxScaler(),
+    ) -> DataLoader:
+        """Create a DataLoader from a dataframe for an autoencoder model
 
         Parameters
         ----------
@@ -84,11 +93,11 @@ class RNNLoader:
         >>> loader = RNNLoader.ae_from_dataframe(df, 3, 2, False)
         >>> X, _ = next(iter(loader))
         X
-        [[[1, 2], 
-        [5, 6], 
-        [9, 10]], 
-        [[3, 4], 
-        [7, 8], 
+        [[[1, 2],
+        [5, 6],
+        [9, 10]],
+        [[3, 4],
+        [7, 8],
         [11, 12]]]
 
         We don't need to specify the y values because they are the same as the X values
@@ -97,24 +106,24 @@ class RNNLoader:
         y = []
         tickers = cls._extract_tickers_from_cols(df)
         for ticker in tickers:
-            ticker_df = df.filter(regex=f'_({ticker})$')
+            ticker_df = df.filter(regex=f"_({ticker})$")
             ticker_df = cls._keep_cols_names(ticker_df)
             for i in range(len(ticker_df) - window_size + 1):
                 if scaler:
-                    X.append(scaler.fit_transform(ticker_df.iloc[i:i + window_size].values))
+                    X.append(scaler.fit_transform(ticker_df.iloc[i : i + window_size].values))
                 else:
-                    X.append(ticker_df.iloc[i:i + window_size].values)
-                y.append([0]) # y is the same as X for an autoencoder
+                    X.append(ticker_df.iloc[i : i + window_size].values)
+                y.append([0])  # y is the same as X for an autoencoder
         X = torch.from_numpy(np.array(X)).float().to(device)
         y = torch.from_numpy(np.array(y)).float().to(device)
         return cls(X, y, batch_size=batch_size, shuffle=shuffle).get_loader()
 
     @staticmethod
     def _extract_tickers_from_cols(df: pd.DataFrame) -> List[str]:
-        """ Extract tickers from columns. Keep original order """
-        return list(dict.fromkeys([col.split('_')[1] for col in df.columns]))
-    
+        """Extract tickers from columns. Keep original order"""
+        return list(dict.fromkeys([col.split("_")[1] for col in df.columns]))
+
     @staticmethod
-    def _keep_cols_names(df: pd.DataFrame, col_names: List[str] = ['Open','Volume']):
-        """ Keep columns that contain any of the col_names in their name (Close, Volume, etc) """
+    def _keep_cols_names(df: pd.DataFrame, col_names: List[str] = ["Open", "Volume"]):
+        """Keep columns that contain any of the col_names in their name (Close, Volume, etc)"""
         return df[[col for col in df.columns if any([col_name in col for col_name in col_names])]]

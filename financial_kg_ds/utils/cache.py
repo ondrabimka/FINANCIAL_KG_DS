@@ -1,6 +1,7 @@
 import os
 import pickle
 
+
 class Cache:
     def __init__(self, cache_dir: str, cache_name: str):
         self.cache_dir = cache_dir
@@ -10,12 +11,12 @@ class Cache:
 
     def load_cache(self):
         if os.path.exists(self.cache_path):
-            with open(self.cache_path, 'rb') as f:
+            with open(self.cache_path, "rb") as f:
                 return pickle.load(f)
         return {}
 
     def save_cache(self):
-        with open(self.cache_path, 'wb') as f:
+        with open(self.cache_path, "wb") as f:
             pickle.dump(self.cache, f)
 
     def get(self, key):

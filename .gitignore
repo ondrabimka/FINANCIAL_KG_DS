@@ -48,3 +48,5 @@ financial_kg_ds/data/historical_prices
 
 # Ignore pytest cache
 .pytest_cache/
+
+playground.py
