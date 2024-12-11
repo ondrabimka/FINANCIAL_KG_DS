@@ -1,6 +1,7 @@
 import torch
 from torch_geometric.nn import GAE, VGAE, GCNConv
 
+# TODO: #2 Implement GVAE
 class VariationalGCNEncoder(torch.nn.Module):
     def __init__(self, in_channels, out_channels):
         super().__init__()
@@ -11,7 +12,8 @@ class VariationalGCNEncoder(torch.nn.Module):
     def forward(self, x, edge_index):
         x = self.conv1(x, edge_index).relu()
         return self.conv_mu(x, edge_index), self.conv_logstd(x, edge_index)
-    
+
+
 class VariationalGCNDecoder(torch.nn.Module):
     def __init__(self, in_channels, out_channels):
         super().__init__()
@@ -19,7 +21,8 @@ class VariationalGCNDecoder(torch.nn.Module):
 
     def forward(self, z, edge_index):
         return self.conv1(z, edge_index).relu()
-    
+
+
 class VariationalGCN(torch.nn.Module):
     def __init__(self, encoder, decoder):
         super().__init__()
@@ -42,7 +45,8 @@ class VariationalGCN(torch.nn.Module):
         mu, logstd = self.encode(x, edge_index)
         z = self.reparameterize(mu, logstd)
         return self.decode(z, edge_index), mu, logstd
-    
+
+
 class VariationalGraphAutoEncoder:
     def __init__(self, in_channels, out_channels):
         self.encoder = VariationalGCNEncoder(in_channels, out_channels)
@@ -62,7 +66,7 @@ class VariationalGraphAutoEncoder:
             print(loss)
             loss.backward()
             self.optimizer.step()
-            print(f'Epoch: {epoch}, Loss: {loss.item()}')
+            print(f"Epoch: {epoch}, Loss: {loss.item()}")
 
     def test(self, data):
         self.model.eval()
