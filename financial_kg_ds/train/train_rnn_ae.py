@@ -12,7 +12,7 @@ import torch.optim as optim
 
 from financial_kg_ds.datasets.download_data import HistoricalData
 from financial_kg_ds.datasets.rnn_loader import RNNLoader
-from financial_kg_ds.models.RNN_autoencoder import LSTMAutoencoder
+from financial_kg_ds.models.RNN_autoencoder import LSTMAutoencoderBidi
 from financial_kg_ds.utils.paths import HISTORICAL_DATA_FILE
 
 # %%
@@ -28,6 +28,7 @@ tickers = list(pd.read_csv(os.getenv("DATA_PATH") + "/ticker_info.csv", usecols=
 # %% Prepare data
 data_df = pd.read_csv(f"{HISTORICAL_DATA_FILE}/historical_data.csv", index_col=0)
 data_df = data_df[data_df.index <= "2024-09-06"]  # date based on FINANCIAL_KG data
+data_df = data_df.tail(1000)
 data_df = data_df.fillna(0)
 
 # %%
@@ -56,7 +57,7 @@ def define_model(trial):
     lstm_layers = trial.suggest_int("lstm_layers", 1, 3)
     hidden_size = trial.suggest_int("hidden_size", 6, 64)
     dropout = trial.suggest_float("dropout", 0.01, 0.5)
-    return LSTMAutoencoder(2, lstm_layers, hidden_size, dropout)
+    return LSTMAutoencoderBidi(2, lstm_layers, hidden_size, dropout)
 
 
 def objective(trial):
@@ -109,7 +110,7 @@ hidden_size = study.best_trial.params["hidden_size"]
 num_layers = study.best_trial.params["lstm_layers"]
 today = date.today().strftime("%Y-%m-%d")
 
-torch.save(best_model.state_dict(), f"financial_kg_ds/data/best_model_{hidden_size}_{num_layers}_{today}.pth")
+torch.save(best_model.state_dict(), f"financial_kg_ds/data/best_model_bidi_{hidden_size}_{num_layers}_{today}.pth")
 # %% plot data
 import matplotlib.pyplot as plt
 
