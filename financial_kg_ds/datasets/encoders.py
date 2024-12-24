@@ -62,3 +62,27 @@ class SentimentAnalysisEncoder(object):
 
     def __call__(self, df: pd.DataFrame):
         return torch.tensor([self.encode_news(title) for title in df.values]).to(self.dtype)
+    
+from financial_kg_ds.models.RNN_autoencoder import RNNEncoderBidi
+from sklearn.preprocessing import MinMaxScaler
+
+class RNNEncoder(object):
+    """Converts time series data to embeddings."""
+
+    def __init__(self, rnn_model_path: str):
+        self.rnn_model = self._load_rnn_model(rnn_model_path)
+
+    def _load_rnn_model(self, rnn_model_path: str):
+        pass
+
+    def _preprocess_df(self, df, window_size=49, scaler=MinMaxScaler()):
+        if len(df) < window_size:
+            raise ValueError("Dataframe is too small")
+        elif len(df) > window_size:
+            df = df.tail(window_size)
+        df = df.fillna(0)
+        return scaler.fit_transform(df)
+
+    def __call__(self, df):
+        df = self._preprocess_df(df)
+        return self.rnn_model(df)
