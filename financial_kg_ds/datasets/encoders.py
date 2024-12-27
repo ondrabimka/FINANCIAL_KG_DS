@@ -63,18 +63,29 @@ class SentimentAnalysisEncoder(object):
     def __call__(self, df: pd.DataFrame):
         return torch.tensor([self.encode_news(title) for title in df.values]).to(self.dtype)
     
-from financial_kg_ds.models.RNN_autoencoder import RNNEncoderBidi
+from financial_kg_ds.models.RNN_autoencoder import LSTMAutoencoderBidi
 from sklearn.preprocessing import MinMaxScaler
 
-class RNNEncoder(object):
     """Converts time series data to embeddings."""
 
     def __init__(self, rnn_model_path: str):
         self.rnn_model = self._load_rnn_model(rnn_model_path)
 
     def _load_rnn_model(self, rnn_model_path: str):
-        pass
+        print("loading rnn model")
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        hidden_dim, num_layers = self._extract_params_from_model_path(rnn_model_path)
+        model = LSTMAutoencoderBidi(2, 1, num_layers)
+        model.load_state_dict(torch.load(rnn_model_path, map_location=device), strict=False)
+        return model
 
+    @staticmethod
+    def _extract_params_from_model_path(rnn_model_path: str):
+        hidden_dim = rnn_model_path.split('_')[5]
+        num_layers = rnn_model_path.split('_')[6]
+        print("hidden_dim: ", hidden_dim, "num_layers: ", num_layers)
+        return int(hidden_dim), int(num_layers)
+        
     def _preprocess_df(self, df, window_size=49, scaler=MinMaxScaler()):
         if len(df) < window_size:
             raise ValueError("Dataframe is too small")
@@ -85,4 +96,4 @@ class RNNEncoder(object):
 
     def __call__(self, df):
         df = self._preprocess_df(df)
-        return self.rnn_model(df)
+        return self.rnn_model.get_embedding(df)
