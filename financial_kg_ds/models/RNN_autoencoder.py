@@ -81,7 +81,7 @@ class RNNDecoderBidi(nn.Module):
         return out
     
 class LSTMAutoencoderBidi(nn.Module):
-    def __init__(self, input_dim, hidden_dim, num_layers, dropout):
+    def __init__(self, input_dim, hidden_dim, num_layers, dropout=0.1):
         super(LSTMAutoencoderBidi, self).__init__()
         self.encoder = RNNEncoder(input_dim, hidden_dim, num_layers, dropout)
         self.decoder = RNNDecoder(hidden_dim, input_dim, num_layers, dropout)
