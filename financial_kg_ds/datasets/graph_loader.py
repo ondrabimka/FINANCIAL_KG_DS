@@ -217,7 +217,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
 
         scaler = StandardScaler(with_mean=False)
 
-        tickers = pd.read_csv("/Users/obimka/Desktop/Zabafa/FINANCIAL_KG/data/data_2024-09-06/ticker_info.csv")
+        tickers = pd.read_csv(self.data_path + "/ticker_info.csv")
         tickers_new = pd.read_csv("/Users/obimka/Desktop/Zabafa/FINANCIAL_KG/data/data_2024-10-03/ticker_info.csv")
         tickers = tickers[["symbol", "marketCap"]]
         tickers_new = tickers_new[["symbol", "marketCap"]]
