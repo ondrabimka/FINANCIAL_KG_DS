@@ -66,6 +66,7 @@ class SentimentAnalysisEncoder(object):
 from financial_kg_ds.models.RNN_autoencoder import LSTMAutoencoderBidi
 from sklearn.preprocessing import MinMaxScaler
 
+class TimeSeriesEncoder(object):
     """Converts time series data to embeddings."""
 
     def __init__(self, rnn_model_path: str):
