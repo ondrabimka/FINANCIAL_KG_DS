@@ -23,7 +23,7 @@ class GraphLoaderBase:
         self.data_path = data_path
         self.data = HeteroData()
 
-    def load_node_csv(self, path, col_to_map: str, encoders=None, **kwargs):
+    def load_node_csv(self, path, col_to_map: str, node_name_col: str = None, encoders=None, **kwargs):
         """
         Load node data from csv file.
 
@@ -34,6 +34,9 @@ class GraphLoaderBase:
 
         col_to_map : str
             Column name to map.
+
+        node_name_col : str
+            Column name of the node name.
 
         encoders : dict
             Dictionary of encoders.
@@ -54,7 +57,12 @@ class GraphLoaderBase:
             xs = [encoder(df[col]) for col, encoder in encoders.items()]
             x = torch.cat(xs, dim=-1)
 
-        return x, mapping
+        node_names = None
+        if node_name_col is not None:
+            node_names = df[node_name_col].unique()
+            assert len(node_names) == x.shape[0], f"Number of node names ({len(node_names)}) does not match the number of nodes ({x.shape[0]})"
+
+        return x, mapping, node_names
 
     def load_edge_csv(self, path, src_index_col, src_mapping, dst_index_col, dst_mapping, encoders=None, **kwargs):
         """
@@ -114,9 +122,10 @@ class GraphLoaderRegresion(GraphLoaderBase):
 
     # Upadate hetero data with node and edge data
     def add_ticker_node(self):
-        ticker_x, ticker_mapping = self.load_node_csv(
+        ticker_x, ticker_mapping, node_names = self.load_node_csv(
             self.data_path + "/ticker_info.csv",
-            "ticker",
+            col_to_map="ticker",
+            node_name_col="symbol",
             encoders={
                 "ticker": OneHotEncoder(),
                 "currentPrice": IdentityEncoder(),
@@ -144,27 +153,39 @@ class GraphLoaderRegresion(GraphLoaderBase):
         self.data["ticker"].x = ticker_x.float()
         self.ticker_mapping = ticker_mapping
 
+        if node_names is not None:
+            self.data["ticker"].name = node_names
+
     def add_mutual_fund_node(self):
-        mutual_fund_x, mutual_fund_mapping = self.load_node_csv(
-            self.data_path + "/mutual_fund.csv", "name", encoders={"name": OneHotEncoder()}, na_values={"value": 0}
+        mutual_fund_x, mutual_fund_mapping, node_names = self.load_node_csv(
+            self.data_path + "/mutual_fund.csv", "name", node_name_col="name", encoders={"name": OneHotEncoder()}, na_values={"value": 0}
         )
         self.data["mutual_fund"].x = mutual_fund_x.float()
         self.mutual_fund_mapping = mutual_fund_mapping
 
+        if node_names is not None:
+            self.data["mutual_fund"].name = node_names
+
     def add_institution_node(self):
-        institution_x, institution_mapping = self.load_node_csv(
-            self.data_path + "/institution.csv", "name", encoders={"name": OneHotEncoder()}, na_values={"value": 0}
+        institution_x, institution_mapping, node_names = self.load_node_csv(
+            self.data_path + "/institution.csv", "name", node_name_col="name", encoders={"name": OneHotEncoder()}, na_values={"value": 0}
         )
         self.data["institution"].x = institution_x.float()
         self.institution_mapping = institution_mapping
 
+        if node_names is not None:
+            self.data["institution"].name = node_names
+
     def add_news_node(self):
         print("loading news")
-        news_x, news_mapping = self.load_node_csv(
-            self.data_path + "/news.csv", "title", encoders={"title": SentimentAnalysisEncoder()}
+        news_x, news_mapping, node_names = self.load_node_csv(
+            self.data_path + "/news.csv", "title", node_name_col="title",encoders={"title": SentimentAnalysisEncoder()}
         )
         self.data["news"].x = news_x.float()
         self.news_mapping = news_mapping
+
+        if node_names is not None:
+            self.data["news"].name = node_names
 
     def add_holds_it_rel(self):
         edge_index, edge_attr = self.load_edge_csv(
@@ -238,10 +259,10 @@ class GraphLoaderRegresion(GraphLoaderBase):
         self.add_ticker_node()
         self.add_mutual_fund_node()
         self.add_institution_node()
-        self.add_news_node()
+        # self.add_news_node()
         self.add_holds_it_rel()
         self.add_holds_mt_rel()
-        self.about_nt_rel()
+        # self.about_nt_rel()
         self.add_mask()
         self.load_label()
         return self.data
@@ -267,30 +288,43 @@ class GraphLoaderAE(GraphLoaderBase):
 
     # Upadate hetero data with node and edge data
     def add_ticker_node(self):
-        ticker_x, ticker_mapping = self.load_node_csv(
-            self.data_path + "/ticker_info.csv", "ticker", encoders={"ticker": OneHotEncoder(), "currentPrice": IdentityEncoder()}
+        ticker_x, ticker_mapping, node_names = self.load_node_csv(
+            self.data_path + "/ticker_info.csv", "ticker", "ticker", encoders={"ticker": OneHotEncoder(), "currentPrice": IdentityEncoder()}
         )  # ,'targetMeanPrice': IdentityEncoder(), 'marketCap': IdentityEncoder()})
         self.data["ticker"].x = ticker_x.float()
         self.ticker_mapping = ticker_mapping
 
+        if node_names is not None:
+            self.data["ticker"].name = node_names
+
     def add_mutual_fund_node(self):
-        mutual_fund_x, mutual_fund_mapping = self.load_node_csv(
-            self.data_path + "/mutual_fund.csv", "name", encoders={"name": OneHotEncoder()}
+        mutual_fund_x, mutual_fund_mapping, node_names = self.load_node_csv(
+            self.data_path + "/mutual_fund.csv", "name", node_name_col="name", encoders={"name": OneHotEncoder()}
         )
         self.data["mutual_fund"].x = mutual_fund_x.float()
         self.mutual_fund_mapping = mutual_fund_mapping
 
+        if node_names is not None:
+            self.data["mutual_fund"].name = node_names
+
     def add_institution_node(self):
-        institution_x, institution_mapping = self.load_node_csv(
-            self.data_path + "/institution.csv", "name", encoders={"name": OneHotEncoder()}
+        institution_x, institution_mapping, node_names = self.load_node_csv(
+            self.data_path + "/institution.csv", "name", node_name_col="name", encoders={"name": OneHotEncoder()}
         )
         self.data["institution"].x = institution_x.float()
         self.institution_mapping = institution_mapping
 
+        if node_names is not None:
+            self.data["institution"].name = node_names
+
     def add_news_node(self):
-        news_x, news_mapping = self.load_node_csv(self.data_path + "/news.csv", "uuid", encoders={"uuid": OneHotEncoder()})
+        # TODO: change to title
+        news_x, news_mapping, node_names = self.load_node_csv(self.data_path + "/news.csv", "uuid", encoders={"uuid": OneHotEncoder()})
         self.data["news"].x = news_x.float()
         self.news_mapping = news_mapping
+
+        if node_names is not None:
+            self.data["news"].name = node_names
 
     def add_holds_it_rel(self):
         edge_index, edge_attr = self.load_edge_csv(
