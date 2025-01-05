@@ -11,7 +11,7 @@ from financial_kg_ds.datasets.encoders import IdentityEncoder, OneHotEncoder, Se
 
 load_dotenv()
 
-
+# TODO: #4 Refactor so that GraphLoaderBase loads the basic graph structure
 class GraphLoaderBase:
     def __init__(self, data_path=os.getenv("DATA_PATH")):
         """

@@ -50,6 +50,7 @@ class RNNLoader:
         window_size: int = 30,
         batch_size: int = 32,
         shuffle: bool = True,
+        col_names: List[str] = ["Open", "Volume"],
         device=torch.device("cpu"),
         scaler=MinMaxScaler(),
     ) -> DataLoader:
@@ -107,7 +108,7 @@ class RNNLoader:
         tickers = cls._extract_tickers_from_cols(df)
         for ticker in tickers:
             ticker_df = df.filter(regex=f"_({ticker})$")
-            ticker_df = cls._keep_cols_names(ticker_df)
+            ticker_df = cls._keep_cols_names(ticker_df, col_names=col_names)
             for i in range(len(ticker_df) - window_size + 1):
                 if scaler:
                     X.append(scaler.fit_transform(ticker_df.iloc[i : i + window_size].values))
