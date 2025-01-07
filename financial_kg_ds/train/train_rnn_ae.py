@@ -35,7 +35,7 @@ data_df = data_df.fillna(0)
 window_size = 49
 batch_size = 32
 shuffle = True
-loader = RNNLoader.ae_from_dataframe(data_df, window_size, batch_size, shuffle, device)
+loader = RNNLoader.ae_from_dataframe(data_df, window_size, batch_size, shuffle, ['Open'], device)
 
 # %%
 # import matplotlib.pyplot as plt
@@ -57,7 +57,7 @@ def define_model(trial):
     lstm_layers = trial.suggest_int("lstm_layers", 1, 3)
     hidden_size = trial.suggest_int("hidden_size", 6, 64)
     dropout = trial.suggest_float("dropout", 0.01, 0.5)
-    return LSTMAutoencoderBidi(2, lstm_layers, hidden_size, dropout)
+    return LSTMAutoencoderBidi(1, hidden_size, lstm_layers, dropout)
 
 
 def objective(trial):
