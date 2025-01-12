@@ -2,7 +2,7 @@ import pandas as pd
 import torch
 
 from financial_kg_ds.utils.cache import Cache
-
+import matplotlib.pyplot as plt
 
 class IdentityEncoder(object):
     """Converts list of floats to tensor."""
@@ -62,12 +62,21 @@ class SentimentAnalysisEncoder(object):
 
     def __call__(self, df: pd.DataFrame):
         return torch.tensor([self.encode_news(title) for title in df.values]).to(self.dtype)
-    
-from financial_kg_ds.models.RNN_autoencoder import LSTMAutoencoderBidi
+
+# %%
+from financial_kg_ds.models.BiRNN_autoencoder import LSTMAutoencoderBidi
 from sklearn.preprocessing import MinMaxScaler
+import torch
 
 class TimeSeriesEncoder(object):
-    """Converts time series data to embeddings."""
+    """Converts time series data to embeddings.
+    
+    Example
+    -------
+    encoder = TimeSeriesEncoder('financial_kg_ds/data/best_model_bidi_29_1_2025-01-08.pth')
+    test_df = pd.read_csv('financial_kg_ds/data/historical_prices/historical_data.csv', usecols=['Close_AAPL']
+    encoder(test_df)
+    """
 
     def __init__(self, rnn_model_path: str):
         self.rnn_model = self._load_rnn_model(rnn_model_path)
@@ -76,7 +85,7 @@ class TimeSeriesEncoder(object):
         print("loading rnn model")
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         hidden_dim, num_layers = self._extract_params_from_model_path(rnn_model_path)
-        model = LSTMAutoencoderBidi(2, 1, num_layers)
+        model = LSTMAutoencoderBidi(1, hidden_dim, num_layers)
         model.load_state_dict(torch.load(rnn_model_path, map_location=device), strict=False)
         return model
 
@@ -87,14 +96,21 @@ class TimeSeriesEncoder(object):
         print("hidden_dim: ", hidden_dim, "num_layers: ", num_layers)
         return int(hidden_dim), int(num_layers)
         
-    def _preprocess_df(self, df, window_size=49, scaler=MinMaxScaler()):
+    def _preprocess_df(self, df: pd.DataFrame, window_size=49, scaler=MinMaxScaler()):
         if len(df) < window_size:
             raise ValueError("Dataframe is too small")
         elif len(df) > window_size:
             df = df.tail(window_size)
         df = df.fillna(0)
-        return scaler.fit_transform(df)
+        return torch.tensor(scaler.fit_transform(df)).reshape(-1,1).unsqueeze(0).float()
 
-    def __call__(self, df):
+    def __call__(self, df: pd.DataFrame):
         df = self._preprocess_df(df)
         return self.rnn_model.get_embedding(df)
+    
+    def plot_input_vs_output(self, df: pd.DataFrame):
+        input = self._preprocess_df(df)
+        output = self.rnn_model(input)
+        plt.plot(input.squeeze().detach().numpy())
+        plt.plot(output.squeeze().detach().numpy())
+        plt.show()
