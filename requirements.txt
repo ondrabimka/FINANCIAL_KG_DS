@@ -4,6 +4,8 @@ plotly==5.24.1
 python-dotenv==1.0.1
 scikit-learn==1.6.1
 scipy==1.15.1
+notebook==7.3.2
 torch==2.6.0+cu124
 torch-geometric==2.6.1
+transformers==4.48.1
 yfinance==0.2.52
