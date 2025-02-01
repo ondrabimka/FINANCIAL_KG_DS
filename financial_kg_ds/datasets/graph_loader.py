@@ -5,6 +5,7 @@ from typing import List
 import pandas as pd
 import torch
 from dotenv import load_dotenv
+from typing import Optional
 from torch_geometric.data import Data, HeteroData
 
 from financial_kg_ds.datasets.encoders import IdentityEncoder, OneHotEncoder, SentimentAnalysisEncoder
@@ -23,7 +24,7 @@ class GraphLoaderBase:
         self.data_path = data_path
         self.data = HeteroData()
 
-    def load_node_csv(self, path, col_to_map: str = None, node_name_col: str = None, encoders = None, **kwargs):
+    def load_node_csv(self, path, col_to_map: Optional[str] = None, node_name_col: Optional[str] = None, encoders = None, **kwargs):
         """
         Load node data from csv file.
 
