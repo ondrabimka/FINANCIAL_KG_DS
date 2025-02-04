@@ -1,7 +1,5 @@
 # %%
-from torch_geometric.datasets import DBLP
 from torch_geometric.transforms import ToUndirected
-
 from financial_kg_ds.datasets.graph_loader import GraphLoaderRegresion
 
 data = GraphLoaderRegresion().get_data()
@@ -12,8 +10,6 @@ for i in data["institution"]["x"][0]:
     print(i)
 
 # %%
-data.metadata()[1]
-
 
 import torch
 import torch.nn.functional as F
@@ -50,14 +46,12 @@ class HeteroGNN(torch.nn.Module):
 
 # %%
 model = HeteroGNN(data.metadata(), hidden_channels=16, out_channels=1, num_layers=2)
-
 # %%
 out = model(data.x_dict, data.edge_index_dict)
 # %%
 out
 # %%
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
-
 
 def train():
     model.train()
@@ -68,7 +62,6 @@ def train():
     loss.backward()
     optimizer.step()
     return loss.item()
-
 
 # %%
 @torch.no_grad()
@@ -83,7 +76,6 @@ def test():
         accs.append(acc)
     return accs
 
-
 # %% test
 for epoch in range(1, 101):
     loss = train()
@@ -95,6 +87,4 @@ for epoch in range(1, 101):
 
 # %% check validation
 out = model(data.x_dict, data.edge_index_dict)
-# %%
-out
 # %%
