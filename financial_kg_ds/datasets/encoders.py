@@ -36,10 +36,9 @@ class SentimentAnalysisEncoder(object):
     def __init__(self, dtype=None):
         self.dtype = dtype
         self.pipe = pipeline("text-classification", model="ProsusAI/finbert")
-        self.cache = Cache("data", "finbert_cache")
+        self.cache = Cache("financial_kg_ds/data", "finbert_cache")
 
     def encode_news(self, title):
-
         if title in self.cache.cache:
             print(f"cache hit: {title}")
             print(self.cache.cache[title])
@@ -57,11 +56,12 @@ class SentimentAnalysisEncoder(object):
             self.cache.cache[title] = label, output["score"]
             self.cache.save_cache()
             return label, output["score"]
-        except:
+        except Exception as e:
+            print(f"Error: {e}: ", title)
             return 0, 0
 
     def __call__(self, df: pd.DataFrame):
-        return torch.tensor([self.encode_news(title) for title in df.values]).to(self.dtype)
+        return torch.tensor([self.encode_news(title) for title in list(set(df.values))]).to(self.dtype)
 
 # %%
 from financial_kg_ds.models.BiRNN_autoencoder import LSTMAutoencoderBidi
