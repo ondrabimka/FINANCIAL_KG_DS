@@ -5,6 +5,7 @@ import pickle
 class Cache:
     def __init__(self, cache_dir: str, cache_name: str):
         self.cache_dir = cache_dir
+        self.makde_dir_if_not_exists()
         self.cache_name = cache_name
         self.cache_path = os.path.join(self.cache_dir, self.cache_name)
         self.cache = self.load_cache()
@@ -33,3 +34,7 @@ class Cache:
     def clear(self):
         self.cache = {}
         self.save_cache()
+
+    def makde_dir_if_not_exists(self):
+        if not os.path.exists(self.cache_dir):
+            os.makedirs(self.cache_dir)
