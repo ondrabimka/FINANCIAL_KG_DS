@@ -12,7 +12,7 @@ import torch.optim as optim
 
 from financial_kg_ds.datasets.download_data import HistoricalData
 from financial_kg_ds.datasets.rnn_loader import RNNLoader
-from financial_kg_ds.models.RNN_autoencoder import LSTMAutoencoderBidi
+from financial_kg_ds.models.BiRNN_autoencoder import LSTMAutoencoderBidi
 from financial_kg_ds.utils.paths import HISTORICAL_DATA_FILE
 
 # %%
