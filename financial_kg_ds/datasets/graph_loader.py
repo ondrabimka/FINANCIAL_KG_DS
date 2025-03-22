@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from typing import Optional
 from torch_geometric.data import Data, HeteroData
 
-from financial_kg_ds.datasets.encoders import IdentityEncoder, OneHotEncoder, SentimentAnalysisEncoder
+from financial_kg_ds.datasets.encoders import IdentityEncoder, OneHotEncoder, SentimentAnalysisEncoder, TimeSeriesEncoder
 
 load_dotenv()
 
@@ -109,7 +109,7 @@ class GraphLoaderBase:
         if dst_index_col is not None: dst_to_map = df[dst_index_col]
         else:dst_to_map = df.index
 
-        # catch error if index is not in mapping
+        # skip if the source or destination index is not in the mapping
         src = [src_mapping.get(index, -1) for index in src_to_map]
         dst = [dst_mapping.get(index, -1) for index in dst_to_map]
 
@@ -119,6 +119,12 @@ class GraphLoaderBase:
         if encoders is not None:
             edge_attrs = [encoder(df[col]) for col, encoder in encoders.items()]
             edge_attr = torch.cat(edge_attrs, dim=-1)
+
+        # if edge_index contains -1, remove the corresponding column from edge_attr and edge_index
+        if -1 in edge_index:
+            mask = (edge_index != -1).all(dim=0)
+            edge_index = edge_index[:, mask]
+            edge_attr = edge_attr[mask]
 
         return edge_index, edge_attr
     
@@ -233,10 +239,10 @@ class GraphLoaderBase:
         # inider holder created insider transaction
         edge_index, edge_attr = self.load_edge_csv(
             self.data_path + "/insider_transaction.csv",
-            None,
-            self.insider_transaction_mapping,
             "name",
             self.insider_holder_mapping,
+            None,
+            self.insider_transaction_mapping,
             encoders={"shares": IdentityEncoder()},
         )
         self.data["insider_holder", "created", "insider_transaction"].edge_index = edge_index
@@ -255,12 +261,12 @@ class GraphLoaderBase:
         self.data["insider_transaction", "involves", "ticker"].edge_attr = edge_attr
 
     def add_mask(self):
-        # 20% of the data is used for training, 20% for validation, and 60% for testing
+        # 40% of the data is used for training, 30% for validation, and 30% for testing
         n = self.data["ticker"].num_nodes
         train_mask = torch.zeros(n, dtype=torch.bool)
         val_mask = torch.zeros(n, dtype=torch.bool)
         test_mask = torch.zeros(n, dtype=torch.bool)
-        n_train = int(0.3 * n)
+        n_train = int(0.4 * n)
         n_val = int(0.3 * n)
         train_mask[:n_train] = True
         val_mask[n_train : n_train + n_val] = True
@@ -345,11 +351,10 @@ class GraphLoaderRegresion(GraphLoaderBase):
     def add_news_node(self):
         print("loading news")
         news_x, news_mapping, node_names = self.load_node_csv(
-            self.data_path + "/news.csv", "title", node_name_col="title",encoders={"title": SentimentAnalysisEncoder()}
+            self.data_path + "/news.csv", "title", node_name_col="title", encoders={"title": SentimentAnalysisEncoder()}
         )
         self.data["news"].x = news_x.float()
         self.news_mapping = news_mapping
-
         if node_names is not None:
             self.data["news"].name = node_names
 
@@ -374,3 +379,23 @@ class GraphLoaderRegresion(GraphLoaderBase):
         ticker["mcap_diff"] = scaler.fit_transform(ticker["mcap_diff"].values.reshape(-1, 1))
         mcap_diff = torch.from_numpy(ticker["mcap_diff"].values).view(-1, 1)
         self.data["ticker"].y = mcap_diff.float()
+
+    def load_full_graph(self, add_mask=True):
+        self.add_ticker_node()
+        self.add_mutual_fund_node()
+        self.add_institution_node()
+        self.add_news_node()
+        self.add_insider_holder_node()
+        self.add_insider_transaction_node()
+        self.add_holds_it_rel()
+        self.add_holds_mt_rel()
+        self.about_nt_rel()
+        self.holds_iht()
+        self.created()
+        self.involves()
+        self.load_label()
+
+        if add_mask:
+            self.add_mask()
+        
+        return self.data

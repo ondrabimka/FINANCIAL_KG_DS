@@ -49,4 +49,8 @@ financial_kg_ds/data/historical_prices
 # Ignore pytest cache
 .pytest_cache/
 
+# Ingore playground
 playground.py
+
+# Cache file
+finbert_cache
