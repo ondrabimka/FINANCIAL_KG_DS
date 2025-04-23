@@ -27,7 +27,6 @@ class HeteroGNN(torch.nn.Module):
             conv = HeteroConv(
                 {
                     edge_type: SAGEConv((-1, -1), hidden_channels, aggr=gnn_aggr)
-                    # edge_type: GATConv((-1, -1), hidden_channels, dropout=0.7, add_self_loops=False)
                     for edge_type in metadata[1]
                 }
             )
@@ -87,6 +86,8 @@ def objective(trial):
     if val_loss < val_loss_min:
         val_loss_min = val_loss
         print(f"Validation Loss decreased to {val_loss_min}")
+        trial.set_user_attr("best_model", model.state_dict())
+
 
     return val_loss
 
@@ -102,4 +103,50 @@ plot_param_importances(study)
 optuna.visualization.plot_intermediate_values(study).show()
 fig = optuna.visualization.plot_contour(study, params=["hidden_channels", "gnn_aggr"])
 fig.show()
+
+
+# %% Load the best model
+best_model = define_model(study.best_trial)
+best_model.load_state_dict(study.best_trial.user_attrs["best_model"])
+
+# %% load new data
+data_new = GraphLoaderRegresion("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-01-14").get_data()
+data_new = ToUndirected()(data_new)
+
+# %% Evaluate the model
+best_model.eval()
+out = best_model(data_new.x_dict, data_new.edge_index_dict)
+mask = data_new["ticker"].test_mask
+loss = F.mse_loss(out[mask], data_new["ticker"].y[mask])
+print(f"Test Loss: {loss.item()}")
+
+# %% check the predictions
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error
+
+def plot_predictions(y_true, y_pred):
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_true, y_pred, alpha=0.5)
+    plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', lw=2)
+    plt.xlabel('True Values')
+    plt.ylabel('Predictions')
+    plt.title('True vs Predicted Values')
+    plt.show()
+
+def evaluate_model(y_true, y_pred):
+    mse = mean_squared_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+
+    print(f"RMSE: {rmse:.4f}")
+    print(f"MAE: {mae:.4f}")
+    print(f"R^2: {r2:.4f}")
+
+    return mse, rmse, mae, r2
+
+
 
