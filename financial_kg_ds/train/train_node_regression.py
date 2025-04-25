@@ -149,4 +149,16 @@ def evaluate_model(y_true, y_pred):
     return mse, rmse, mae, r2
 
 
+# %%
+out.shape
 
+# %%
+pred_val = data["ticker"].y
+# %%
+tickers = data_new["ticker"].name
+# %%
+pred_df = pd.DataFrame([tickers, pred_val.squeeze(1).detach().numpy()]).T
+# %%
+pred_df.to_csv("financial_kg_ds/data/predictions/prediction_2024_01_14.csv")
+
+# %%
