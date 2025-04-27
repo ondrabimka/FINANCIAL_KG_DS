@@ -54,3 +54,6 @@ playground.py
 
 # Cache file
 finbert_cache
+
+# DS_Store
+.DS_Store
