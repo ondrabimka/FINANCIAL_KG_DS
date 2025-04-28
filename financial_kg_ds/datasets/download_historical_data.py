@@ -28,8 +28,10 @@ class HistoricalData:
         Load historical data from Yahoo Finance API
     """
 
-    def __init__(self, tickers: List[str]):
+    def __init__(self, tickers: List[str], period: str = "max", interval: str = "1wk"):
         self.tickers = [yf.Ticker(ticker) for ticker in tickers]
+        self.period = period
+        self.interval = interval
 
     def download_data(self, **kwargs):
         """
@@ -51,7 +53,7 @@ class HistoricalData:
             dfs.append(df)
             sleep(kwargs.get("sleep", 1))
         self._validate_data_dir()
-        pd.concat(dfs, axis=1, join="outer").to_csv(f"{HISTORICAL_DATA_FILE}/historical_data.csv")
+        pd.concat(dfs, axis=1, join="outer").to_csv(f"{HISTORICAL_DATA_FILE}/historical_data_{self.interval}.csv")
 
     def load_data(self, **kwargs):
         """
@@ -62,11 +64,18 @@ class HistoricalData:
         **kwargs : dict
             Keyword arguments to pass to yfinance.Ticker.history method and sleep time between requests
         """
-        self.download_data(**kwargs)
-        return self._load_file()[0]
+        # check if data is already downloaded
+        if os.path.exists(f"{HISTORICAL_DATA_FILE}/historical_data_{self.interval}.csv"):
+            print("Data already downloaded")
+            return self._load_file()[0]
+        else:
+            print("Data not downloaded yet")
+            print("Downloading data")
+            self.download_data(**kwargs)
+            return self._load_file()[0]
 
     def _load_file(self):
-        historical_data = pd.read_csv(f"{HISTORICAL_DATA_FILE}/historical_data.csv")
+        historical_data = pd.read_csv(f"{HISTORICAL_DATA_FILE}/historical_data_{self.interval}.csv")
         tickers_already_downloaded = historical_data.columns.str.split("_").str[-1].unique()
         dates_already_downloaded = historical_data.index
         return historical_data, tickers_already_downloaded, dates_already_downloaded

@@ -10,10 +10,16 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from financial_kg_ds.datasets.download_data import HistoricalData
+from financial_kg_ds.datasets.download_historical_data import HistoricalData
 from financial_kg_ds.datasets.rnn_loader import RNNLoader
 from financial_kg_ds.models.BiRNN_autoencoder import LSTMAutoencoderBidi
 from financial_kg_ds.utils.paths import HISTORICAL_DATA_FILE
+
+
+# %% hyperparameters
+PERIOD = "2y"
+INTERVAL = "1h"
+DATE_CUT_OFF = "2024-09-06"  # date based on FINANCIAL_KG data
 
 # %%
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -26,7 +32,7 @@ tickers = list(pd.read_csv(os.getenv("DATA_PATH") + "/ticker_info.csv", usecols=
 # historical_data.download_data(period='2y', interval='1h')
 
 # %% Prepare data
-data_df = pd.read_csv(f"{HISTORICAL_DATA_FILE}/historical_data.csv", index_col=0)
+data_df = pd.read_csv(f"{HISTORICAL_DATA_FILE}/historical_data_1h.csv", index_col=0)
 data_df = data_df[data_df.index <= "2024-09-06"]  # date based on FINANCIAL_KG data
 data_df = data_df.tail(1000)
 data_df = data_df.fillna(0)

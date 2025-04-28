@@ -1,46 +1,15 @@
 # %%
 from torch_geometric.transforms import ToUndirected
 from financial_kg_ds.datasets.graph_loader import GraphLoaderRegresion
+from financial_kg_ds.models.GNN_hetero_sage_conv import HeteroGNN
 
-data = GraphLoaderRegresion().get_data()
+data = GraphLoaderRegresion.get_data()
 data = ToUndirected()(data)
-
-# %%
-for i in data["institution"]["x"][0]:
-    print(i)
 
 # %%
 import torch
 import torch.nn.functional as F
 from torch.nn import Linear
-
-# %%
-from torch_geometric.nn import GATConv, HeteroConv, SAGEConv
-
-
-class HeteroGNN(torch.nn.Module):
-    def __init__(self, metadata, hidden_channels, out_channels, num_layers, gnn_aggr="add"):
-        super().__init__()
-
-        self.convs = torch.nn.ModuleList()
-        for _ in range(num_layers):
-            conv = HeteroConv(
-                {
-                    edge_type: SAGEConv((-1, -1), hidden_channels, aggr=gnn_aggr)
-                    for edge_type in metadata[1]
-                }
-            )
-            self.convs.append(conv)
-
-        self.lin = Linear(hidden_channels, out_channels)
-
-    def forward(self, x_dict, edge_index_dict):
-        for conv in self.convs:
-            x_dict = conv(x_dict, edge_index_dict)
-            x_dict = {key: F.dropout(x, p=0.2, training=self.training) for key, x in x_dict.items()}
-            x_dict = {key: F.leaky_relu(x) for key, x in x_dict.items()}
-        return self.lin(x_dict["ticker"])
-
 import optuna
 from optuna.visualization import plot_param_importances
 
@@ -159,6 +128,6 @@ tickers = data_new["ticker"].name
 # %%
 pred_df = pd.DataFrame([tickers, pred_val.squeeze(1).detach().numpy()]).T
 # %%
-pred_df.to_csv("financial_kg_ds/data/predictions/prediction_2024_01_14.csv")
+pred_df.to_csv("financial_kg_ds/data/predictions/prediction_2025_01_14.csv")
 
 # %%

@@ -69,16 +69,17 @@ from sklearn.preprocessing import MinMaxScaler
 import torch
 
 class TimeSeriesEncoder(object):
-    """Converts time series data to embeddings.
+    """
+    Converts time series data to embeddings.
     
     Example
     -------
     encoder = TimeSeriesEncoder('financial_kg_ds/data/best_model_bidi_29_1_2025-01-08.pth')
-    test_df = pd.read_csv('financial_kg_ds/data/historical_prices/historical_data.csv', usecols=['Close_AAPL']
+    test_df = pd.read_csv('financial_kg_ds/data/historical_prices/historical_data_1h.csv', usecols=['Close_AAPL']
     encoder(test_df)
     """
 
-    def __init__(self, rnn_model_path: str):
+    def __init__(self, rnn_model_path: str = 'financial_kg_ds/data/best_model_bidi_53_2_2025-01-07.pth'):
         self.rnn_model = self._load_rnn_model(rnn_model_path)
 
     def _load_rnn_model(self, rnn_model_path: str):
