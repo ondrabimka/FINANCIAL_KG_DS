@@ -1,0 +1,1 @@
+# TODO: #6 Create a logger for the project
