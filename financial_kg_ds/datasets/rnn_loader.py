@@ -82,7 +82,7 @@ class RNNLoader:
         self.cols_to_keep = cols_to_keep
         self.device = device
 
-    def dataframe_to_windows(self, df: pd.DataFrame = None) -> Tuple[torch.Tensor, torch.Tensor]:
+    def dataframe_to_windows(self, df: pd.DataFrame = None, dropna: bool = True) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Convert dataframe to windows of data. Data is scaled on every window separately.
 
@@ -144,6 +144,14 @@ class RNNLoader:
         tickers = self._extract_tickers_from_cols(df)
         for ticker in tickers:
             ticker_df = df.filter(regex=f"_({ticker})$")
+
+            if dropna:
+                ticker_df = ticker_df.dropna()
+
+            if ticker_df.empty:
+                print(f"Ticker {ticker} is not valid")
+                continue
+            
             ticker_df = self._keep_cols_names(ticker_df, cols_to_keep=self.cols_to_keep)
             for i in range(len(ticker_df) - self.window_size + 1):
                 if self.scaler:
