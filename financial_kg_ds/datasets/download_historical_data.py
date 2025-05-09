@@ -62,11 +62,10 @@ class HistoricalData:
         for ticker in self.tickers:
             ticker_path = os.path.join(self.data_dir, f"{ticker.ticker}.csv")
             if os.path.exists(ticker_path):
-                df = pd.read_csv(ticker_path, usecols=columns)
+                df = pd.read_csv(ticker_path, usecols=columns, parse_dates=['Date'])
                 df.rename(columns={col: f"{col}_{ticker.ticker}" for col in df.columns if col != 'Date'}, inplace=True)
-                df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-                df = df.set_index('Date')
-                print(df.head())
+                df['Date'] = pd.to_datetime(df['Date'], errors='coerce', utc=True).dt.tz_localize(None)
+                df = df.set_index('Date', drop=True)
 
                 if whole_df.empty:
                     whole_df = df
@@ -76,6 +75,7 @@ class HistoricalData:
             else:
                 print(f"No data found for {ticker.ticker}, with period {self.period} and interval {self.interval}")
 
+        whole_df = whole_df.drop(columns=['Date'], errors='ignore')
         return whole_df
 
     def get_ticker_data(self, ticker: str):
@@ -110,10 +110,26 @@ class HistoricalData:
                 print(f"No existing data for {ticker.ticker}, downloading full history")
                 self.download_data(**kwargs)
 
+    def load_file(self, ticker: str):
+        """Load data from a specific file"""
+        ticker_path = os.path.join(self.data_dir, f"{ticker}.csv")
+        if os.path.exists(ticker_path):
+            return pd.read_csv(ticker_path)
+        return None
+    
+    def load_tickers(self):
+        """Load all tickers from the data directory"""
+        for ticker in self.tickers:
+            ticker_path = os.path.join(self.data_dir, f"{ticker.ticker}.csv")
+            if os.path.exists(ticker_path):
+                yield self.load_file(ticker.ticker)
+
+
+                
 # %%
 # Create instance
-historical_data = HistoricalData(ALL_TICKERS, period="10y", interval="1wk")
-historical_data.download_data()
+# historical_data = HistoricalData(ALL_TICKERS[:5], period="10y", interval="1wk")
+# historical_data.download_data()
 # dta = historical_data.combine_ticker_data(['Close'])
 # Load all data combined
 # combined_data = historical_data.download_data()

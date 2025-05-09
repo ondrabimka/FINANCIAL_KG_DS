@@ -106,6 +106,8 @@ class TimeSeriesEncoder(object):
         return torch.tensor(scaler.fit_transform(df)).reshape(-1,1).unsqueeze(0).float()
 
     def __call__(self, df: pd.DataFrame):
+        tickers = df.values
+
         df = self._preprocess_df(df)
         return self.rnn_model.get_embedding(df)
     
