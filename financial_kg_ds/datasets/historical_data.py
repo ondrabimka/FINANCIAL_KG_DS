@@ -46,8 +46,7 @@ class HistoricalData:
 
 
     def combine_ticker_data(self, columns: List[str] = None, add_empty_if_not_found: bool = True):
-        """ Combine all ticker CSV files into one DataFrame """
-
+        """Combine all ticker CSV files into one DataFrame"""
         assert isinstance(columns, list) or columns is None, "columns should be a list or None"
         valid_columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Dividends', 'Stock Splits']
         if columns:
@@ -64,7 +63,7 @@ class HistoricalData:
             if os.path.exists(ticker_path):
                 df = pd.read_csv(ticker_path, usecols=columns, parse_dates=['Date'])
                 df.rename(columns={col: f"{col}_{ticker.ticker}" for col in df.columns if col != 'Date'}, inplace=True)
-                df['Date'] = pd.to_datetime(df['Date'], errors='coerce', utc=True).dt.tz_localize(None)
+                df['Date'] = pd.to_datetime(df['Date'], utc=True)
                 df = df.set_index('Date', drop=True)
 
                 if whole_df.empty:
@@ -76,7 +75,8 @@ class HistoricalData:
                 print(f"No data found for {ticker.ticker}, with period {self.period} and interval {self.interval}")
                 if add_empty_if_not_found:
                     empty_df = pd.DataFrame(columns=[f"{col}_{ticker.ticker}" for col in columns[1:]])
-                    empty_df['Date'] = pd.to_datetime([], errors='coerce', utc=True).dt.tz_localize(None)
+                    empty_df['Date'] = pd.to_datetime([], errors='coerce', utc=True)
+                    empty_df['Date'] = pd.to_datetime(empty_df['Date'], utc=True)
                     empty_df = empty_df.set_index('Date', drop=True)
                     whole_df = whole_df.merge(empty_df, how='outer', on='Date')
 
@@ -147,3 +147,5 @@ class HistoricalData:
 # dta
 
 # %%
+# import pandas as pd
+# df = pd.read_csv("financial_kg_ds/data/historical_prices/1wk/AA.csv", usecols=['Close','Date'], parse_dates=['Date'])
