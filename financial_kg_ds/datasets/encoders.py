@@ -136,7 +136,7 @@ class TimeSeriesEncoder(object):
 
         historical_data = HistoricalData(tickers=tickers, period=period, interval=interval)
         historical_data_df = historical_data.combine_ticker_data(columns)
-        historical_data_df = historical_data_df[historical_data_df.index < pd.to_datetime(self.date_cut_off)]
+        historical_data_df = historical_data_df[historical_data_df.index < pd.to_datetime(self.date_cut_off).tz_localize('UTC')]
         return historical_data_df
             
 
@@ -153,6 +153,7 @@ class TimeSeriesEncoder(object):
             df = list(df)
 
         data = self.get_dataframe(df, columns, period, interval)
+        print(f"data shape: {data.shape}")
         embeddings = []
         for col in tqdm(data.columns, desc="Encoding columns"):
             if col not in data.columns:
