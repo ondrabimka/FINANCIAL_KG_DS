@@ -4,7 +4,7 @@ import torch
 from typing import Union
 
 from financial_kg_ds.utils.cache import Cache
-from financial_kg_ds.datasets.download_historical_data import HistoricalData
+from financial_kg_ds.datasets.historical_data import HistoricalData
 import matplotlib.pyplot as plt
 
 class IdentityEncoder(object):

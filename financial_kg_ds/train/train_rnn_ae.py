@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from financial_kg_ds.datasets.download_historical_data import HistoricalData
+from financial_kg_ds.datasets.historical_data import HistoricalData
 from financial_kg_ds.datasets.rnn_loader import RNNLoader
 from financial_kg_ds.models.BiRNN_autoencoder import LSTMAutoencoderBidi
 from financial_kg_ds.utils.utils import ALL_TICKERS
