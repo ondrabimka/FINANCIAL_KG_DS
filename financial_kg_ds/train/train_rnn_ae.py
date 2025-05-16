@@ -23,7 +23,7 @@ from datetime import datetime
 PERIOD = "10y"
 INTERVAL = "1wk"
 DATE_CUT_OFF = "2024-09-06"  # max date to consider for training
-N_OF_EPOCHS = 100
+N_EPOCHS = 100
 
 # %%
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -67,7 +67,7 @@ del data_df
 # %%
 def define_model(trial):
     lstm_layers = trial.suggest_int("lstm_layers", 1, 3)
-    hidden_size = trial.suggest_int("hidden_size", 6, 64)
+    hidden_size = trial.suggest_int("hidden_size", 6, 128)
     dropout = trial.suggest_float("dropout", 0.01, 0.5)
     return LSTMAutoencoderBidi(1, hidden_size, lstm_layers, dropout).to(device)
 
@@ -83,10 +83,9 @@ def objective(trial):
     
     val_loss_min = float('inf')
     patience = trial.suggest_int("patience", 5, 15)
-    n_epochs = trial.suggest_int("n_epochs", 10, 30)
     
     counter = 0
-    for _ in range(n_epochs):
+    for _ in range(N_EPOCHS):
         # Training
         model.train()
         train_loss = 0
@@ -148,8 +147,11 @@ best_model = study.user_attrs["best_model"]
 hidden_size = study.best_trial.params["hidden_size"]
 num_layers = study.best_trial.params["lstm_layers"]
 today = date.today().strftime("%Y-%m-%d")
+date_cutoff = str(pd.to_datetime(DATE_CUT_OFF, format="%Y-%m-%d").date())
 
-torch.save(best_model.state_dict(), f"financial_kg_ds/data/best_model_bidi_{hidden_size}_{num_layers}_{today}_{PERIOD}_{INTERVAL}_{DATE_CUT_OFF}.pth")
+torch.save(best_model.state_dict(), f"financial_kg_ds/data/best_model_bidi_{hidden_size}_{num_layers}_{today}_{PERIOD}_{INTERVAL}_{date_cutoff}.pth")
+
+
 # %% plot data
 import matplotlib.pyplot as plt
 
@@ -186,3 +188,4 @@ plt.show()
 # plt.plot(timeseries_volume.cpu().detach().numpy().flatten(), label="pred")
 # plt.legend()
 # plt.show()
+

@@ -45,7 +45,7 @@ class HistoricalData:
         return self.combine_ticker_data()
 
 
-    def combine_ticker_data(self, columns: List[str] = None):
+    def combine_ticker_data(self, columns: List[str] = None, add_empty_if_not_found: bool = True):
         """ Combine all ticker CSV files into one DataFrame """
 
         assert isinstance(columns, list) or columns is None, "columns should be a list or None"
@@ -70,12 +70,19 @@ class HistoricalData:
                 if whole_df.empty:
                     whole_df = df
                 else:
-                    whole_df = whole_df.join(df, how='outer', on='Date')
+                    whole_df = whole_df.merge(df, how='outer', on='Date')
 
             else:
                 print(f"No data found for {ticker.ticker}, with period {self.period} and interval {self.interval}")
+                if add_empty_if_not_found:
+                    empty_df = pd.DataFrame(columns=[f"{col}_{ticker.ticker}" for col in columns[1:]])
+                    empty_df['Date'] = pd.to_datetime([], errors='coerce', utc=True).dt.tz_localize(None)
+                    empty_df = empty_df.set_index('Date', drop=True)
+                    whole_df = whole_df.merge(empty_df, how='outer', on='Date')
 
         whole_df = whole_df.drop(columns=['Date'], errors='ignore')
+        whole_df = whole_df.sort_index(ascending=True)
+        whole_df = whole_df[whole_df.index.notna()]
         return whole_df
 
     def get_ticker_data(self, ticker: str):
@@ -128,9 +135,15 @@ class HistoricalData:
                 
 # %%
 # Create instance
-# historical_data = HistoricalData(ALL_TICKERS[:5], period="10y", interval="1wk")
+# tickers = ["AAPL", "MSFT", "GOOGL","ZLSWU"]
+# historical_data = HistoricalData(ALL_TICKERS, period="10y", interval="1wk")
+# historical_data = HistoricalData(tickers, period="10y", interval="1wk")
 # historical_data.download_data()
 # dta = historical_data.combine_ticker_data(['Close'])
 # Load all data combined
 # combined_data = historical_data.download_data()
 
+# %%
+# dta
+
+# %%
