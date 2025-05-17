@@ -57,3 +57,6 @@ finbert_cache
 
 # DS_Store
 .DS_Store
+
+# Training checkpoints
+checkpoints/

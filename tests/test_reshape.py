@@ -21,7 +21,7 @@ class TestRNNLoader(unittest.TestCase):
         batch_size = 5
         shuffle = False
 
-        loader = RNNLoader.ae_from_dataframe(df, window_size, batch_size, shuffle, scaler=None)
+        loader, _, _ = RNNLoader(df, window_size, batch_size, shuffle).get_loaders(0, 0)
         X, _ = next(iter(loader))
 
         expected_X = np.array(

@@ -319,7 +319,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
             col_to_map="ticker",
             node_name_col="symbol",
             encoders={
-                "ticker": OneHotEncoder(),
+                # "ticker": OneHotEncoder(),
                 "currentPrice": IdentityEncoder(),
                 "targetHighPrice": IdentityEncoder(),
                 "targetLowPrice": IdentityEncoder(),
@@ -339,6 +339,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
                 "freeCashflow": IdentityEncoder(),
                 "insidersPercentHeld": IdentityEncoder(),
                 "institutionsPercentHeld": IdentityEncoder(),
+                "ticker": TimeSeriesEncoder("10y", "1wk", "2024-11-12"),
             },
         )
         # 'trailingPE': IdentityEncoder(),})
@@ -365,6 +366,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
 
         tickers = pd.read_csv(self.data_path + "/ticker_info.csv")
         tickers_new = pd.read_csv("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-10-25/ticker_info.csv")
+        # tickers_new = pd.read_csv("/Users/obimka/Desktop/Zabafa/FINANCIAL_KG/data/data_2025-01-02/ticker_info.csv")
         tickers = tickers[["symbol", "marketCap"]]
         tickers_new = tickers_new[["symbol", "marketCap"]]
         tickers = tickers.drop_duplicates(subset="symbol")

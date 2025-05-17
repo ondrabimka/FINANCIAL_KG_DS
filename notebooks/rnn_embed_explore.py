@@ -7,11 +7,14 @@ import numpy as np
 from financial_kg_ds.utils.paths import HISTORICAL_DATA_FILE
 
 # %% load data
-data_df = pd.read_csv(f"{HISTORICAL_DATA_FILE}/historical_data.csv", index_col=0)
+data_df = pd.read_csv(f"{HISTORICAL_DATA_FILE}/historical_data_1h.csv", index_col=0, nrows=1000)
 data_df = data_df[data_df.index <= "2024-11-12"]
 data_df = data_df[[col for col in data_df.columns if "Close" in col]] # %% keep all Close_ticker columns
 data_df = data_df.tail(50)
 data_df = data_df.dropna(axis=1) # %% drop na columnwise
+
+# %%
+data_df
 
 # %%
 encoder = TimeSeriesEncoder("financial_kg_ds/data/best_model_bidi_29_1_2025-01-08.pth")
