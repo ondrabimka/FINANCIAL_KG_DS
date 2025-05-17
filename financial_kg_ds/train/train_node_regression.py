@@ -123,7 +123,7 @@ best_model = define_model(study.best_trial)
 best_model.load_state_dict(study.best_trial.user_attrs["best_model"])
 
 # %% load new data
-data_new = GraphLoaderRegresion("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-01-14").get_data()
+data_new = GraphLoaderRegresion("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15").get_data()
 data_new = ToUndirected()(data_new)
 
 # %% Evaluate the model
@@ -172,6 +172,6 @@ tickers = data_new["ticker"].name
 # %%
 pred_df = pd.DataFrame([tickers, pred_val.squeeze(1).detach().numpy()]).T
 # %%
-pred_df.to_csv("financial_kg_ds/data/predictions/prediction_2025_01_14.csv")
+pred_df.to_csv("financial_kg_ds/data/predictions/prediction_on_data_2024-11-15.csv")
 
 # %%

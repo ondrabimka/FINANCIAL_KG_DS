@@ -339,7 +339,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
                 "freeCashflow": IdentityEncoder(),
                 "insidersPercentHeld": IdentityEncoder(),
                 "institutionsPercentHeld": IdentityEncoder(),
-                "ticker": TimeSeriesEncoder("10y", "1wk", "2024-11-12"),
+                "ticker": TimeSeriesEncoder("10y", "1wk", "2024-09-06"),
             },
         )
         # 'trailingPE': IdentityEncoder(),})
