@@ -29,7 +29,6 @@ def define_model(trial):
         hidden_channels=trial.suggest_int("hidden_channels", 32, 256, log=True),
         out_channels=1,
         num_layers=trial.suggest_int("num_layers", 2, 5),
-        dropout=trial.suggest_float("dropout", 0.1, 0.5),
         gnn_aggr=trial.suggest_categorical("gnn_aggr", ["add", "mean", "max"]),
     )
 
@@ -69,7 +68,7 @@ def objective(trial):
         verbose=True
     )
     
-    num_epochs = trial.suggest_int("num_epochs", 20, 100)  # Make epochs configurable
+    num_epochs = trial.suggest_int("num_epochs", 20, 200)  # Make epochs configurable
     
     for epoch in range(num_epochs):
         model.train()
