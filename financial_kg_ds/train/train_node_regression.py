@@ -4,6 +4,13 @@ import json
 from torch_geometric.transforms import ToUndirected
 from financial_kg_ds.datasets.graph_loader import GraphLoaderRegresion
 from financial_kg_ds.models.GNN_hetero_sage_conv import HeteroGNN
+import torch
+import numpy as np
+import pandas as pd
+
+# %% Hyperparameters
+USE_AUGMENTATIONS = True  # Set to True to use augmentations
+NUM_EPOCHS = 100  # Number of epochs for training
 
 # %%
 data = GraphLoaderRegresion.get_data()
@@ -51,6 +58,33 @@ def validate(model, data):
         val_loss = F.mse_loss(out[mask], data["ticker"].y[mask]).item()
     return val_loss
 
+
+def asymmetric_loss(y_pred, y_true, alpha=1.0):
+    """Custom loss function that penalizes over-optimistic predictions more"""
+    diff = y_pred - y_true
+    loss = torch.where(diff > 0, 
+                      alpha * (diff ** 2),  # Higher penalty for over-prediction
+                      diff ** 2)            # Normal penalty for under-prediction
+    return loss.mean()
+
+
+def train_without_augmentations(model, data, optimizer):
+    """Train model without augmentations"""
+    model.train()
+    optimizer.zero_grad()
+    
+    out = model(data.x_dict, data.edge_index_dict)
+    mask = data["ticker"].train_mask
+    loss = asymmetric_loss(out[mask], data["ticker"].y[mask])
+    
+    loss.backward()
+    optimizer.step()
+    
+    return loss.item()
+
+
+
+
 def objective(trial):
     val_loss_min = float('inf')
     patience = 5
@@ -68,35 +102,33 @@ def objective(trial):
         verbose=True
     )
     
-    num_epochs = trial.suggest_int("num_epochs", 20, 200)  # Make epochs configurable
     
-    for epoch in range(num_epochs):
-        model.train()
-        optimizer.zero_grad()
-        out = model(data.x_dict, data.edge_index_dict)
-        mask = data["ticker"].train_mask
-        loss = F.mse_loss(out[mask], data["ticker"].y[mask])
-        loss.backward()
-        optimizer.step()
-
-        # Validation
+    for epoch in range(NUM_EPOCHS):
+        train_loss = train_without_augmentations(model, data, optimizer)
+        
         val_loss = validate(model, data)
         scheduler.step(val_loss)
-            
+        
+        # Save the best model
         if val_loss < val_loss_min:
             val_loss_min = val_loss
             patience_counter = 0
-            print(f"Epoch {epoch}: Validation Loss decreased to {val_loss_min}")
             trial.set_user_attr("best_model", model.state_dict())
-            save_checkpoint(model, trial.number, val_loss_min, trial.params)  # Save checkpoint
         else:
             patience_counter += 1
-                
+        
+        # Save checkpoint
+        save_checkpoint(model, trial.number, val_loss, trial.params)
+        
+        print(f"Epoch {epoch+1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+        
         if patience_counter >= patience:
-            print(f"Early stopping triggered at epoch {epoch}")
+            print("Early stopping triggered")
             break
-                
+        
     return val_loss_min
+
+
 
 # %%
 study = optuna.create_study(
@@ -172,6 +204,6 @@ tickers = data_new["ticker"].name
 # %%
 pred_df = pd.DataFrame([tickers, pred_val.squeeze(1).detach().numpy()]).T
 # %%
-pred_df.to_csv("financial_kg_ds/data/predictions/prediction_on_data_2024-11-15.csv")
+pred_df.to_csv("financial_kg_ds/data/predictions/prediction_on_data_2024-11-15_1.csv")
 
 # %%
