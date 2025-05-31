@@ -7,9 +7,14 @@ from financial_kg_ds.models.GNN_hetero_sage_conv import HeteroGNN
 import torch
 import numpy as np
 import pandas as pd
+from financial_kg_ds.utils.mlflow_utils import MLflowTracker
+from datetime import datetime
+import yaml
+import joblib
+from financial_kg_ds.utils.evaluate_gnn import ModelEvaluator
+from financial_kg_ds.utils.losses import LossFactory
 
 # %% Hyperparameters
-USE_AUGMENTATIONS = True  # Set to True to use augmentations
 NUM_EPOCHS = 100  # Number of epochs for training
 
 # %%
@@ -50,160 +55,151 @@ def save_checkpoint(model, trial_number, val_loss, params, checkpoint_dir="check
     path = os.path.join(checkpoint_dir, f"model_trial_{trial_number}.pt")
     torch.save(checkpoint, path)
 
-def validate(model, data):
-    model.eval()
-    with torch.no_grad():
-        out = model(data.x_dict, data.edge_index_dict)
-        mask = data["ticker"].val_mask
-        val_loss = F.mse_loss(out[mask], data["ticker"].y[mask]).item()
-    return val_loss
 
-
-def asymmetric_loss(y_pred, y_true, alpha=1.0):
-    """Custom loss function that penalizes over-optimistic predictions more"""
-    diff = y_pred - y_true
-    loss = torch.where(diff > 0, 
-                      alpha * (diff ** 2),  # Higher penalty for over-prediction
-                      diff ** 2)            # Normal penalty for under-prediction
-    return loss.mean()
-
-
-def train_without_augmentations(model, data, optimizer):
-    """Train model without augmentations"""
+def train(model, data, optimizer, loss_fn):
+    """ Train model for one epoch """
     model.train()
     optimizer.zero_grad()
     
     out = model(data.x_dict, data.edge_index_dict)
     mask = data["ticker"].train_mask
-    loss = asymmetric_loss(out[mask], data["ticker"].y[mask])
+    loss = loss_fn(out[mask], data["ticker"].y[mask])
     
     loss.backward()
     optimizer.step()
     
     return loss.item()
 
+def validate(model, data, loss_fn):
+    """Validate model """
+    model.eval()
+    with torch.no_grad():
+        out = model(data.x_dict, data.edge_index_dict)
+        mask = data["ticker"].val_mask
+        val_loss = loss_fn(out[mask], data["ticker"].y[mask])
+    return val_loss
 
 
+def load_config():
+    with open("configs/models/base_gnn.yaml", "r") as f:
+        return yaml.safe_load(f)
 
 def objective(trial):
-    val_loss_min = float('inf')
-    patience = 5
-    patience_counter = 0
+    # Initialize MLflow tracking
+    mlflow_tracker = MLflowTracker("GNN_Optimization")
+    run_name = f"trial_{trial.number}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    mlflow_tracker.start_run(run_name)
+
+    try:
+
+        config = load_config()
+        loss_fn = LossFactory.create_loss(config)
+
+        val_loss_min = float('inf')
+        patience = 5
+        patience_counter = 0
+        
+        model = define_model(trial)
+        learning_rate = trial.suggest_float("learning_rate", 1e-5, 1e-1, log=True)
+        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+        
+        # Log parameters
+        mlflow_tracker.log_params({
+            "hidden_channels": trial.params["hidden_channels"],
+            "num_layers": trial.params["num_layers"],
+            "gnn_aggr": trial.params["gnn_aggr"],
+            "learning_rate": trial.params["learning_rate"]
+        })
+        
+        for epoch in range(NUM_EPOCHS):
+            train_loss = train(model, data, optimizer, loss_fn)
+            val_loss = validate(model, data, loss_fn)
+            
+            # Log metrics
+            mlflow_tracker.log_metrics({
+                "train_loss": train_loss,
+                "val_loss": val_loss
+            }, step=epoch)
+            
+            # Save the best model
+            if val_loss < val_loss_min:
+                val_loss_min = val_loss
+                patience_counter = 0
+                trial.set_user_attr("best_model", model.state_dict())
+            else:
+                patience_counter += 1
+            
+            # Save checkpoint
+            save_checkpoint(model, trial.number, val_loss, trial.params)
+            
+            print(f"Epoch {epoch+1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+            
+            if patience_counter >= patience:
+                print("Early stopping triggered")
+                break
+            
+        # Log final model and metrics
+        mlflow_tracker.log_model(model, "model")
+        mlflow_tracker.log_metrics({
+            "final_val_loss": val_loss_min,
+            "best_epoch": epoch
+        })
+        
+        return val_loss_min
     
-    model = define_model(trial)
-    learning_rate = trial.suggest_float("learning_rate", 1e-5, 1e-1, log=True)
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    finally:
+        mlflow_tracker.end_run()
+
+def main():
+    try:
+        config = load_config()
+    except FileNotFoundError:
+        print("Error: Config file not found. Please ensure base_gnn.yaml exists in configs/models/")
+        return
+
+    # Create MLflow experiment for the full training
+    mlflow_tracker = MLflowTracker("GNN_Training")
+    run_name = f"full_training_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    mlflow_tracker.start_run(run_name)
     
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, 
-        mode='min', 
-        factor=0.5, 
-        patience=3,
-        verbose=True
-    )
-    
-    
-    for epoch in range(NUM_EPOCHS):
-        train_loss = train_without_augmentations(model, data, optimizer)
+    try:
+        # Ensure data path exists
+        data_path = "C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15"
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"Data path not found: {data_path}")
+            
+        # Log configuration
+        mlflow_tracker.log_params(config)
         
-        val_loss = validate(model, data)
-        scheduler.step(val_loss)
+        # Run optimization
+        study = optuna.create_study(direction="minimize")
+        study.optimize(objective, n_trials=50)
         
-        # Save the best model
-        if val_loss < val_loss_min:
-            val_loss_min = val_loss
-            patience_counter = 0
-            trial.set_user_attr("best_model", model.state_dict())
-        else:
-            patience_counter += 1
+        # Train final model with best parameters
+        best_model = define_model(study.best_trial)
+        best_model.load_state_dict(study.best_trial.user_attrs["best_model"])
         
-        # Save checkpoint
-        save_checkpoint(model, trial.number, val_loss, trial.params)
+        # Evaluate on new data
+        data_new = GraphLoaderRegresion("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15").get_data()
+        data_new = ToUndirected()(data_new)
+
+        # Initialize evaluator
+        evaluator = ModelEvaluator(threshold=100, prediction_limit=5)
         
-        print(f"Epoch {epoch+1}/{NUM_EPOCHS}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+        # Evaluate model
+        metrics, eval_df, eval_plots = evaluator.evaluate(best_model, data_new)
         
-        if patience_counter >= patience:
-            print("Early stopping triggered")
-            break
+        # Save evaluation results
+        save_dir = "financial_kg_ds/experiments/evaluations"
+        result_paths = evaluator.save_results(eval_df, metrics, eval_plots, save_dir)
         
-    return val_loss_min
+        # Log to MLflow
+        mlflow_tracker.log_metrics(metrics)
+        for path_type, path in result_paths.items():
+            mlflow_tracker.log_artifact(path)
+        
+    finally:
+        mlflow_tracker.end_run()
 
-
-
-# %%
-study = optuna.create_study(
-    direction="minimize",
-    pruner=optuna.pruners.MedianPruner(
-        n_startup_trials=5,
-        n_warmup_steps=10
-    )
-)
-study.optimize(objective, n_trials=50)  # Increase number of trials
-
-# %%
-study.best_params
-
-# %%
-plot_param_importances(study)
-optuna.visualization.plot_intermediate_values(study).show()
-fig = optuna.visualization.plot_contour(study, params=["hidden_channels", "gnn_aggr"])
-fig.show()
-
-
-# %% Load the best model
-best_model = define_model(study.best_trial)
-best_model.load_state_dict(study.best_trial.user_attrs["best_model"])
-
-# %% load new data
-data_new = GraphLoaderRegresion("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15").get_data()
-data_new = ToUndirected()(data_new)
-
-# %% Evaluate the model
-best_model.eval()
-out = best_model(data_new.x_dict, data_new.edge_index_dict)
-mask = data_new["ticker"].test_mask
-loss = F.mse_loss(out[mask], data_new["ticker"].y[mask])
-print(f"Test Loss: {loss.item()}")
-
-# %% check the predictions
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.metrics import mean_absolute_error
-
-def plot_predictions(y_true, y_pred):
-    plt.figure(figsize=(10, 6))
-    plt.scatter(y_true, y_pred, alpha=0.5)
-    plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--', lw=2)
-    plt.xlabel('True Values')
-    plt.ylabel('Predictions')
-    plt.title('True vs Predicted Values')
-    plt.show()
-
-def evaluate_model(y_true, y_pred):
-    mse = mean_squared_error(y_true, y_pred)
-    rmse = np.sqrt(mse)
-    mae = mean_absolute_error(y_true, y_pred)
-    r2 = r2_score(y_true, y_pred)
-
-    print(f"RMSE: {rmse:.4f}")
-    print(f"MAE: {mae:.4f}")
-    print(f"R^2: {r2:.4f}")
-
-    return mse, rmse, mae, r2
-
-
-# %%
-out.shape
-
-# %%
-pred_val = data["ticker"].y
-# %%
-tickers = data_new["ticker"].name
-# %%
-pred_df = pd.DataFrame([tickers, pred_val.squeeze(1).detach().numpy()]).T
-# %%
-pred_df.to_csv("financial_kg_ds/data/predictions/prediction_on_data_2024-11-15_1.csv")
-
-# %%
+if __name__ == "__main__":
+    main()
