@@ -13,6 +13,7 @@ import yaml
 import joblib
 from financial_kg_ds.utils.evaluate_gnn import ModelEvaluator
 from financial_kg_ds.utils.losses import LossFactory
+import mlflow
 
 # %% Hyperparameters
 NUM_EPOCHS = 100  # Number of epochs for training
@@ -85,10 +86,10 @@ def load_config():
         return yaml.safe_load(f)
 
 def objective(trial):
-    # Initialize MLflow tracking
+    # Initialize MLflow tracking with nested=True
     mlflow_tracker = MLflowTracker("GNN_Optimization")
     run_name = f"trial_{trial.number}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    mlflow_tracker.start_run(run_name)
+    mlflow_tracker.start_run(run_name, nested=True)  # Add nested=True here
 
     try:
 
@@ -151,6 +152,10 @@ def objective(trial):
         mlflow_tracker.end_run()
 
 def main():
+    # End any existing runs (safety check)
+    if mlflow.active_run():
+        mlflow.end_run()
+
     try:
         config = load_config()
     except FileNotFoundError:
@@ -160,7 +165,7 @@ def main():
     # Create MLflow experiment for the full training
     mlflow_tracker = MLflowTracker("GNN_Training")
     run_name = f"full_training_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    mlflow_tracker.start_run(run_name)
+    mlflow_tracker.start_run(run_name)  # This will be the parent run
     
     try:
         # Ensure data path exists
@@ -173,7 +178,7 @@ def main():
         
         # Run optimization
         study = optuna.create_study(direction="minimize")
-        study.optimize(objective, n_trials=50)
+        study.optimize(objective, n_trials=2)
         
         # Train final model with best parameters
         best_model = define_model(study.best_trial)

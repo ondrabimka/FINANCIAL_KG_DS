@@ -6,23 +6,31 @@ import os
 class MLflowTracker:
     def __init__(self, experiment_name: str):
         self.experiment_name = experiment_name
-        mlruns_dir = "mlruns"
-        os.makedirs(mlruns_dir, exist_ok=True)
+        # mlruns_dir = "mlruns"
+        # os.makedirs(mlruns_dir, exist_ok=True)
         # self.mlflow_uri = "file://" + os.path.abspath(mlruns_dir)
-        mlflow.set_tracking_uri("http://localhost:5000")
+        self.mlflow_uri = "http://localhost:5000"
+        mlflow.set_tracking_uri(self.mlflow_uri)
         # mlflow.set_tracking_uri(self.mlflow_uri)
         
         # Create or get experiment
         try:
-            self.experiment_id = mlflow.create_experiment(
-                experiment_name,
-                artifact_location=os.path.join(self.mlflow_uri, experiment_name)
-            )
-        except:
+            self.experiment_id = mlflow.create_experiment(experiment_name)
+        except mlflow.exceptions.MlflowException:
             self.experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
 
-    def start_run(self, run_name: str):
-        active_run = mlflow.start_run(experiment_id=self.experiment_id, run_name=run_name)
+    def start_run(self, run_name: str, nested: bool = False):
+        """Start a new MLflow run
+        
+        Args:
+            run_name: Name of the run
+            nested: Whether this is a nested run
+        """
+        active_run = mlflow.start_run(
+            experiment_id=self.experiment_id, 
+            run_name=run_name,
+            nested=nested
+        )
         self.run_id = active_run.info.run_id
         return self.run_id
 

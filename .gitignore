@@ -60,3 +60,11 @@ finbert_cache
 
 # Training checkpoints
 checkpoints/
+
+# Ignore mlruns
+mlruns/
+
+# Mlartifacts
+mlartifacts/
+
+experiments/
