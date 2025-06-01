@@ -62,23 +62,23 @@ class ModelEvaluator:
         # Standard metrics
         mse = mean_squared_error(df['actual'], df['prediction'])
         metrics = {
-            'test_mse': mse,
-            'test_rmse': np.sqrt(mse),
-            'test_mae': mean_absolute_error(df['actual'], df['prediction']),
-            'test_r2': r2_score(df['actual'], df['prediction']),
-            'market_return': df['return_actual'].mean(),
-            'median_return': df['return_actual'].median(),
-            'direction_accuracy': (df['predicted_direction'] == df['actual_direction']).mean(),
-            'profitable_trades': (df['return_actual'] > 0).mean(),
-            'total_predictions': len(df),
+            'test_mse': float(mse),  # Convert numpy types to Python types
+            'test_rmse': float(np.sqrt(mse)),
+            'test_mae': float(mean_absolute_error(df['actual'], df['prediction'])),
+            'test_r2': float(r2_score(df['actual'], df['prediction'])),
+            'market_return': float(df['return_actual'].mean()),
+            'median_return': float(df['return_actual'].median()),
+            'direction_accuracy': float((df['predicted_direction'] == df['actual_direction']).mean()),
+            'profitable_trades': float((df['return_actual'] > 0).mean()),
+            'total_predictions': int(len(df)),  # Convert to int
         }
         
         # Add statistical tests
         correlation, p_value = stats.pearsonr(df['prediction'], df['actual'])
         metrics.update({
-            'correlation': correlation,
-            'p_value': p_value,
-            'statistically_significant': p_value < 0.05
+            'correlation': float(correlation),
+            'p_value': float(p_value),
+            'statistically_significant': bool(p_value < 0.05)  # Convert to bool
         })
         
         return metrics
