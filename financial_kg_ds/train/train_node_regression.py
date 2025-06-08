@@ -15,6 +15,11 @@ from financial_kg_ds.utils.evaluate_gnn import ModelEvaluator
 from financial_kg_ds.utils.losses import LossFactory
 import mlflow
 
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 # %% Hyperparameters
 NUM_EPOCHS = 100  # Number of epochs for training
 
@@ -30,10 +35,10 @@ import optuna
 from optuna.visualization import plot_param_importances
 
 # %%
-model = HeteroGNN(data.metadata(), hidden_channels=16, out_channels=1, num_layers=2)
-out = model(data.x_dict, data.edge_index_dict)
-mask = data["ticker"].train_mask
-loss = F.mse_loss(out[mask], data["ticker"].y[mask])
+# model = HeteroGNN(data.metadata(), hidden_channels=16, out_channels=1, num_layers=2)
+# out = model(data.x_dict, data.edge_index_dict)
+# mask = data["ticker"].train_mask
+# loss = F.mse_loss(out[mask], data["ticker"].y[mask])
 
 # %%
 def define_model(trial):
@@ -140,7 +145,7 @@ def objective(trial):
                 break
             
         # Log final model and metrics
-        mlflow_tracker.log_model(model, "model")
+        mlflow_tracker.log_model(model, "model", data)  # Add data parameter
         mlflow_tracker.log_metrics({
             "final_val_loss": val_loss_min,
             "best_epoch": epoch
@@ -169,23 +174,27 @@ def main():
     
     try:
         # Ensure data path exists
-        data_path = "C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15"
+        data_path = os.getenv("TRAIN_DATA_PATH")
         if not os.path.exists(data_path):
             raise FileNotFoundError(f"Data path not found: {data_path}")
+        
+        eval_data_path = os.getenv("EVAL_DATA_PATH")
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"Data path not found: {eval_data_path}")
             
         # Log configuration
         mlflow_tracker.log_params(config)
         
         # Run optimization
         study = optuna.create_study(direction="minimize")
-        study.optimize(objective, n_trials=2)
+        study.optimize(objective, n_trials=30)
         
         # Train final model with best parameters
         best_model = define_model(study.best_trial)
         best_model.load_state_dict(study.best_trial.user_attrs["best_model"])
         
         # Evaluate on new data
-        data_new = GraphLoaderRegresion("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15").get_data()
+        data_new = GraphLoaderRegresion(eval_data_path).get_data()
         data_new = ToUndirected()(data_new)
 
         # Initialize evaluator
@@ -203,6 +212,21 @@ def main():
         for path_type, path in result_paths.items():
             mlflow_tracker.log_artifact(path)
         
+        # Log final model and metrics with proper registration
+        model_name = f"best_model_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        mlflow_tracker.log_model(
+            model=best_model,
+            name=model_name,
+            data=data_new
+        )
+        
+        # Log metrics individually
+        for metric_name, metric_value in metrics.items():
+            if isinstance(metric_value, (int, float)):
+                mlflow_tracker.log_metrics({
+                    f"final_{metric_name}": float(metric_value)
+                })
+            
     finally:
         mlflow_tracker.end_run()
 
