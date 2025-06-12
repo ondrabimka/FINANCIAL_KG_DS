@@ -142,32 +142,32 @@ class ModelEvaluator:
         }
     
 
-# %%
-from financial_kg_ds.datasets.graph_loader import GraphLoaderRegresion
-from torch_geometric.transforms import ToUndirected
-from financial_kg_ds.models.GNN_hetero_sage_conv import HeteroGNN
-
-data = GraphLoaderRegresion.get_data()
-data = ToUndirected()(data)
-
-# %%
-
-# model = HeteroGNN(data.metadata(), hidden_channels=16, out_channels=1, num_layers=2)
-# out = model(data.x_dict, data.edge_index_dict)
-
-# %%
-import mlflow
-from mlflow.models import Model
-
-model_uri = 'runs:/729d772ff60f4bfd9db483b02e75757b/best_model_20250605_172810'
-# The model is logged with an input example
-pyfunc_model = mlflow.pyfunc.load_model(model_uri)
-
-# Verify the model with the provided input data using the logged dependencies.
-# For more details, refer to:
-# https://mlflow.org/docs/latest/models.html#validate-models-before-deployment
-mlflow.models.predict(
-    model_uri=model_uri,
-    input_data=data,
-    env_manager="uv",
-)
+# # %%
+# from financial_kg_ds.datasets.graph_loader import GraphLoaderRegresion
+# from torch_geometric.transforms import ToUndirected
+# from financial_kg_ds.models.GNN_hetero_sage_conv import HeteroGNN
+# 
+# data = GraphLoaderRegresion.get_data()
+# data = ToUndirected()(data)
+# 
+# # %%
+# 
+# # model = HeteroGNN(data.metadata(), hidden_channels=16, out_channels=1, num_layers=2)
+# # out = model(data.x_dict, data.edge_index_dict)
+# 
+# # %%
+# import mlflow
+# from mlflow.models import Model
+# 
+# model_uri = 'runs:/729d772ff60f4bfd9db483b02e75757b/best_model_20250605_172810'
+# # The model is logged with an input example
+# pyfunc_model = mlflow.pyfunc.load_model(model_uri)
+# 
+# # Verify the model with the provided input data using the logged dependencies.
+# # For more details, refer to:
+# # https://mlflow.org/docs/latest/models.html#validate-models-before-deployment
+# mlflow.models.predict(
+#     model_uri=model_uri,
+#     input_data=data,
+#     env_manager="uv",
+# )

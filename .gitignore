@@ -68,3 +68,6 @@ mlruns/
 mlartifacts/
 
 experiments/
+
+# mlruns.db
+mlruns.db
