@@ -14,7 +14,7 @@ load_dotenv()
 
 # TODO: #4 Refactor so that GraphLoaderBase loads the basic graph structure
 class GraphLoaderBase:
-    def __init__(self, data_path=os.getenv("DATA_PATH")):
+    def __init__(self, data_path=os.getenv("TRAIN_DATA_PATH")):
         """
         Parameters
         ----------
@@ -295,7 +295,7 @@ class GraphLoaderBase:
         return self.data
     
     @classmethod
-    def get_data(cls, data_path=os.getenv("DATA_PATH")):
+    def get_data(cls, data_path=os.getenv("TRAIN_DATA_PATH")):
         """
         Get the graph data.
         """
@@ -303,7 +303,7 @@ class GraphLoaderBase:
         return loader.load_full_graph()
 
 class GraphLoaderRegresion(GraphLoaderBase):
-    def __init__(self, data_path=os.getenv("DATA_PATH")):
+    def __init__(self, data_path=os.getenv("TRAIN_DATA_PATH")):
         """
         Parameters
         ----------
@@ -365,7 +365,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
         scaler = StandardScaler(with_mean=False)
 
         tickers = pd.read_csv(self.data_path + "/ticker_info.csv")
-        tickers_new = pd.read_csv("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-10-25/ticker_info.csv")
+        tickers_new = pd.read_csv("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2025-01-02/ticker_info.csv")
         # tickers_new = pd.read_csv("/Users/obimka/Desktop/Zabafa/FINANCIAL_KG/data/data_2025-01-02/ticker_info.csv")
         tickers = tickers[["symbol", "marketCap"]]
         tickers_new = tickers_new[["symbol", "marketCap"]]
