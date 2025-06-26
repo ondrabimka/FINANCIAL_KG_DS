@@ -303,14 +303,18 @@ class GraphLoaderBase:
         return loader.load_full_graph()
 
 class GraphLoaderRegresion(GraphLoaderBase):
-    def __init__(self, data_path=os.getenv("TRAIN_DATA_PATH")):
+    def __init__(self, data_path=os.getenv("TRAIN_DATA_PATH"), eval_data_path=os.getenv("EVAL_DATA_PATH")):
         """
         Parameters
         ----------
         data_path : str
             Path to the data directory.
+
+        eval_data_path : str
+            Path to the data from which the labels are computed.
         """
         super().__init__(data_path)
+        self.eval_data_path = eval_data_path
 
     # Upadate hetero data with node and edge data
     def add_ticker_node(self):
@@ -360,13 +364,24 @@ class GraphLoaderRegresion(GraphLoaderBase):
             self.data["news"].name = node_names
 
     def load_label(self):
+
+        """
+        Load the label for the ticker node, which is the percentage change (scaled) in market cap between the training and test data.
+        The label is computed as follows:
+        1. Load the market cap from the ticker_info.csv file in both the training and test data.
+        2. Compute the difference in market cap between the test and training data.
+        3. Scale the difference by dividing it by the market cap in the training data and multiplying by 100.
+        4. Clip the value to a maximum of 500 (500% from the original market cap).
+        5. Scale the value using StandardScaler with mean set to False.
+        6. Convert the value to a torch tensor and assign it to the ticker node's y attribute.
+        """
+
         from sklearn.preprocessing import StandardScaler
 
         scaler = StandardScaler(with_mean=False)
 
         tickers = pd.read_csv(self.data_path + "/ticker_info.csv")
-        tickers_new = pd.read_csv("C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2025-01-02/ticker_info.csv")
-        # tickers_new = pd.read_csv("/Users/obimka/Desktop/Zabafa/FINANCIAL_KG/data/data_2025-01-02/ticker_info.csv")
+        tickers_new = pd.read_csv(self.eval_data_path + "/ticker_info.csv")
         tickers = tickers[["symbol", "marketCap"]]
         tickers_new = tickers_new[["symbol", "marketCap"]]
         tickers = tickers.drop_duplicates(subset="symbol")
@@ -376,7 +391,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
         ticker = tickers.merge(tickers_new, on="symbol", suffixes=("_old", "_new"), how="left")
         ticker["mcap_diff"] = ticker["marketCap_new"] - ticker["marketCap_old"]
         ticker["mcap_diff"] = ticker["mcap_diff"] / ticker["marketCap_old"] * 100
-        ticker["mcap_diff"] = ticker["mcap_diff"].clip(upper=200)
+        ticker["mcap_diff"] = ticker["mcap_diff"].clip(upper=500)
         ticker["mcap_diff"] = ticker["mcap_diff"].fillna(0)
         ticker["mcap_diff"] = scaler.fit_transform(ticker["mcap_diff"].values.reshape(-1, 1))
         mcap_diff = torch.from_numpy(ticker["mcap_diff"].values).view(-1, 1)
@@ -401,3 +416,11 @@ class GraphLoaderRegresion(GraphLoaderBase):
             self.add_mask()
         
         return self.data
+    
+    @classmethod
+    def get_data(cls, data_path=os.getenv("TRAIN_DATA_PATH"), eval_data_path=os.getenv("EVAL_DATA_PATH")):
+        """
+        Get the graph data.
+        """
+        loader = cls(data_path, eval_data_path)
+        return loader.load_full_graph()
