@@ -10,6 +10,8 @@ from torch_geometric.data import Data, HeteroData
 
 from financial_kg_ds.datasets.encoders import IdentityEncoder, OneHotEncoder, SentimentAnalysisEncoder, TimeSeriesEncoder
 
+from financial_kg_ds.utils.utils import ALL_TICKERS
+
 load_dotenv()
 
 # TODO: #4 Refactor so that GraphLoaderBase loads the basic graph structure
@@ -51,6 +53,12 @@ class GraphLoaderBase:
             Mapping from the index to the node index.
         """
         df = pd.read_csv(path, **kwargs)
+
+        # if col_to_map is ticker make sure its filled with ALL_TICKERS
+        if col_to_map == "ticker":
+            ticker_df = pd.DataFrame({'ticker': ALL_TICKERS})
+            df = ticker_df.merge(df, on='ticker', how='left')
+
 
         if col_to_map is not None:
             mapping = {index: i for i, index in enumerate(df[col_to_map].unique())}
