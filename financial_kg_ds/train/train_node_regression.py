@@ -1,5 +1,7 @@
 # %%
 import os
+print(os.getcwd())
+
 import json
 from torch_geometric.transforms import ToUndirected
 from financial_kg_ds.datasets.graph_loader import GraphLoaderRegresion
@@ -21,12 +23,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # %% Hyperparameters
-NUM_EPOCHS = 100  # Number of epochs for training
+NUM_EPOCHS = 2  # Number of epochs for training
 
 # %%
 data = GraphLoaderRegresion.get_data()
 data = ToUndirected()(data)
-
 # %%
 import torch
 import torch.nn.functional as F
@@ -181,24 +182,31 @@ def main():
         eval_data_path = os.getenv("EVAL_DATA_PATH")
         if not os.path.exists(data_path):
             raise FileNotFoundError(f"Data path not found: {eval_data_path}")
+        
+        test_data_path = os.getenv("TEST_DATA_PATH")
+        if not os.path.exists(test_data_path):
+            raise FileNotFoundError(f"Data path not found: {test_data_path}")
             
         # Log configuration
         mlflow_tracker.log_params(config)
         
         # Run optimization
         study = optuna.create_study(direction="minimize")
-        study.optimize(objective, n_trials=30)
+        study.optimize(objective, n_trials=2)
         
         # Train final model with best parameters
         best_model = define_model(study.best_trial)
         best_model.load_state_dict(study.best_trial.user_attrs["best_model"])
         
         # Evaluate on new data
-        data_new = GraphLoaderRegresion(eval_data_path).get_data()
+        data_new = GraphLoaderRegresion(
+            data_path=eval_data_path,
+            eval_data_path=test_data_path
+        ).get_data()
         data_new = ToUndirected()(data_new)
 
         # Initialize evaluator
-        evaluator = ModelEvaluator(threshold=100, prediction_limit=5)
+        evaluator = ModelEvaluator(eval_data_path, test_data_path, threshold=100, prediction_limit=5)
         
         # Evaluate model
         metrics, eval_df, eval_plots = evaluator.evaluate(best_model, data_new)

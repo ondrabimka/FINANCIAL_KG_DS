@@ -89,6 +89,8 @@ To train a model:
 python -m financial_kg_ds.train.train_node_regression
 ```
 
+Note: MLFlow needs to be running to track experiments. You can start it with: [MLflow Integration](#mlflow-integration)
+
 ## Evaluation
 The system provides comprehensive evaluation metrics including:
 - Standard metrics (MSE, RMSE, MAE, R²)
@@ -99,7 +101,7 @@ The system provides comprehensive evaluation metrics including:
 ## MLflow Integration
 View training results and experiments:
 ```bash
-mlflow ui --backend-store-uri file://`pwd`/mlruns
+mlflow server --backend-store-uri sqlite:///mlruns.db --default-artifact-root ./mlruns --host 0.0.0.0 --port 5001
 ```
 Then open http://localhost:5000 in your browser.
 
