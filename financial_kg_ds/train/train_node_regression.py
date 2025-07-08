@@ -22,9 +22,6 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# %% Hyperparameters
-NUM_EPOCHS = 2  # Number of epochs for training
-
 # %%
 data = GraphLoaderRegresion.get_data()
 data = ToUndirected()(data)
@@ -42,13 +39,28 @@ from optuna.visualization import plot_param_importances
 # loss = F.mse_loss(out[mask], data["ticker"].y[mask])
 
 # %%
+def load_model_config():
+    with open("configs/models/base_gnn.yaml", "r") as f:
+        return yaml.safe_load(f)
+    
+def load_train_config():
+    with open("configs/models/base_gnn.yaml", "r") as f:
+        return yaml.safe_load(f)
+    
+try:
+    model_config = load_model_config()
+    train_config = load_train_config()
+except FileNotFoundError:
+    print("Error: Config file not found. Please ensure base_gnn.yaml exists in configs/models/")
+    raise 
+
 def define_model(trial):
     return HeteroGNN(
         data.metadata(),
-        hidden_channels=trial.suggest_int("hidden_channels", 32, 256, log=True),
+        hidden_channels=trial.suggest_int("hidden_channels", model_config['model']['optuna_params']['hidden_channels']['min'], model_config['model']['optuna_params']['hidden_channels']['min'], log=True),
         out_channels=1,
-        num_layers=trial.suggest_int("num_layers", 2, 5),
-        gnn_aggr=trial.suggest_categorical("gnn_aggr", ["add", "mean", "max"]),
+        num_layers=trial.suggest_int("num_layers", model_config['model']['num_layers']['min'], model_config['model']['num_layers']['max']),
+        gnn_aggr=trial.suggest_categorical("gnn_aggr", model_config['model']['gnn_aggr']['choices']),
     )
 
 
@@ -86,11 +98,6 @@ def validate(model, data, loss_fn):
         val_loss = loss_fn(out[mask], data["ticker"].y[mask])
     return val_loss
 
-
-def load_config():
-    with open("configs/models/base_gnn.yaml", "r") as f:
-        return yaml.safe_load(f)
-
 def objective(trial):
     # Initialize MLflow tracking with nested=True
     mlflow_tracker = MLflowTracker("GNN_Optimization")
@@ -98,9 +105,7 @@ def objective(trial):
     mlflow_tracker.start_run(run_name, nested=True)  # Add nested=True here
 
     try:
-
-        config = load_config()
-        loss_fn = LossFactory.create_loss(config)
+        loss_fn = LossFactory.create_loss(model_config)
 
         val_loss_min = float('inf')
         patience = 5
@@ -162,12 +167,6 @@ def main():
     if mlflow.active_run():
         mlflow.end_run()
 
-    try:
-        config = load_config()
-    except FileNotFoundError:
-        print("Error: Config file not found. Please ensure base_gnn.yaml exists in configs/models/")
-        return
-
     # Create MLflow experiment for the full training
     mlflow_tracker = MLflowTracker("GNN_Training")
     run_name = f"full_training_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -188,11 +187,11 @@ def main():
             raise FileNotFoundError(f"Data path not found: {test_data_path}")
             
         # Log configuration
-        mlflow_tracker.log_params(config)
+        mlflow_tracker.log_params(model_config)
         
         # Run optimization
         study = optuna.create_study(direction="minimize")
-        study.optimize(objective, n_trials=2)
+        study.optimize(objective, n_trials=10)
         
         # Train final model with best parameters
         best_model = define_model(study.best_trial)
@@ -240,3 +239,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+    
