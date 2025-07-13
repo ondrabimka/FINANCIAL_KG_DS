@@ -13,10 +13,6 @@ model:
       max: 5
     gnn_aggr:
       choices: ["add", "mean", "max"]
-    learning_rate:
-      min: 1e-5
-      max: 1e-1
-      log: true
 
 loss:
   name: "asymmetric"  # Options: "mse", "asymmetric", "huber", "quantile"

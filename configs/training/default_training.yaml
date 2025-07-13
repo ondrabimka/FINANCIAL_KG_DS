@@ -7,6 +7,10 @@ training:
   optuna:
     n_trials: 50
     direction: "minimize"
+    learning_rate:
+        min: 0.0001
+        max: 0.1
+        log: true
 
   
 evaluation:
