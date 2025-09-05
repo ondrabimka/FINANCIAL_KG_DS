@@ -5,18 +5,18 @@ model:
     dropout: 0.2
   optuna_params:
     hidden_channels:
-      min: 32
-      max: 256
+      min: 64
+      max: 512
       log: true
     num_layers:
       min: 2
-      max: 5
+      max: 6
     gnn_aggr:
       choices: ["add", "mean", "max"]
 
 loss:
   name: "asymmetric"  # Options: "mse", "asymmetric", "huber", "quantile"
   params:
-    alpha: 1.5  # For asymmetric loss
+    alpha: 1.5  # For asymmetric loss - penalize over-predictions more
     beta: 0.9   # For quantile loss
     delta: 1.0  # For huber loss
