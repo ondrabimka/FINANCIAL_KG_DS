@@ -5,7 +5,7 @@ training:
     min_delta: 1e-5
     monitor: "val_loss"
   optuna:
-    n_trials: 50
+    n_trials: 20
     direction: "minimize"
     learning_rate:
         min: 0.0001

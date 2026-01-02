@@ -1,0 +1,953 @@
+2025-12-29 21:57:14,391 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\models\base_gnn.yaml
+2025-12-29 21:57:14,395 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\training\default_training.yaml
+2025-12-29 21:57:14,395 - financial_kg_ds - INFO - Configuration loaded successfully:
+2025-12-29 21:57:14,395 - financial_kg_ds - INFO - Model: HeteroGNN
+2025-12-29 21:57:14,395 - financial_kg_ds - INFO - Loss function: asymmetric
+2025-12-29 21:57:14,395 - financial_kg_ds - INFO - Training epochs: 200
+2025-12-29 21:57:14,396 - financial_kg_ds - INFO - Optuna trials: 50
+2025-12-29 21:58:38,894 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/models/base_gnn.yaml
+2025-12-29 21:58:38,900 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/training/default_training.yaml
+2025-12-29 21:58:38,900 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-29 21:58:38,900 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-29 21:58:42,067 - financial_kg_ds.utils.mlflow_utils - INFO - Created new MLflow experiment: GNN_Financial_Training
+2025-12-29 21:58:42,634 - financial_kg_ds - INFO - === Data Path Verification ===
+2025-12-29 21:58:42,634 - financial_kg_ds - INFO - TRAIN: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-09-06
+2025-12-29 21:58:42,634 - financial_kg_ds - INFO - EVAL: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15
+2025-12-29 21:58:42,635 - financial_kg_ds - INFO - TEST: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2025-01-02
+2025-12-29 21:58:42,672 - financial_kg_ds - INFO - === Stage 1: Hyperparameter Optimization on Training Data ===
+2025-12-29 21:58:42,672 - financial_kg_ds - INFO - Running optimization with 50 trials...
+2025-12-29 21:58:42,672 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-29 21:58:42,672 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-29 21:58:42,688 - financial_kg_ds.utils.mlflow_utils - INFO - Created new MLflow experiment: GNN_Optimization
+2025-12-29 22:18:16,788 - financial_kg_ds - INFO - Trial 0 - Epoch 1/200, Train Loss: 1.2151, Val Loss: 1497.5233, Direction Acc: 0.513
+2025-12-29 22:40:56,193 - financial_kg_ds - INFO - Trial 0 - Epoch 11/200, Train Loss: 1.1834, Val Loss: 222.1834, Direction Acc: 0.513
+2025-12-29 22:52:20,523 - financial_kg_ds - INFO - Trial 0 - Epoch 21/200, Train Loss: 1.0454, Val Loss: 1.2590, Direction Acc: 0.407
+2025-12-29 23:06:33,844 - financial_kg_ds - INFO - Trial 0 - Epoch 31/200, Train Loss: 1.0105, Val Loss: 1.2554, Direction Acc: 0.394
+2025-12-29 23:16:31,157 - financial_kg_ds - INFO - Trial 0 - Epoch 41/200, Train Loss: 1.0102, Val Loss: 1.1484, Direction Acc: 0.394
+2025-12-29 23:21:05,964 - financial_kg_ds - INFO - Trial 0 - Early stopping triggered at epoch 44
+2025-12-29 23:21:33,710 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-29 23:21:34,599 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-29 23:21:47,739 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-29 23:23:19,736 - financial_kg_ds - INFO - Trial 1 - Epoch 1/200, Train Loss: 1.2903, Val Loss: 1.1965, Direction Acc: 0.393
+2025-12-29 23:39:21,424 - financial_kg_ds - INFO - Trial 1 - Epoch 11/200, Train Loss: 0.9866, Val Loss: 1.0434, Direction Acc: 0.513
+2025-12-29 23:49:43,463 - financial_kg_ds - INFO - Trial 1 - Epoch 21/200, Train Loss: 0.9474, Val Loss: 1.1038, Direction Acc: 0.513
+2025-12-29 23:56:35,535 - financial_kg_ds - INFO - Trial 1 - Early stopping triggered at epoch 25
+2025-12-30 00:00:26,435 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 00:00:28,547 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 00:01:14,579 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 00:02:18,216 - financial_kg_ds - INFO - Trial 2 - Epoch 1/200, Train Loss: 1.1239, Val Loss: 97433.8125, Direction Acc: 0.511
+2025-12-30 00:03:41,668 - financial_kg_ds - INFO - Trial 2 - Epoch 11/200, Train Loss: 0.9715, Val Loss: 1.3762, Direction Acc: 0.511
+2025-12-30 00:04:29,874 - financial_kg_ds - INFO - Trial 2 - Epoch 21/200, Train Loss: 0.9628, Val Loss: 1.5063, Direction Acc: 0.527
+2025-12-30 00:05:01,136 - financial_kg_ds - INFO - Trial 2 - Early stopping triggered at epoch 27
+2025-12-30 00:05:16,750 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 00:05:16,750 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 00:06:40,309 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 00:07:05,556 - financial_kg_ds - INFO - Trial 3 - Epoch 1/200, Train Loss: 1.1560, Val Loss: 173548976.0000, Direction Acc: 0.525
+2025-12-30 00:10:30,594 - financial_kg_ds - INFO - Trial 3 - Epoch 11/200, Train Loss: 1.5261, Val Loss: 2.0323, Direction Acc: 0.504
+2025-12-30 00:13:54,145 - financial_kg_ds - INFO - Trial 3 - Epoch 21/200, Train Loss: 1.8288, Val Loss: 6.7933, Direction Acc: 0.394
+2025-12-30 00:15:35,821 - financial_kg_ds - INFO - Trial 3 - Early stopping triggered at epoch 25
+2025-12-30 00:15:36,039 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 00:15:36,039 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 00:15:36,084 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 00:16:33,827 - financial_kg_ds - INFO - Trial 4 - Epoch 1/200, Train Loss: 1.2087, Val Loss: 3.2914, Direction Acc: 0.394
+2025-12-30 00:28:09,586 - financial_kg_ds - INFO - Trial 4 - Epoch 11/200, Train Loss: 1.0136, Val Loss: 1.0641, Direction Acc: 0.476
+2025-12-30 00:34:16,999 - financial_kg_ds - INFO - Trial 4 - Early stopping triggered at epoch 17
+2025-12-30 00:34:31,790 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 00:34:32,793 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 00:34:45,527 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 00:35:09,359 - financial_kg_ds - INFO - Trial 5 - Epoch 1/200, Train Loss: 1.2488, Val Loss: 5.1678, Direction Acc: 0.397
+2025-12-30 00:36:40,042 - financial_kg_ds - INFO - Trial 5 - Epoch 11/200, Train Loss: 1.3057, Val Loss: 1.4745, Direction Acc: 0.510
+2025-12-30 00:38:10,451 - financial_kg_ds - INFO - Trial 5 - Epoch 21/200, Train Loss: 1.0914, Val Loss: 1.1045, Direction Acc: 0.520
+2025-12-30 00:39:39,705 - financial_kg_ds - INFO - Trial 5 - Epoch 31/200, Train Loss: 1.0005, Val Loss: 1.1357, Direction Acc: 0.419
+2025-12-30 00:41:09,061 - financial_kg_ds - INFO - Trial 5 - Epoch 41/200, Train Loss: 0.9782, Val Loss: 1.0645, Direction Acc: 0.409
+2025-12-30 00:42:38,416 - financial_kg_ds - INFO - Trial 5 - Epoch 51/200, Train Loss: 0.9779, Val Loss: 1.0513, Direction Acc: 0.515
+2025-12-30 00:44:07,430 - financial_kg_ds - INFO - Trial 5 - Epoch 61/200, Train Loss: 0.9709, Val Loss: 1.0494, Direction Acc: 0.521
+2025-12-30 00:44:43,100 - financial_kg_ds - INFO - Trial 5 - Early stopping triggered at epoch 64
+2025-12-30 00:44:43,434 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 00:44:43,434 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 00:44:43,510 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 00:45:07,048 - financial_kg_ds - INFO - Trial 6 - Epoch 1/200, Train Loss: 1.2237, Val Loss: 5.5419, Direction Acc: 0.394
+2025-12-30 00:48:58,896 - financial_kg_ds - INFO - Trial 6 - Epoch 11/200, Train Loss: 1.0330, Val Loss: 2.7945, Direction Acc: 0.528
+2025-12-30 00:52:50,077 - financial_kg_ds - INFO - Trial 6 - Epoch 21/200, Train Loss: 0.9752, Val Loss: 1.1383, Direction Acc: 0.505
+2025-12-30 00:56:42,254 - financial_kg_ds - INFO - Trial 6 - Epoch 31/200, Train Loss: 0.9560, Val Loss: 1.0596, Direction Acc: 0.527
+2025-12-30 01:01:14,346 - financial_kg_ds - INFO - Trial 6 - Epoch 41/200, Train Loss: 0.9300, Val Loss: 1.0732, Direction Acc: 0.503
+2025-12-30 01:03:33,157 - financial_kg_ds - INFO - Trial 6 - Early stopping triggered at epoch 46
+2025-12-30 01:03:33,392 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 01:03:33,393 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 01:03:33,430 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 01:03:53,048 - financial_kg_ds - INFO - Trial 7 - Epoch 1/200, Train Loss: 1.1469, Val Loss: 1.1435, Direction Acc: 0.388
+2025-12-30 01:07:01,401 - financial_kg_ds - INFO - Trial 7 - Epoch 11/200, Train Loss: 0.9902, Val Loss: 1.0646, Direction Acc: 0.513
+2025-12-30 01:11:51,275 - financial_kg_ds - INFO - Trial 7 - Early stopping triggered at epoch 19
+2025-12-30 01:11:51,589 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 01:11:51,590 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 01:11:51,617 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 01:11:56,384 - financial_kg_ds - INFO - Trial 8 - Epoch 1/200, Train Loss: 1.3348, Val Loss: 16895.5234, Direction Acc: 0.513
+2025-12-30 01:12:41,973 - financial_kg_ds - INFO - Trial 8 - Epoch 11/200, Train Loss: 0.9915, Val Loss: 2.1867, Direction Acc: 0.513
+2025-12-30 01:13:27,630 - financial_kg_ds - INFO - Trial 8 - Epoch 21/200, Train Loss: 0.9642, Val Loss: 1.0797, Direction Acc: 0.414
+2025-12-30 01:14:13,341 - financial_kg_ds - INFO - Trial 8 - Epoch 31/200, Train Loss: 0.9711, Val Loss: 1.0869, Direction Acc: 0.407
+2025-12-30 01:14:58,984 - financial_kg_ds - INFO - Trial 8 - Epoch 41/200, Train Loss: 0.9126, Val Loss: 1.1456, Direction Acc: 0.411
+2025-12-30 01:15:44,739 - financial_kg_ds - INFO - Trial 8 - Epoch 51/200, Train Loss: 0.9336, Val Loss: 1.1585, Direction Acc: 0.394
+2025-12-30 01:16:30,498 - financial_kg_ds - INFO - Trial 8 - Epoch 61/200, Train Loss: 0.8540, Val Loss: 1.1303, Direction Acc: 0.492
+2025-12-30 01:16:30,499 - financial_kg_ds - INFO - Trial 8 - Early stopping triggered at epoch 60
+2025-12-30 01:16:30,633 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 01:16:30,633 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 01:16:30,655 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 01:17:03,434 - financial_kg_ds - INFO - Trial 9 - Epoch 1/200, Train Loss: 1.2868, Val Loss: 2544609525760.0000, Direction Acc: 0.521
+2025-12-30 01:22:13,335 - financial_kg_ds - INFO - Trial 9 - Epoch 11/200, Train Loss: 2.1103, Val Loss: 1038.4692, Direction Acc: 0.400
+2025-12-30 01:27:22,229 - financial_kg_ds - INFO - Trial 9 - Epoch 21/200, Train Loss: 1.7965, Val Loss: 31.8876, Direction Acc: 0.526
+2025-12-30 01:32:31,280 - financial_kg_ds - INFO - Trial 9 - Epoch 31/200, Train Loss: 1.0250, Val Loss: 2.9612, Direction Acc: 0.531
+2025-12-30 01:37:40,003 - financial_kg_ds - INFO - Trial 9 - Epoch 41/200, Train Loss: 1.0718, Val Loss: 1.3482, Direction Acc: 0.519
+2025-12-30 01:42:48,840 - financial_kg_ds - INFO - Trial 9 - Epoch 51/200, Train Loss: 0.9775, Val Loss: 1.0432, Direction Acc: 0.520
+2025-12-30 01:47:58,242 - financial_kg_ds - INFO - Trial 9 - Epoch 61/200, Train Loss: 0.9770, Val Loss: 1.0455, Direction Acc: 0.531
+2025-12-30 01:53:09,074 - financial_kg_ds - INFO - Trial 9 - Epoch 71/200, Train Loss: 0.9745, Val Loss: 1.0431, Direction Acc: 0.517
+2025-12-30 01:58:18,044 - financial_kg_ds - INFO - Trial 9 - Epoch 81/200, Train Loss: 0.9693, Val Loss: 1.0422, Direction Acc: 0.518
+2025-12-30 02:03:27,035 - financial_kg_ds - INFO - Trial 9 - Epoch 91/200, Train Loss: 0.9651, Val Loss: 1.0400, Direction Acc: 0.520
+2025-12-30 02:09:07,586 - financial_kg_ds - INFO - Trial 9 - Epoch 101/200, Train Loss: 0.9624, Val Loss: 1.0403, Direction Acc: 0.519
+2025-12-30 02:11:10,973 - financial_kg_ds - INFO - Trial 9 - Early stopping triggered at epoch 104
+2025-12-30 02:11:11,844 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 02:11:11,844 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 02:11:13,121 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 02:11:26,036 - financial_kg_ds - INFO - Trial 10 - Epoch 1/200, Train Loss: 1.3034, Val Loss: 1521937.3750, Direction Acc: 0.517
+2025-12-30 02:13:44,284 - financial_kg_ds - INFO - Trial 10 - Epoch 11/200, Train Loss: 1.1379, Val Loss: 26.3943, Direction Acc: 0.516
+2025-12-30 02:15:29,846 - financial_kg_ds - INFO - Trial 10 - Epoch 21/200, Train Loss: 1.1001, Val Loss: 3.1428, Direction Acc: 0.409
+2025-12-30 02:18:08,762 - financial_kg_ds - INFO - Trial 10 - Epoch 31/200, Train Loss: 1.0706, Val Loss: 1.0591, Direction Acc: 0.453
+2025-12-30 02:19:54,276 - financial_kg_ds - INFO - Trial 10 - Epoch 41/200, Train Loss: 1.0388, Val Loss: 1.7278, Direction Acc: 0.402
+2025-12-30 02:20:57,544 - financial_kg_ds - INFO - Trial 10 - Early stopping triggered at epoch 46
+2025-12-30 02:20:58,327 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 02:20:58,327 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 02:20:59,024 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 02:22:00,754 - financial_kg_ds - INFO - Trial 11 - Epoch 1/200, Train Loss: 1.1877, Val Loss: 1.0694, Direction Acc: 0.425
+2025-12-30 02:33:27,718 - financial_kg_ds - INFO - Trial 11 - Epoch 11/200, Train Loss: 1.0219, Val Loss: 1.0722, Direction Acc: 0.513
+2025-12-30 02:44:22,606 - financial_kg_ds - INFO - Trial 11 - Epoch 21/200, Train Loss: 0.9759, Val Loss: 1.0870, Direction Acc: 0.513
+2025-12-30 03:03:08,381 - financial_kg_ds - INFO - Trial 11 - Early stopping triggered at epoch 29
+2025-12-30 03:05:51,242 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 03:05:52,558 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 03:06:27,655 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-30 03:07:58,024 - financial_kg_ds - INFO - Trial 12 - Epoch 1/200, Train Loss: 1.1417, Val Loss: 1.4320, Direction Acc: 0.389
+2025-12-30 03:14:24,990 - financial_kg_ds - INFO - Trial 12 - Epoch 11/200, Train Loss: 1.0257, Val Loss: 1.0980, Direction Acc: 0.513
+2025-12-30 03:20:02,479 - financial_kg_ds - INFO - Trial 12 - Epoch 21/200, Train Loss: 0.9566, Val Loss: 1.0471, Direction Acc: 0.513
+2025-12-30 03:25:40,757 - financial_kg_ds - INFO - Trial 12 - Epoch 31/200, Train Loss: 0.9324, Val Loss: 1.0500, Direction Acc: 0.513
+2025-12-30 03:26:14,281 - financial_kg_ds - INFO - Trial 12 - Early stopping triggered at epoch 31
+2025-12-30 03:26:28,965 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-30 03:26:29,271 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-30 03:26:37,119 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 18:55:37,593 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\models\base_gnn.yaml
+2025-12-31 18:55:37,597 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\training\default_training.yaml
+2025-12-31 18:55:37,597 - financial_kg_ds - INFO - Configuration loaded successfully:
+2025-12-31 18:55:37,597 - financial_kg_ds - INFO - Model: HeteroGNN
+2025-12-31 18:55:37,597 - financial_kg_ds - INFO - Loss function: asymmetric
+2025-12-31 18:55:37,597 - financial_kg_ds - INFO - Training epochs: 200
+2025-12-31 18:55:37,597 - financial_kg_ds - INFO - Optuna trials: 50
+2025-12-31 18:57:01,240 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/models/base_gnn.yaml
+2025-12-31 18:57:01,244 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/training/default_training.yaml
+2025-12-31 18:57:01,245 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 18:57:01,245 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 18:57:04,774 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Financial_Training
+2025-12-31 18:57:05,093 - financial_kg_ds - INFO - === Data Path Verification ===
+2025-12-31 18:57:05,094 - financial_kg_ds - INFO - TRAIN: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-09-06
+2025-12-31 18:57:05,094 - financial_kg_ds - INFO - EVAL: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15
+2025-12-31 18:57:05,094 - financial_kg_ds - INFO - TEST: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2025-01-02
+2025-12-31 18:57:05,115 - financial_kg_ds - INFO - === Stage 1: Hyperparameter Optimization on Training Data ===
+2025-12-31 18:57:05,115 - financial_kg_ds - INFO - Running optimization with 50 trials...
+2025-12-31 18:57:05,116 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 18:57:05,116 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 18:57:05,132 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 18:57:12,422 - financial_kg_ds - INFO - Trial 0 - Epoch 1/200, Train Loss: 1.3456, Val Loss: 639.0963, Direction Acc: 0.501
+2025-12-31 18:58:15,266 - financial_kg_ds - INFO - Trial 0 - Epoch 11/200, Train Loss: 1.0310, Val Loss: 2.3682, Direction Acc: 0.404
+2025-12-31 18:59:17,433 - financial_kg_ds - INFO - Trial 0 - Epoch 21/200, Train Loss: 0.9782, Val Loss: 1.2629, Direction Acc: 0.396
+2025-12-31 19:00:21,439 - financial_kg_ds - INFO - Trial 0 - Epoch 31/200, Train Loss: 0.9581, Val Loss: 1.0800, Direction Acc: 0.430
+2025-12-31 19:00:21,440 - financial_kg_ds - INFO - Trial 0 - Early stopping triggered at epoch 30
+2025-12-31 19:00:21,564 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 19:00:21,564 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 19:00:21,584 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 19:00:25,507 - financial_kg_ds - INFO - Trial 1 - Epoch 1/200, Train Loss: 1.3126, Val Loss: 712.0957, Direction Acc: 0.392
+2025-12-31 19:01:02,988 - financial_kg_ds - INFO - Trial 1 - Epoch 11/200, Train Loss: 1.0169, Val Loss: 1.3827, Direction Acc: 0.512
+2025-12-31 19:01:40,556 - financial_kg_ds - INFO - Trial 1 - Epoch 21/200, Train Loss: 0.9762, Val Loss: 1.3742, Direction Acc: 0.510
+2025-12-31 19:02:18,041 - financial_kg_ds - INFO - Trial 1 - Epoch 31/200, Train Loss: 0.9152, Val Loss: 1.1377, Direction Acc: 0.532
+2025-12-31 19:02:55,537 - financial_kg_ds - INFO - Trial 1 - Epoch 41/200, Train Loss: 0.9220, Val Loss: 1.1061, Direction Acc: 0.527
+2025-12-31 19:03:33,054 - financial_kg_ds - INFO - Trial 1 - Epoch 51/200, Train Loss: 0.9034, Val Loss: 1.1635, Direction Acc: 0.514
+2025-12-31 19:04:10,668 - financial_kg_ds - INFO - Trial 1 - Epoch 61/200, Train Loss: 0.8371, Val Loss: 1.2611, Direction Acc: 0.398
+2025-12-31 19:04:18,096 - financial_kg_ds - INFO - Trial 1 - Early stopping triggered at epoch 62
+2025-12-31 19:04:18,195 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 19:04:18,195 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 19:04:18,215 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 19:04:24,165 - financial_kg_ds - INFO - Trial 2 - Epoch 1/200, Train Loss: 1.2893, Val Loss: 2.2146, Direction Acc: 0.420
+2025-12-31 19:05:21,219 - financial_kg_ds - INFO - Trial 2 - Epoch 11/200, Train Loss: 1.0321, Val Loss: 1.1055, Direction Acc: 0.512
+2025-12-31 19:06:17,696 - financial_kg_ds - INFO - Trial 2 - Epoch 21/200, Train Loss: 0.9719, Val Loss: 1.0629, Direction Acc: 0.510
+2025-12-31 19:07:14,371 - financial_kg_ds - INFO - Trial 2 - Epoch 31/200, Train Loss: 0.9403, Val Loss: 1.0655, Direction Acc: 0.425
+2025-12-31 19:08:05,041 - financial_kg_ds - INFO - Trial 2 - Early stopping triggered at epoch 39
+2025-12-31 19:08:05,151 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 19:08:05,152 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 19:08:05,171 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 19:08:17,505 - financial_kg_ds - INFO - Trial 3 - Epoch 1/200, Train Loss: 1.1612, Val Loss: 64762691584.0000, Direction Acc: 0.517
+2025-12-31 19:10:12,649 - financial_kg_ds - INFO - Trial 3 - Epoch 11/200, Train Loss: 1.1738, Val Loss: 615.7219, Direction Acc: 0.517
+2025-12-31 19:12:07,689 - financial_kg_ds - INFO - Trial 3 - Epoch 21/200, Train Loss: 0.9853, Val Loss: 2.0146, Direction Acc: 0.513
+2025-12-31 19:14:02,673 - financial_kg_ds - INFO - Trial 3 - Epoch 31/200, Train Loss: 0.9801, Val Loss: 1.1194, Direction Acc: 0.538
+2025-12-31 19:15:57,472 - financial_kg_ds - INFO - Trial 3 - Epoch 41/200, Train Loss: 0.9616, Val Loss: 1.0485, Direction Acc: 0.529
+2025-12-31 19:17:52,551 - financial_kg_ds - INFO - Trial 3 - Epoch 51/200, Train Loss: 0.9487, Val Loss: 1.0475, Direction Acc: 0.527
+2025-12-31 19:19:47,555 - financial_kg_ds - INFO - Trial 3 - Epoch 61/200, Train Loss: 0.9241, Val Loss: 1.0495, Direction Acc: 0.530
+2025-12-31 19:20:10,592 - financial_kg_ds - INFO - Trial 3 - Early stopping triggered at epoch 62
+2025-12-31 19:20:10,753 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 19:20:10,753 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 19:20:10,774 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 19:20:35,536 - financial_kg_ds - INFO - Trial 4 - Epoch 1/200, Train Loss: 1.6365, Val Loss: 190974592.0000, Direction Acc: 0.512
+2025-12-31 19:24:42,414 - financial_kg_ds - INFO - Trial 4 - Epoch 11/200, Train Loss: 1.0549, Val Loss: 57.4617, Direction Acc: 0.503
+2025-12-31 19:28:48,448 - financial_kg_ds - INFO - Trial 4 - Epoch 21/200, Train Loss: 0.9974, Val Loss: 5.2821, Direction Acc: 0.537
+2025-12-31 19:32:54,342 - financial_kg_ds - INFO - Trial 4 - Epoch 31/200, Train Loss: 1.0153, Val Loss: 1.6115, Direction Acc: 0.537
+2025-12-31 19:36:59,982 - financial_kg_ds - INFO - Trial 4 - Epoch 41/200, Train Loss: 0.9570, Val Loss: 1.2201, Direction Acc: 0.541
+2025-12-31 19:41:06,889 - financial_kg_ds - INFO - Trial 4 - Epoch 51/200, Train Loss: 0.9408, Val Loss: 1.0555, Direction Acc: 0.526
+2025-12-31 19:45:13,259 - financial_kg_ds - INFO - Trial 4 - Epoch 61/200, Train Loss: 0.9222, Val Loss: 1.1229, Direction Acc: 0.418
+2025-12-31 19:47:16,467 - financial_kg_ds - INFO - Trial 4 - Early stopping triggered at epoch 65
+2025-12-31 19:47:16,632 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 19:47:16,632 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 19:47:16,653 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 19:47:25,281 - financial_kg_ds - INFO - Trial 5 - Epoch 1/200, Train Loss: 1.2294, Val Loss: 3818.8528, Direction Acc: 0.364
+2025-12-31 19:48:50,891 - financial_kg_ds - INFO - Trial 5 - Epoch 11/200, Train Loss: 1.1089, Val Loss: 1.3833, Direction Acc: 0.510
+2025-12-31 19:50:16,521 - financial_kg_ds - INFO - Trial 5 - Epoch 21/200, Train Loss: 1.0124, Val Loss: 1.2626, Direction Acc: 0.419
+2025-12-31 19:51:42,185 - financial_kg_ds - INFO - Trial 5 - Epoch 31/200, Train Loss: 0.9774, Val Loss: 1.3015, Direction Acc: 0.421
+2025-12-31 19:53:07,644 - financial_kg_ds - INFO - Trial 5 - Epoch 41/200, Train Loss: 0.9880, Val Loss: 1.0647, Direction Acc: 0.483
+2025-12-31 19:54:32,860 - financial_kg_ds - INFO - Trial 5 - Epoch 51/200, Train Loss: 0.9296, Val Loss: 1.1058, Direction Acc: 0.532
+2025-12-31 19:55:23,937 - financial_kg_ds - INFO - Trial 5 - Early stopping triggered at epoch 56
+2025-12-31 19:55:24,071 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 19:55:24,072 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 19:55:24,092 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 19:55:33,936 - financial_kg_ds - INFO - Trial 6 - Epoch 1/200, Train Loss: 1.2467, Val Loss: 1.6201, Direction Acc: 0.418
+2025-12-31 19:57:12,006 - financial_kg_ds - INFO - Trial 6 - Epoch 11/200, Train Loss: 1.1133, Val Loss: 1.1055, Direction Acc: 0.511
+2025-12-31 19:58:50,052 - financial_kg_ds - INFO - Trial 6 - Epoch 21/200, Train Loss: 0.9618, Val Loss: 1.0703, Direction Acc: 0.396
+2025-12-31 20:00:28,372 - financial_kg_ds - INFO - Trial 6 - Epoch 31/200, Train Loss: 0.9557, Val Loss: 1.0935, Direction Acc: 0.414
+2025-12-31 20:02:06,342 - financial_kg_ds - INFO - Trial 6 - Epoch 41/200, Train Loss: 0.9236, Val Loss: 1.0565, Direction Acc: 0.444
+2025-12-31 20:03:44,172 - financial_kg_ds - INFO - Trial 6 - Epoch 51/200, Train Loss: 0.8491, Val Loss: 1.0576, Direction Acc: 0.484
+2025-12-31 20:03:53,944 - financial_kg_ds - INFO - Trial 6 - Early stopping triggered at epoch 51
+2025-12-31 20:03:54,066 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 20:03:54,067 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 20:03:54,085 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 20:04:00,321 - financial_kg_ds - INFO - Trial 7 - Epoch 1/200, Train Loss: 1.1163, Val Loss: 1.0765, Direction Acc: 0.513
+2025-12-31 20:05:02,765 - financial_kg_ds - INFO - Trial 7 - Epoch 11/200, Train Loss: 1.0195, Val Loss: 1.0634, Direction Acc: 0.388
+2025-12-31 20:05:52,494 - financial_kg_ds - INFO - Trial 7 - Early stopping triggered at epoch 18
+2025-12-31 20:05:52,626 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 20:05:52,626 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 20:05:52,645 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 20:05:54,817 - financial_kg_ds - INFO - Trial 8 - Epoch 1/200, Train Loss: 1.2096, Val Loss: 1.2370, Direction Acc: 0.396
+2025-12-31 20:06:15,287 - financial_kg_ds - INFO - Trial 8 - Epoch 11/200, Train Loss: 0.9854, Val Loss: 1.0596, Direction Acc: 0.424
+2025-12-31 20:06:29,537 - financial_kg_ds - INFO - Trial 8 - Early stopping triggered at epoch 17
+2025-12-31 20:06:29,656 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 20:06:29,657 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 20:06:29,680 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 20:06:50,837 - financial_kg_ds - INFO - Trial 9 - Epoch 1/200, Train Loss: 1.3570, Val Loss: 1.2637, Direction Acc: 0.394
+2025-12-31 20:10:17,225 - financial_kg_ds - INFO - Trial 9 - Epoch 11/200, Train Loss: 1.0324, Val Loss: 1.0546, Direction Acc: 0.513
+2025-12-31 20:13:43,679 - financial_kg_ds - INFO - Trial 9 - Epoch 21/200, Train Loss: 0.9579, Val Loss: 1.0637, Direction Acc: 0.461
+2025-12-31 20:14:04,414 - financial_kg_ds - INFO - Trial 9 - Early stopping triggered at epoch 21
+2025-12-31 20:14:04,565 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 20:14:04,565 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 20:14:04,585 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 20:15:16,329 - financial_kg_ds - INFO - Trial 10 - Epoch 1/200, Train Loss: 1.1488, Val Loss: 379635212746752.0000, Direction Acc: 0.497
+2025-12-31 20:24:42,623 - financial_kg_ds - INFO - Trial 10 - Epoch 11/200, Train Loss: 8.0066, Val Loss: 10820.4326, Direction Acc: 0.517
+2025-12-31 20:34:05,657 - financial_kg_ds - INFO - Trial 10 - Epoch 21/200, Train Loss: 5.7101, Val Loss: 20.3340, Direction Acc: 0.394
+2025-12-31 20:43:29,444 - financial_kg_ds - INFO - Trial 10 - Epoch 31/200, Train Loss: 1.6173, Val Loss: 5.0329, Direction Acc: 0.391
+2025-12-31 20:52:51,953 - financial_kg_ds - INFO - Trial 10 - Epoch 41/200, Train Loss: 1.6165, Val Loss: 1.3923, Direction Acc: 0.394
+2025-12-31 21:02:14,871 - financial_kg_ds - INFO - Trial 10 - Epoch 51/200, Train Loss: 1.1882, Val Loss: 1.3999, Direction Acc: 0.398
+2025-12-31 21:11:37,440 - financial_kg_ds - INFO - Trial 10 - Epoch 61/200, Train Loss: 1.0429, Val Loss: 1.0721, Direction Acc: 0.486
+2025-12-31 21:20:59,615 - financial_kg_ds - INFO - Trial 10 - Epoch 71/200, Train Loss: 1.0415, Val Loss: 1.0625, Direction Acc: 0.495
+2025-12-31 21:30:22,236 - financial_kg_ds - INFO - Trial 10 - Epoch 81/200, Train Loss: 1.0158, Val Loss: 1.0582, Direction Acc: 0.461
+2025-12-31 21:39:44,751 - financial_kg_ds - INFO - Trial 10 - Epoch 91/200, Train Loss: 0.9935, Val Loss: 1.0522, Direction Acc: 0.516
+2025-12-31 21:49:09,605 - financial_kg_ds - INFO - Trial 10 - Epoch 101/200, Train Loss: 0.9885, Val Loss: 1.0438, Direction Acc: 0.534
+2025-12-31 21:58:32,959 - financial_kg_ds - INFO - Trial 10 - Epoch 111/200, Train Loss: 0.9886, Val Loss: 1.0444, Direction Acc: 0.511
+2025-12-31 22:07:57,389 - financial_kg_ds - INFO - Trial 10 - Epoch 121/200, Train Loss: 0.9989, Val Loss: 1.0430, Direction Acc: 0.537
+2025-12-31 22:17:20,328 - financial_kg_ds - INFO - Trial 10 - Epoch 131/200, Train Loss: 0.9764, Val Loss: 1.0453, Direction Acc: 0.517
+2025-12-31 22:17:20,328 - financial_kg_ds - INFO - Trial 10 - Early stopping triggered at epoch 130
+2025-12-31 22:17:20,778 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 22:17:20,779 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 22:17:20,831 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 22:18:18,656 - financial_kg_ds - INFO - Trial 11 - Epoch 1/200, Train Loss: 1.5745, Val Loss: 5762407834058752.0000, Direction Acc: 0.516
+2025-12-31 22:27:46,370 - financial_kg_ds - INFO - Trial 11 - Epoch 11/200, Train Loss: 7.0679, Val Loss: 7266.6997, Direction Acc: 0.513
+2025-12-31 22:37:13,599 - financial_kg_ds - INFO - Trial 11 - Epoch 21/200, Train Loss: 2.0727, Val Loss: 322.7539, Direction Acc: 0.513
+2025-12-31 22:46:41,552 - financial_kg_ds - INFO - Trial 11 - Epoch 31/200, Train Loss: 1.4740, Val Loss: 1.4722, Direction Acc: 0.521
+2025-12-31 22:56:08,906 - financial_kg_ds - INFO - Trial 11 - Epoch 41/200, Train Loss: 1.3927, Val Loss: 1.2522, Direction Acc: 0.490
+2025-12-31 23:05:35,771 - financial_kg_ds - INFO - Trial 11 - Epoch 51/200, Train Loss: 1.0340, Val Loss: 1.0785, Direction Acc: 0.516
+2025-12-31 23:15:02,653 - financial_kg_ds - INFO - Trial 11 - Epoch 61/200, Train Loss: 0.9925, Val Loss: 1.0954, Direction Acc: 0.516
+2025-12-31 23:24:30,842 - financial_kg_ds - INFO - Trial 11 - Epoch 71/200, Train Loss: 0.9899, Val Loss: 1.0443, Direction Acc: 0.532
+2025-12-31 23:33:56,871 - financial_kg_ds - INFO - Trial 11 - Epoch 81/200, Train Loss: 0.9688, Val Loss: 1.0408, Direction Acc: 0.519
+2025-12-31 23:43:24,628 - financial_kg_ds - INFO - Trial 11 - Epoch 91/200, Train Loss: 0.9748, Val Loss: 1.0454, Direction Acc: 0.516
+2025-12-31 23:47:11,636 - financial_kg_ds - INFO - Trial 11 - Early stopping triggered at epoch 94
+2025-12-31 23:47:12,092 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2025-12-31 23:47:12,093 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2025-12-31 23:47:12,123 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2025-12-31 23:48:15,075 - financial_kg_ds - INFO - Trial 12 - Epoch 1/200, Train Loss: 1.3197, Val Loss: 8247133387882496.0000, Direction Acc: 0.516
+2025-12-31 23:58:32,139 - financial_kg_ds - INFO - Trial 12 - Epoch 11/200, Train Loss: 6.6899, Val Loss: 14768.6826, Direction Acc: 0.518
+2026-01-01 00:08:49,175 - financial_kg_ds - INFO - Trial 12 - Epoch 21/200, Train Loss: 6.5533, Val Loss: 4.3718, Direction Acc: 0.394
+2026-01-01 00:19:03,414 - financial_kg_ds - INFO - Trial 12 - Epoch 31/200, Train Loss: 1.5753, Val Loss: 4.4469, Direction Acc: 0.384
+2026-01-01 00:29:17,980 - financial_kg_ds - INFO - Trial 12 - Epoch 41/200, Train Loss: 1.1575, Val Loss: 1.4723, Direction Acc: 0.417
+2026-01-01 00:39:32,151 - financial_kg_ds - INFO - Trial 12 - Epoch 51/200, Train Loss: 1.2563, Val Loss: 1.1142, Direction Acc: 0.505
+2026-01-01 00:49:47,362 - financial_kg_ds - INFO - Trial 12 - Epoch 61/200, Train Loss: 0.9903, Val Loss: 1.0814, Direction Acc: 0.417
+2026-01-01 01:00:00,800 - financial_kg_ds - INFO - Trial 12 - Epoch 71/200, Train Loss: 1.0249, Val Loss: 1.0651, Direction Acc: 0.424
+2026-01-01 01:10:17,147 - financial_kg_ds - INFO - Trial 12 - Epoch 81/200, Train Loss: 0.9931, Val Loss: 1.0557, Direction Acc: 0.513
+2026-01-01 01:20:34,125 - financial_kg_ds - INFO - Trial 12 - Epoch 91/200, Train Loss: 0.9967, Val Loss: 1.0434, Direction Acc: 0.514
+2026-01-01 01:30:48,355 - financial_kg_ds - INFO - Trial 12 - Epoch 101/200, Train Loss: 0.9871, Val Loss: 1.0417, Direction Acc: 0.521
+2026-01-01 01:41:04,156 - financial_kg_ds - INFO - Trial 12 - Epoch 111/200, Train Loss: 0.9845, Val Loss: 1.0424, Direction Acc: 0.516
+2026-01-01 01:51:20,720 - financial_kg_ds - INFO - Trial 12 - Epoch 121/200, Train Loss: 0.9823, Val Loss: 1.0407, Direction Acc: 0.526
+2026-01-01 02:01:35,356 - financial_kg_ds - INFO - Trial 12 - Epoch 131/200, Train Loss: 0.9681, Val Loss: 1.0422, Direction Acc: 0.516
+2026-01-01 02:11:49,191 - financial_kg_ds - INFO - Trial 12 - Epoch 141/200, Train Loss: 0.9733, Val Loss: 1.0412, Direction Acc: 0.529
+2026-01-01 02:13:52,406 - financial_kg_ds - INFO - Trial 12 - Early stopping triggered at epoch 142
+2026-01-01 02:13:53,054 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 02:13:53,054 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 02:13:53,084 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 02:14:57,395 - financial_kg_ds - INFO - Trial 13 - Epoch 1/200, Train Loss: 1.1464, Val Loss: 2983549766467584.0000, Direction Acc: 0.391
+2026-01-01 02:25:36,241 - financial_kg_ds - INFO - Trial 13 - Epoch 11/200, Train Loss: 1.4028, Val Loss: 2405.1946, Direction Acc: 0.402
+2026-01-01 02:36:13,222 - financial_kg_ds - INFO - Trial 13 - Epoch 21/200, Train Loss: 1.0092, Val Loss: 28.6272, Direction Acc: 0.376
+2026-01-01 02:46:52,374 - financial_kg_ds - INFO - Trial 13 - Epoch 31/200, Train Loss: 1.2169, Val Loss: 3.0966, Direction Acc: 0.389
+2026-01-01 02:57:31,926 - financial_kg_ds - INFO - Trial 13 - Epoch 41/200, Train Loss: 1.0931, Val Loss: 1.3172, Direction Acc: 0.394
+2026-01-01 03:08:11,344 - financial_kg_ds - INFO - Trial 13 - Epoch 51/200, Train Loss: 1.0044, Val Loss: 1.0618, Direction Acc: 0.510
+2026-01-01 03:18:50,364 - financial_kg_ds - INFO - Trial 13 - Epoch 61/200, Train Loss: 0.9739, Val Loss: 1.0444, Direction Acc: 0.519
+2026-01-01 03:29:28,643 - financial_kg_ds - INFO - Trial 13 - Epoch 71/200, Train Loss: 0.9733, Val Loss: 1.0403, Direction Acc: 0.530
+2026-01-01 03:40:05,554 - financial_kg_ds - INFO - Trial 13 - Epoch 81/200, Train Loss: 0.9729, Val Loss: 1.0435, Direction Acc: 0.514
+2026-01-01 03:50:46,025 - financial_kg_ds - INFO - Trial 13 - Epoch 91/200, Train Loss: 0.9667, Val Loss: 1.0390, Direction Acc: 0.524
+2026-01-01 04:01:23,588 - financial_kg_ds - INFO - Trial 13 - Epoch 101/200, Train Loss: 0.9648, Val Loss: 1.0399, Direction Acc: 0.526
+2026-01-01 04:05:39,490 - financial_kg_ds - INFO - Trial 13 - Early stopping triggered at epoch 104
+2026-01-01 04:05:39,997 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 04:05:39,998 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 04:05:40,029 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 04:06:18,354 - financial_kg_ds - INFO - Trial 14 - Epoch 1/200, Train Loss: 1.2450, Val Loss: 4645849137152.0000, Direction Acc: 0.393
+2026-01-01 04:12:34,689 - financial_kg_ds - INFO - Trial 14 - Epoch 11/200, Train Loss: 2.0278, Val Loss: 975.4636, Direction Acc: 0.513
+2026-01-01 04:18:51,107 - financial_kg_ds - INFO - Trial 14 - Epoch 21/200, Train Loss: 1.2849, Val Loss: 7.4084, Direction Acc: 0.519
+2026-01-01 04:25:07,470 - financial_kg_ds - INFO - Trial 14 - Epoch 31/200, Train Loss: 1.0975, Val Loss: 1.0692, Direction Acc: 0.534
+2026-01-01 04:31:24,653 - financial_kg_ds - INFO - Trial 14 - Epoch 41/200, Train Loss: 0.9839, Val Loss: 1.0893, Direction Acc: 0.401
+2026-01-01 04:37:41,157 - financial_kg_ds - INFO - Trial 14 - Epoch 51/200, Train Loss: 0.9843, Val Loss: 1.0681, Direction Acc: 0.516
+2026-01-01 04:43:57,897 - financial_kg_ds - INFO - Trial 14 - Epoch 61/200, Train Loss: 0.9751, Val Loss: 1.0433, Direction Acc: 0.519
+2026-01-01 04:44:35,555 - financial_kg_ds - INFO - Trial 14 - Early stopping triggered at epoch 61
+2026-01-01 04:44:37,038 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 04:44:37,038 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 04:44:37,059 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 04:45:02,966 - financial_kg_ds - INFO - Trial 15 - Epoch 1/200, Train Loss: 1.2011, Val Loss: 5.5300, Direction Acc: 0.394
+2026-01-01 04:49:20,389 - financial_kg_ds - INFO - Trial 15 - Epoch 11/200, Train Loss: 1.1030, Val Loss: 1.0961, Direction Acc: 0.555
+2026-01-01 04:53:37,127 - financial_kg_ds - INFO - Trial 15 - Epoch 21/200, Train Loss: 0.9818, Val Loss: 1.0892, Direction Acc: 0.493
+2026-01-01 04:56:11,203 - financial_kg_ds - INFO - Trial 15 - Early stopping triggered at epoch 26
+2026-01-01 04:56:11,397 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 04:56:11,397 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 04:56:11,415 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 04:56:48,375 - financial_kg_ds - INFO - Trial 16 - Epoch 1/200, Train Loss: 1.4083, Val Loss: 45905010688.0000, Direction Acc: 0.516
+2026-01-01 05:02:49,834 - financial_kg_ds - INFO - Trial 16 - Epoch 11/200, Train Loss: 1.1167, Val Loss: 68.3913, Direction Acc: 0.509
+2026-01-01 05:08:50,720 - financial_kg_ds - INFO - Trial 16 - Epoch 21/200, Train Loss: 1.0260, Val Loss: 1.4063, Direction Acc: 0.526
+2026-01-01 05:14:52,106 - financial_kg_ds - INFO - Trial 16 - Epoch 31/200, Train Loss: 0.9863, Val Loss: 1.1803, Direction Acc: 0.535
+2026-01-01 05:20:53,218 - financial_kg_ds - INFO - Trial 16 - Epoch 41/200, Train Loss: 0.9785, Val Loss: 1.0534, Direction Acc: 0.526
+2026-01-01 05:26:54,123 - financial_kg_ds - INFO - Trial 16 - Epoch 51/200, Train Loss: 0.9494, Val Loss: 1.0534, Direction Acc: 0.518
+2026-01-01 05:32:54,835 - financial_kg_ds - INFO - Trial 16 - Epoch 61/200, Train Loss: 0.9220, Val Loss: 1.0527, Direction Acc: 0.535
+2026-01-01 05:32:54,835 - financial_kg_ds - INFO - Trial 16 - Early stopping triggered at epoch 60
+2026-01-01 05:32:55,053 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 05:32:55,053 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 05:32:55,073 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 05:33:16,356 - financial_kg_ds - INFO - Trial 17 - Epoch 1/200, Train Loss: 1.5246, Val Loss: 1821525803008.0000, Direction Acc: 0.513
+2026-01-01 05:36:48,003 - financial_kg_ds - INFO - Trial 17 - Epoch 11/200, Train Loss: 2.7642, Val Loss: 889.1151, Direction Acc: 0.513
+2026-01-01 05:40:20,140 - financial_kg_ds - INFO - Trial 17 - Epoch 21/200, Train Loss: 1.0103, Val Loss: 3.8497, Direction Acc: 0.519
+2026-01-01 05:43:51,249 - financial_kg_ds - INFO - Trial 17 - Epoch 31/200, Train Loss: 1.1119, Val Loss: 1.9283, Direction Acc: 0.395
+2026-01-01 05:47:22,950 - financial_kg_ds - INFO - Trial 17 - Epoch 41/200, Train Loss: 1.0162, Val Loss: 1.0645, Direction Acc: 0.513
+2026-01-01 05:50:54,043 - financial_kg_ds - INFO - Trial 17 - Epoch 51/200, Train Loss: 0.9765, Val Loss: 1.0440, Direction Acc: 0.530
+2026-01-01 05:53:21,407 - financial_kg_ds - INFO - Trial 17 - Early stopping triggered at epoch 57
+2026-01-01 05:53:21,573 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 05:53:21,573 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 05:53:21,592 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 05:54:13,533 - financial_kg_ds - INFO - Trial 18 - Epoch 1/200, Train Loss: 1.1394, Val Loss: 14052.3359, Direction Acc: 0.508
+2026-01-01 06:02:15,172 - financial_kg_ds - INFO - Trial 18 - Epoch 11/200, Train Loss: 5.3164, Val Loss: 1.8320, Direction Acc: 0.389
+2026-01-01 06:10:05,165 - financial_kg_ds - INFO - Trial 18 - Epoch 21/200, Train Loss: 2.1699, Val Loss: 2.0641, Direction Acc: 0.394
+2026-01-01 06:18:10,886 - financial_kg_ds - INFO - Trial 18 - Epoch 31/200, Train Loss: 1.0618, Val Loss: 1.0533, Direction Acc: 0.513
+2026-01-01 06:26:05,128 - financial_kg_ds - INFO - Trial 18 - Epoch 41/200, Train Loss: 0.9833, Val Loss: 1.0550, Direction Acc: 0.513
+2026-01-01 06:34:00,266 - financial_kg_ds - INFO - Trial 18 - Epoch 51/200, Train Loss: 0.9727, Val Loss: 1.0497, Direction Acc: 0.510
+2026-01-01 06:37:08,514 - financial_kg_ds - INFO - Trial 18 - Early stopping triggered at epoch 54
+2026-01-01 06:37:09,230 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 06:37:09,233 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 06:37:09,273 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 06:37:34,317 - financial_kg_ds - INFO - Trial 19 - Epoch 1/200, Train Loss: 1.1783, Val Loss: 1.1715, Direction Acc: 0.394
+2026-01-01 06:41:44,273 - financial_kg_ds - INFO - Trial 19 - Epoch 11/200, Train Loss: 1.0250, Val Loss: 1.0712, Direction Acc: 0.511
+2026-01-01 06:44:39,453 - financial_kg_ds - INFO - Trial 19 - Early stopping triggered at epoch 17
+2026-01-01 06:44:39,640 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 06:44:39,640 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 06:44:39,660 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 06:44:44,476 - financial_kg_ds - INFO - Trial 20 - Epoch 1/200, Train Loss: 1.1774, Val Loss: 22343.7852, Direction Acc: 0.410
+2026-01-01 06:45:31,125 - financial_kg_ds - INFO - Trial 20 - Epoch 11/200, Train Loss: 0.9910, Val Loss: 1.0872, Direction Acc: 0.509
+2026-01-01 06:46:17,613 - financial_kg_ds - INFO - Trial 20 - Epoch 21/200, Train Loss: 0.9482, Val Loss: 1.0687, Direction Acc: 0.414
+2026-01-01 06:47:04,372 - financial_kg_ds - INFO - Trial 20 - Epoch 31/200, Train Loss: 0.9334, Val Loss: 1.0621, Direction Acc: 0.533
+2026-01-01 06:47:51,021 - financial_kg_ds - INFO - Trial 20 - Epoch 41/200, Train Loss: 0.8691, Val Loss: 1.0733, Direction Acc: 0.518
+2026-01-01 06:48:19,781 - financial_kg_ds - INFO - Trial 20 - Early stopping triggered at epoch 46
+2026-01-01 06:48:19,916 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 06:48:19,916 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 06:48:19,937 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 06:49:16,954 - financial_kg_ds - INFO - Trial 21 - Epoch 1/200, Train Loss: 1.4532, Val Loss: 2689413494603776.0000, Direction Acc: 0.394
+2026-01-01 06:58:15,282 - financial_kg_ds - INFO - Trial 21 - Epoch 11/200, Train Loss: 1.1703, Val Loss: 122.2341, Direction Acc: 0.521
+2026-01-01 07:07:13,313 - financial_kg_ds - INFO - Trial 21 - Epoch 21/200, Train Loss: 2.2818, Val Loss: 120.8356, Direction Acc: 0.536
+2026-01-01 07:16:10,926 - financial_kg_ds - INFO - Trial 21 - Epoch 31/200, Train Loss: 1.6450, Val Loss: 14.0262, Direction Acc: 0.528
+2026-01-01 07:25:08,871 - financial_kg_ds - INFO - Trial 21 - Epoch 41/200, Train Loss: 1.1300, Val Loss: 1.3885, Direction Acc: 0.518
+2026-01-01 07:34:06,394 - financial_kg_ds - INFO - Trial 21 - Epoch 51/200, Train Loss: 0.9835, Val Loss: 1.0815, Direction Acc: 0.518
+2026-01-01 07:43:04,946 - financial_kg_ds - INFO - Trial 21 - Epoch 61/200, Train Loss: 1.0096, Val Loss: 1.0594, Direction Acc: 0.508
+2026-01-01 07:52:03,166 - financial_kg_ds - INFO - Trial 21 - Epoch 71/200, Train Loss: 0.9798, Val Loss: 1.0461, Direction Acc: 0.513
+2026-01-01 07:59:13,296 - financial_kg_ds - INFO - Trial 21 - Early stopping triggered at epoch 78
+2026-01-01 07:59:13,925 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 07:59:13,926 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 07:59:13,957 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 07:59:55,897 - financial_kg_ds - INFO - Trial 22 - Epoch 1/200, Train Loss: 1.4054, Val Loss: 83162092797952.0000, Direction Acc: 0.518
+2026-01-01 08:06:39,566 - financial_kg_ds - INFO - Trial 22 - Epoch 11/200, Train Loss: 1.0513, Val Loss: 9.3090, Direction Acc: 0.509
+2026-01-01 08:13:23,065 - financial_kg_ds - INFO - Trial 22 - Epoch 21/200, Train Loss: 1.0103, Val Loss: 3.2031, Direction Acc: 0.369
+2026-01-01 08:20:07,461 - financial_kg_ds - INFO - Trial 22 - Epoch 31/200, Train Loss: 1.0249, Val Loss: 1.1060, Direction Acc: 0.407
+2026-01-01 08:26:51,870 - financial_kg_ds - INFO - Trial 22 - Epoch 41/200, Train Loss: 0.9953, Val Loss: 1.0713, Direction Acc: 0.492
+2026-01-01 08:33:36,042 - financial_kg_ds - INFO - Trial 22 - Epoch 51/200, Train Loss: 0.9735, Val Loss: 1.0421, Direction Acc: 0.513
+2026-01-01 08:40:20,372 - financial_kg_ds - INFO - Trial 22 - Epoch 61/200, Train Loss: 0.9723, Val Loss: 1.0394, Direction Acc: 0.520
+2026-01-01 08:47:04,168 - financial_kg_ds - INFO - Trial 22 - Epoch 71/200, Train Loss: 0.9684, Val Loss: 1.0386, Direction Acc: 0.519
+2026-01-01 08:53:48,431 - financial_kg_ds - INFO - Trial 22 - Epoch 81/200, Train Loss: 0.9673, Val Loss: 1.0394, Direction Acc: 0.519
+2026-01-01 08:57:51,677 - financial_kg_ds - INFO - Trial 22 - Early stopping triggered at epoch 86
+2026-01-01 08:57:51,960 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 08:57:51,961 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 08:57:51,990 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 08:58:27,294 - financial_kg_ds - INFO - Trial 23 - Epoch 1/200, Train Loss: 1.1138, Val Loss: 11326840635392.0000, Direction Acc: 0.394
+2026-01-01 09:04:14,777 - financial_kg_ds - INFO - Trial 23 - Epoch 11/200, Train Loss: 2.5194, Val Loss: 1035.5359, Direction Acc: 0.395
+2026-01-01 09:10:02,479 - financial_kg_ds - INFO - Trial 23 - Epoch 21/200, Train Loss: 1.0856, Val Loss: 5.0938, Direction Acc: 0.394
+2026-01-01 09:15:49,903 - financial_kg_ds - INFO - Trial 23 - Epoch 31/200, Train Loss: 1.0552, Val Loss: 1.4777, Direction Acc: 0.513
+2026-01-01 09:21:37,599 - financial_kg_ds - INFO - Trial 23 - Epoch 41/200, Train Loss: 1.0096, Val Loss: 1.0804, Direction Acc: 0.399
+2026-01-01 09:22:12,622 - financial_kg_ds - INFO - Trial 23 - Early stopping triggered at epoch 41
+2026-01-01 09:22:12,903 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 09:22:12,904 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 09:22:12,939 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 09:22:52,671 - financial_kg_ds - INFO - Trial 24 - Epoch 1/200, Train Loss: 1.1351, Val Loss: 30467399090176.0000, Direction Acc: 0.520
+2026-01-01 09:29:26,338 - financial_kg_ds - INFO - Trial 24 - Epoch 11/200, Train Loss: 1.6078, Val Loss: 55.6956, Direction Acc: 0.397
+2026-01-01 09:35:59,761 - financial_kg_ds - INFO - Trial 24 - Epoch 21/200, Train Loss: 1.6721, Val Loss: 1.6883, Direction Acc: 0.390
+2026-01-01 09:42:33,601 - financial_kg_ds - INFO - Trial 24 - Epoch 31/200, Train Loss: 1.0569, Val Loss: 1.8128, Direction Acc: 0.518
+2026-01-01 09:47:10,006 - financial_kg_ds - INFO - Trial 24 - Early stopping triggered at epoch 37
+2026-01-01 09:47:10,217 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 09:47:10,217 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 09:47:10,236 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 09:47:32,517 - financial_kg_ds - INFO - Trial 25 - Epoch 1/200, Train Loss: 1.1199, Val Loss: 1884424064.0000, Direction Acc: 0.394
+2026-01-01 09:51:14,008 - financial_kg_ds - INFO - Trial 25 - Epoch 11/200, Train Loss: 1.1893, Val Loss: 1204.4978, Direction Acc: 0.521
+2026-01-01 09:54:55,547 - financial_kg_ds - INFO - Trial 25 - Epoch 21/200, Train Loss: 0.9986, Val Loss: 6.1605, Direction Acc: 0.511
+2026-01-01 09:58:37,394 - financial_kg_ds - INFO - Trial 25 - Epoch 31/200, Train Loss: 0.9935, Val Loss: 1.0926, Direction Acc: 0.537
+2026-01-01 10:02:18,839 - financial_kg_ds - INFO - Trial 25 - Epoch 41/200, Train Loss: 0.9660, Val Loss: 1.0781, Direction Acc: 0.537
+2026-01-01 10:06:00,777 - financial_kg_ds - INFO - Trial 25 - Epoch 51/200, Train Loss: 0.9478, Val Loss: 1.0514, Direction Acc: 0.539
+2026-01-01 10:09:42,457 - financial_kg_ds - INFO - Trial 25 - Epoch 61/200, Train Loss: 0.9232, Val Loss: 1.0660, Direction Acc: 0.531
+2026-01-01 10:11:33,336 - financial_kg_ds - INFO - Trial 25 - Early stopping triggered at epoch 65
+2026-01-01 10:11:33,537 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 10:11:33,537 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 10:11:33,556 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 10:12:21,272 - financial_kg_ds - INFO - Trial 26 - Epoch 1/200, Train Loss: 1.1769, Val Loss: 686528778993664.0000, Direction Acc: 0.394
+2026-01-01 10:20:07,506 - financial_kg_ds - INFO - Trial 26 - Epoch 11/200, Train Loss: 1.5732, Val Loss: 621.5506, Direction Acc: 0.518
+2026-01-01 10:27:53,593 - financial_kg_ds - INFO - Trial 26 - Epoch 21/200, Train Loss: 1.1170, Val Loss: 7.5654, Direction Acc: 0.514
+2026-01-01 10:35:39,088 - financial_kg_ds - INFO - Trial 26 - Epoch 31/200, Train Loss: 1.2422, Val Loss: 8.3480, Direction Acc: 0.529
+2026-01-01 10:37:58,495 - financial_kg_ds - INFO - Trial 26 - Early stopping triggered at epoch 33
+2026-01-01 10:37:58,780 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 10:37:58,781 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 10:37:58,817 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 10:39:04,753 - financial_kg_ds - INFO - Trial 27 - Epoch 1/200, Train Loss: 1.4844, Val Loss: 81884860121088.0000, Direction Acc: 0.513
+2026-01-01 10:49:28,037 - financial_kg_ds - INFO - Trial 27 - Epoch 11/200, Train Loss: 5.8216, Val Loss: 9704.7881, Direction Acc: 0.513
+2026-01-01 10:59:48,527 - financial_kg_ds - INFO - Trial 27 - Epoch 21/200, Train Loss: 1.1566, Val Loss: 136.7220, Direction Acc: 0.515
+2026-01-01 11:10:09,302 - financial_kg_ds - INFO - Trial 27 - Epoch 31/200, Train Loss: 1.3519, Val Loss: 2.1088, Direction Acc: 0.394
+2026-01-01 11:20:30,141 - financial_kg_ds - INFO - Trial 27 - Epoch 41/200, Train Loss: 1.0933, Val Loss: 1.1488, Direction Acc: 0.513
+2026-01-01 11:30:51,025 - financial_kg_ds - INFO - Trial 27 - Epoch 51/200, Train Loss: 1.0084, Val Loss: 1.0487, Direction Acc: 0.531
+2026-01-01 11:41:11,630 - financial_kg_ds - INFO - Trial 27 - Epoch 61/200, Train Loss: 0.9788, Val Loss: 1.0462, Direction Acc: 0.514
+2026-01-01 11:47:23,543 - financial_kg_ds - INFO - Trial 27 - Early stopping triggered at epoch 66
+2026-01-01 11:47:24,273 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 11:47:24,274 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 11:47:24,315 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 11:47:59,693 - financial_kg_ds - INFO - Trial 28 - Epoch 1/200, Train Loss: 1.2238, Val Loss: 3.1333, Direction Acc: 0.516
+2026-01-01 11:53:33,437 - financial_kg_ds - INFO - Trial 28 - Epoch 11/200, Train Loss: 1.2721, Val Loss: 1.1237, Direction Acc: 0.516
+2026-01-01 11:59:06,369 - financial_kg_ds - INFO - Trial 28 - Epoch 21/200, Train Loss: 1.0073, Val Loss: 1.0472, Direction Acc: 0.527
+2026-01-01 12:04:38,464 - financial_kg_ds - INFO - Trial 28 - Epoch 31/200, Train Loss: 0.9905, Val Loss: 1.0472, Direction Acc: 0.510
+2026-01-01 12:10:10,362 - financial_kg_ds - INFO - Trial 28 - Epoch 41/200, Train Loss: 0.9327, Val Loss: 1.0438, Direction Acc: 0.524
+2026-01-01 12:15:41,330 - financial_kg_ds - INFO - Trial 28 - Epoch 51/200, Train Loss: 0.9242, Val Loss: 1.0511, Direction Acc: 0.503
+2026-01-01 12:17:54,281 - financial_kg_ds - INFO - Trial 28 - Early stopping triggered at epoch 54
+2026-01-01 12:17:54,451 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 12:17:54,451 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 12:17:54,471 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 12:18:17,073 - financial_kg_ds - INFO - Trial 29 - Epoch 1/200, Train Loss: 1.1864, Val Loss: 1.2526, Direction Acc: 0.406
+2026-01-01 12:22:01,525 - financial_kg_ds - INFO - Trial 29 - Epoch 11/200, Train Loss: 1.0326, Val Loss: 1.0761, Direction Acc: 0.457
+2026-01-01 12:25:45,945 - financial_kg_ds - INFO - Trial 29 - Epoch 21/200, Train Loss: 0.9401, Val Loss: 1.0864, Direction Acc: 0.504
+2026-01-01 12:29:30,698 - financial_kg_ds - INFO - Trial 29 - Epoch 31/200, Train Loss: 0.7994, Val Loss: 1.1332, Direction Acc: 0.521
+2026-01-01 12:29:30,698 - financial_kg_ds - INFO - Trial 29 - Early stopping triggered at epoch 30
+2026-01-01 12:29:30,914 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 12:29:30,914 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 12:29:30,934 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 12:29:50,140 - financial_kg_ds - INFO - Trial 30 - Epoch 1/200, Train Loss: 1.1880, Val Loss: 197293.6562, Direction Acc: 0.519
+2026-01-01 12:33:00,992 - financial_kg_ds - INFO - Trial 30 - Epoch 11/200, Train Loss: 1.0752, Val Loss: 4.3756, Direction Acc: 0.510
+2026-01-01 12:36:11,711 - financial_kg_ds - INFO - Trial 30 - Epoch 21/200, Train Loss: 1.0060, Val Loss: 1.1317, Direction Acc: 0.507
+2026-01-01 12:39:23,018 - financial_kg_ds - INFO - Trial 30 - Epoch 31/200, Train Loss: 0.9494, Val Loss: 1.0927, Direction Acc: 0.521
+2026-01-01 12:42:33,943 - financial_kg_ds - INFO - Trial 30 - Epoch 41/200, Train Loss: 0.8969, Val Loss: 1.0603, Direction Acc: 0.482
+2026-01-01 12:45:45,136 - financial_kg_ds - INFO - Trial 30 - Epoch 51/200, Train Loss: 0.8948, Val Loss: 1.0919, Direction Acc: 0.395
+2026-01-01 12:46:42,574 - financial_kg_ds - INFO - Trial 30 - Early stopping triggered at epoch 53
+2026-01-01 12:46:42,725 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 12:46:42,726 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 12:46:42,764 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 12:47:34,204 - financial_kg_ds - INFO - Trial 31 - Epoch 1/200, Train Loss: 1.1499, Val Loss: 139357964992512.0000, Direction Acc: 0.386
+2026-01-01 12:55:57,044 - financial_kg_ds - INFO - Trial 31 - Epoch 11/200, Train Loss: 1.6336, Val Loss: 22.2792, Direction Acc: 0.528
+2026-01-01 13:04:19,529 - financial_kg_ds - INFO - Trial 31 - Epoch 21/200, Train Loss: 1.8723, Val Loss: 132.8878, Direction Acc: 0.394
+2026-01-01 13:12:42,051 - financial_kg_ds - INFO - Trial 31 - Epoch 31/200, Train Loss: 1.2062, Val Loss: 5.5989, Direction Acc: 0.394
+2026-01-01 13:21:05,023 - financial_kg_ds - INFO - Trial 31 - Epoch 41/200, Train Loss: 1.0259, Val Loss: 1.6183, Direction Acc: 0.396
+2026-01-01 13:29:27,127 - financial_kg_ds - INFO - Trial 31 - Epoch 51/200, Train Loss: 1.0194, Val Loss: 1.1080, Direction Acc: 0.407
+2026-01-01 13:37:49,966 - financial_kg_ds - INFO - Trial 31 - Epoch 61/200, Train Loss: 1.0055, Val Loss: 1.0467, Direction Acc: 0.518
+2026-01-01 13:46:12,666 - financial_kg_ds - INFO - Trial 31 - Epoch 71/200, Train Loss: 0.9896, Val Loss: 1.0455, Direction Acc: 0.517
+2026-01-01 13:54:34,687 - financial_kg_ds - INFO - Trial 31 - Epoch 81/200, Train Loss: 0.9811, Val Loss: 1.0440, Direction Acc: 0.518
+2026-01-01 14:02:57,155 - financial_kg_ds - INFO - Trial 31 - Epoch 91/200, Train Loss: 0.9702, Val Loss: 1.0423, Direction Acc: 0.523
+2026-01-01 14:11:19,293 - financial_kg_ds - INFO - Trial 31 - Epoch 101/200, Train Loss: 0.9731, Val Loss: 1.0418, Direction Acc: 0.522
+2026-01-01 14:19:42,123 - financial_kg_ds - INFO - Trial 31 - Epoch 111/200, Train Loss: 0.9642, Val Loss: 1.0413, Direction Acc: 0.530
+2026-01-01 14:28:05,112 - financial_kg_ds - INFO - Trial 31 - Epoch 121/200, Train Loss: 0.9593, Val Loss: 1.0414, Direction Acc: 0.528
+2026-01-01 14:33:06,478 - financial_kg_ds - INFO - Trial 31 - Early stopping triggered at epoch 126
+2026-01-01 14:33:06,976 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 14:33:06,976 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 14:33:07,000 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 14:34:12,805 - financial_kg_ds - INFO - Trial 32 - Epoch 1/200, Train Loss: 1.1359, Val Loss: 11389842025873408.0000, Direction Acc: 0.515
+2026-01-01 14:44:38,089 - financial_kg_ds - INFO - Trial 32 - Epoch 11/200, Train Loss: 2.1000, Val Loss: 7494.4365, Direction Acc: 0.517
+2026-01-01 14:55:06,143 - financial_kg_ds - INFO - Trial 32 - Epoch 21/200, Train Loss: 2.3623, Val Loss: 47.2299, Direction Acc: 0.394
+2026-01-01 15:05:33,605 - financial_kg_ds - INFO - Trial 32 - Epoch 31/200, Train Loss: 1.4040, Val Loss: 15.2153, Direction Acc: 0.394
+2026-01-01 15:07:38,446 - financial_kg_ds - INFO - Trial 32 - Early stopping triggered at epoch 32
+2026-01-01 15:07:39,062 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 15:07:39,063 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 15:07:39,094 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 15:08:28,643 - financial_kg_ds - INFO - Trial 33 - Epoch 1/200, Train Loss: 1.2857, Val Loss: 195364422418432.0000, Direction Acc: 0.513
+2026-01-01 15:16:40,185 - financial_kg_ds - INFO - Trial 33 - Epoch 11/200, Train Loss: 5.3572, Val Loss: 7693.2451, Direction Acc: 0.513
+2026-01-01 15:24:52,088 - financial_kg_ds - INFO - Trial 33 - Epoch 21/200, Train Loss: 1.2138, Val Loss: 66.5629, Direction Acc: 0.520
+2026-01-01 15:33:03,212 - financial_kg_ds - INFO - Trial 33 - Epoch 31/200, Train Loss: 1.3423, Val Loss: 3.7049, Direction Acc: 0.389
+2026-01-01 15:41:15,869 - financial_kg_ds - INFO - Trial 33 - Epoch 41/200, Train Loss: 0.9861, Val Loss: 1.0801, Direction Acc: 0.426
+2026-01-01 15:49:27,482 - financial_kg_ds - INFO - Trial 33 - Epoch 51/200, Train Loss: 1.0002, Val Loss: 1.0700, Direction Acc: 0.519
+2026-01-01 15:57:39,684 - financial_kg_ds - INFO - Trial 33 - Epoch 61/200, Train Loss: 0.9882, Val Loss: 1.0535, Direction Acc: 0.439
+2026-01-01 16:05:52,875 - financial_kg_ds - INFO - Trial 33 - Epoch 71/200, Train Loss: 0.9705, Val Loss: 1.0397, Direction Acc: 0.540
+2026-01-01 16:14:05,946 - financial_kg_ds - INFO - Trial 33 - Epoch 81/200, Train Loss: 0.9779, Val Loss: 1.0433, Direction Acc: 0.521
+2026-01-01 16:18:12,122 - financial_kg_ds - INFO - Trial 33 - Early stopping triggered at epoch 85
+2026-01-01 16:18:12,349 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 16:18:12,349 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 16:18:12,370 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 16:18:51,245 - financial_kg_ds - INFO - Trial 34 - Epoch 1/200, Train Loss: 1.0728, Val Loss: 876858441728.0000, Direction Acc: 0.392
+2026-01-01 16:25:17,442 - financial_kg_ds - INFO - Trial 34 - Epoch 11/200, Train Loss: 1.4509, Val Loss: 3.2905, Direction Acc: 0.531
+2026-01-01 16:31:43,222 - financial_kg_ds - INFO - Trial 34 - Epoch 21/200, Train Loss: 1.0219, Val Loss: 1.1268, Direction Acc: 0.524
+2026-01-01 16:38:09,266 - financial_kg_ds - INFO - Trial 34 - Epoch 31/200, Train Loss: 1.0040, Val Loss: 1.0778, Direction Acc: 0.514
+2026-01-01 16:44:36,154 - financial_kg_ds - INFO - Trial 34 - Epoch 41/200, Train Loss: 0.9845, Val Loss: 1.0463, Direction Acc: 0.523
+2026-01-01 16:51:02,211 - financial_kg_ds - INFO - Trial 34 - Epoch 51/200, Train Loss: 0.9821, Val Loss: 1.0470, Direction Acc: 0.533
+2026-01-01 16:57:27,560 - financial_kg_ds - INFO - Trial 34 - Epoch 61/200, Train Loss: 0.9726, Val Loss: 1.0464, Direction Acc: 0.531
+2026-01-01 17:03:53,315 - financial_kg_ds - INFO - Trial 34 - Epoch 71/200, Train Loss: 0.9632, Val Loss: 1.0444, Direction Acc: 0.534
+2026-01-01 17:09:40,923 - financial_kg_ds - INFO - Trial 34 - Early stopping triggered at epoch 79
+2026-01-01 17:09:41,095 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 17:09:41,095 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 17:09:41,117 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 17:10:18,565 - financial_kg_ds - INFO - Trial 35 - Epoch 1/200, Train Loss: 1.4715, Val Loss: 59375042560.0000, Direction Acc: 0.513
+2026-01-01 17:16:33,749 - financial_kg_ds - INFO - Trial 35 - Epoch 11/200, Train Loss: 1.3008, Val Loss: 735.0231, Direction Acc: 0.515
+2026-01-01 17:22:49,492 - financial_kg_ds - INFO - Trial 35 - Epoch 21/200, Train Loss: 1.0303, Val Loss: 1.1198, Direction Acc: 0.431
+2026-01-01 17:29:05,620 - financial_kg_ds - INFO - Trial 35 - Epoch 31/200, Train Loss: 0.9965, Val Loss: 1.1801, Direction Acc: 0.538
+2026-01-01 17:35:20,387 - financial_kg_ds - INFO - Trial 35 - Epoch 41/200, Train Loss: 0.9596, Val Loss: 1.0690, Direction Acc: 0.422
+2026-01-01 17:41:36,280 - financial_kg_ds - INFO - Trial 35 - Epoch 51/200, Train Loss: 0.9573, Val Loss: 1.0510, Direction Acc: 0.537
+2026-01-01 17:47:52,426 - financial_kg_ds - INFO - Trial 35 - Epoch 61/200, Train Loss: 0.9423, Val Loss: 1.0588, Direction Acc: 0.483
+2026-01-01 17:51:39,605 - financial_kg_ds - INFO - Trial 35 - Early stopping triggered at epoch 66
+2026-01-01 17:51:39,855 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 17:51:39,855 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 17:51:39,889 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 17:52:20,835 - financial_kg_ds - INFO - Trial 36 - Epoch 1/200, Train Loss: 1.2787, Val Loss: 79189213184.0000, Direction Acc: 0.386
+2026-01-01 17:59:09,896 - financial_kg_ds - INFO - Trial 36 - Epoch 11/200, Train Loss: 1.8569, Val Loss: 975.0235, Direction Acc: 0.398
+2026-01-01 18:05:58,343 - financial_kg_ds - INFO - Trial 36 - Epoch 21/200, Train Loss: 1.2320, Val Loss: 3.0863, Direction Acc: 0.390
+2026-01-01 18:12:46,808 - financial_kg_ds - INFO - Trial 36 - Epoch 31/200, Train Loss: 1.0961, Val Loss: 1.1854, Direction Acc: 0.520
+2026-01-01 18:19:36,208 - financial_kg_ds - INFO - Trial 36 - Epoch 41/200, Train Loss: 0.9952, Val Loss: 1.0425, Direction Acc: 0.519
+2026-01-01 18:26:24,451 - financial_kg_ds - INFO - Trial 36 - Epoch 51/200, Train Loss: 0.9678, Val Loss: 1.0412, Direction Acc: 0.520
+2026-01-01 18:33:14,258 - financial_kg_ds - INFO - Trial 36 - Epoch 61/200, Train Loss: 0.9710, Val Loss: 1.0429, Direction Acc: 0.513
+2026-01-01 18:40:03,621 - financial_kg_ds - INFO - Trial 36 - Epoch 71/200, Train Loss: 0.9663, Val Loss: 1.0399, Direction Acc: 0.517
+2026-01-01 18:42:06,323 - financial_kg_ds - INFO - Trial 36 - Early stopping triggered at epoch 73
+2026-01-01 18:42:06,527 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 18:42:06,528 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 18:42:06,547 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 18:42:24,068 - financial_kg_ds - INFO - Trial 37 - Epoch 1/200, Train Loss: 1.1804, Val Loss: 3825753344.0000, Direction Acc: 0.521
+2026-01-01 18:45:19,253 - financial_kg_ds - INFO - Trial 37 - Epoch 11/200, Train Loss: 1.6326, Val Loss: 1869.9572, Direction Acc: 0.513
+2026-01-01 18:48:14,004 - financial_kg_ds - INFO - Trial 37 - Epoch 21/200, Train Loss: 1.0174, Val Loss: 2.7752, Direction Acc: 0.525
+2026-01-01 18:51:08,321 - financial_kg_ds - INFO - Trial 37 - Epoch 31/200, Train Loss: 0.9801, Val Loss: 1.0892, Direction Acc: 0.534
+2026-01-01 18:54:02,192 - financial_kg_ds - INFO - Trial 37 - Epoch 41/200, Train Loss: 0.9647, Val Loss: 1.0555, Direction Acc: 0.518
+2026-01-01 18:56:55,884 - financial_kg_ds - INFO - Trial 37 - Epoch 51/200, Train Loss: 0.9481, Val Loss: 1.0516, Direction Acc: 0.467
+2026-01-01 18:59:50,169 - financial_kg_ds - INFO - Trial 37 - Epoch 61/200, Train Loss: 0.9285, Val Loss: 1.0702, Direction Acc: 0.529
+2026-01-01 19:00:25,139 - financial_kg_ds - INFO - Trial 37 - Early stopping triggered at epoch 62
+2026-01-01 19:00:25,324 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 19:00:25,324 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 19:00:25,344 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 19:00:34,356 - financial_kg_ds - INFO - Trial 38 - Epoch 1/200, Train Loss: 1.2094, Val Loss: 6.2580, Direction Acc: 0.396
+2026-01-01 19:02:03,542 - financial_kg_ds - INFO - Trial 38 - Epoch 11/200, Train Loss: 0.9867, Val Loss: 1.0418, Direction Acc: 0.516
+2026-01-01 19:03:32,672 - financial_kg_ds - INFO - Trial 38 - Epoch 21/200, Train Loss: 0.9778, Val Loss: 1.0505, Direction Acc: 0.529
+2026-01-01 19:04:17,311 - financial_kg_ds - INFO - Trial 38 - Early stopping triggered at epoch 25
+2026-01-01 19:04:17,420 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 19:04:17,421 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 19:04:17,442 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 19:04:41,056 - financial_kg_ds - INFO - Trial 39 - Epoch 1/200, Train Loss: 1.2624, Val Loss: 35387116.0000, Direction Acc: 0.515
+2026-01-01 19:08:38,073 - financial_kg_ds - INFO - Trial 39 - Epoch 11/200, Train Loss: 1.0232, Val Loss: 2.8200, Direction Acc: 0.492
+2026-01-01 19:12:34,971 - financial_kg_ds - INFO - Trial 39 - Epoch 21/200, Train Loss: 0.9723, Val Loss: 2.6353, Direction Acc: 0.523
+2026-01-01 19:16:31,589 - financial_kg_ds - INFO - Trial 39 - Epoch 31/200, Train Loss: 0.9420, Val Loss: 1.3583, Direction Acc: 0.535
+2026-01-01 19:20:28,352 - financial_kg_ds - INFO - Trial 39 - Epoch 41/200, Train Loss: 0.9168, Val Loss: 1.2103, Direction Acc: 0.407
+2026-01-01 19:24:25,606 - financial_kg_ds - INFO - Trial 39 - Epoch 51/200, Train Loss: 0.9174, Val Loss: 1.1032, Direction Acc: 0.422
+2026-01-01 19:28:22,614 - financial_kg_ds - INFO - Trial 39 - Epoch 61/200, Train Loss: 0.8672, Val Loss: 1.2130, Direction Acc: 0.525
+2026-01-01 19:29:57,317 - financial_kg_ds - INFO - Trial 39 - Early stopping triggered at epoch 64
+2026-01-01 19:29:57,517 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 19:29:57,517 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 19:29:57,538 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 19:30:35,356 - financial_kg_ds - INFO - Trial 40 - Epoch 1/200, Train Loss: 1.7911, Val Loss: 1205600518144.0000, Direction Acc: 0.383
+2026-01-01 19:36:42,943 - financial_kg_ds - INFO - Trial 40 - Epoch 11/200, Train Loss: 6.6730, Val Loss: 5764.4404, Direction Acc: 0.513
+2026-01-01 19:42:50,068 - financial_kg_ds - INFO - Trial 40 - Epoch 21/200, Train Loss: 1.0136, Val Loss: 2.4698, Direction Acc: 0.513
+2026-01-01 19:48:57,115 - financial_kg_ds - INFO - Trial 40 - Epoch 31/200, Train Loss: 1.3523, Val Loss: 1.5228, Direction Acc: 0.394
+2026-01-01 19:55:04,192 - financial_kg_ds - INFO - Trial 40 - Epoch 41/200, Train Loss: 1.1362, Val Loss: 1.1952, Direction Acc: 0.513
+2026-01-01 20:01:11,011 - financial_kg_ds - INFO - Trial 40 - Epoch 51/200, Train Loss: 1.0199, Val Loss: 1.0823, Direction Acc: 0.412
+2026-01-01 20:07:18,101 - financial_kg_ds - INFO - Trial 40 - Epoch 61/200, Train Loss: 0.9779, Val Loss: 1.0475, Direction Acc: 0.515
+2026-01-01 20:13:25,075 - financial_kg_ds - INFO - Trial 40 - Epoch 71/200, Train Loss: 0.9694, Val Loss: 1.0439, Direction Acc: 0.516
+2026-01-01 20:19:31,860 - financial_kg_ds - INFO - Trial 40 - Epoch 81/200, Train Loss: 0.9673, Val Loss: 1.0424, Direction Acc: 0.510
+2026-01-01 20:25:38,291 - financial_kg_ds - INFO - Trial 40 - Epoch 91/200, Train Loss: 0.9712, Val Loss: 1.0450, Direction Acc: 0.515
+2026-01-01 20:31:45,264 - financial_kg_ds - INFO - Trial 40 - Epoch 101/200, Train Loss: 0.9722, Val Loss: 1.0424, Direction Acc: 0.520
+2026-01-01 20:31:45,265 - financial_kg_ds - INFO - Trial 40 - Early stopping triggered at epoch 100
+2026-01-01 20:31:45,475 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 20:31:45,476 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 20:31:45,496 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 20:32:30,243 - financial_kg_ds - INFO - Trial 41 - Epoch 1/200, Train Loss: 1.3883, Val Loss: 1551912534016.0000, Direction Acc: 0.449
+2026-01-01 20:39:50,939 - financial_kg_ds - INFO - Trial 41 - Epoch 11/200, Train Loss: 2.4654, Val Loss: 3795.4744, Direction Acc: 0.401
+2026-01-01 20:47:10,616 - financial_kg_ds - INFO - Trial 41 - Epoch 21/200, Train Loss: 2.4577, Val Loss: 45.5712, Direction Acc: 0.529
+2026-01-01 20:52:18,793 - financial_kg_ds - INFO - Trial 41 - Early stopping triggered at epoch 27
+2026-01-01 20:52:19,059 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 20:52:19,059 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 20:52:19,080 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 20:53:11,425 - financial_kg_ds - INFO - Trial 42 - Epoch 1/200, Train Loss: 1.2836, Val Loss: 3063883497472.0000, Direction Acc: 0.392
+2026-01-01 21:01:33,454 - financial_kg_ds - INFO - Trial 42 - Epoch 11/200, Train Loss: 2.1264, Val Loss: 4584.4736, Direction Acc: 0.513
+2026-01-01 21:09:55,937 - financial_kg_ds - INFO - Trial 42 - Epoch 21/200, Train Loss: 1.1570, Val Loss: 50.8148, Direction Acc: 0.543
+2026-01-01 21:18:18,479 - financial_kg_ds - INFO - Trial 42 - Epoch 31/200, Train Loss: 1.0110, Val Loss: 3.2602, Direction Acc: 0.536
+2026-01-01 21:26:41,236 - financial_kg_ds - INFO - Trial 42 - Epoch 41/200, Train Loss: 0.9689, Val Loss: 1.2317, Direction Acc: 0.524
+2026-01-01 21:35:03,345 - financial_kg_ds - INFO - Trial 42 - Epoch 51/200, Train Loss: 0.9661, Val Loss: 1.0510, Direction Acc: 0.534
+2026-01-01 21:43:26,912 - financial_kg_ds - INFO - Trial 42 - Epoch 61/200, Train Loss: 0.9492, Val Loss: 1.0593, Direction Acc: 0.516
+2026-01-01 21:47:38,293 - financial_kg_ds - INFO - Trial 42 - Early stopping triggered at epoch 65
+2026-01-01 21:47:38,577 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 21:47:38,577 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 21:47:38,598 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 21:47:57,001 - financial_kg_ds - INFO - Trial 43 - Epoch 1/200, Train Loss: 1.4215, Val Loss: 89423.0156, Direction Acc: 0.513
+2026-01-01 21:50:59,024 - financial_kg_ds - INFO - Trial 43 - Epoch 11/200, Train Loss: 4.7124, Val Loss: 25.3992, Direction Acc: 0.513
+2026-01-01 21:54:00,107 - financial_kg_ds - INFO - Trial 43 - Epoch 21/200, Train Loss: 1.1998, Val Loss: 1.0659, Direction Acc: 0.468
+2026-01-01 21:57:01,036 - financial_kg_ds - INFO - Trial 43 - Epoch 31/200, Train Loss: 0.9892, Val Loss: 1.0757, Direction Acc: 0.482
+2026-01-01 22:00:02,111 - financial_kg_ds - INFO - Trial 43 - Epoch 41/200, Train Loss: 0.9663, Val Loss: 1.0583, Direction Acc: 0.512
+2026-01-01 22:03:02,816 - financial_kg_ds - INFO - Trial 43 - Epoch 51/200, Train Loss: 0.9631, Val Loss: 1.0409, Direction Acc: 0.541
+2026-01-01 22:06:04,130 - financial_kg_ds - INFO - Trial 43 - Epoch 61/200, Train Loss: 0.9646, Val Loss: 1.0421, Direction Acc: 0.527
+2026-01-01 22:07:16,637 - financial_kg_ds - INFO - Trial 43 - Early stopping triggered at epoch 64
+2026-01-01 22:07:16,928 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 22:07:16,928 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 22:07:16,967 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 22:07:53,584 - financial_kg_ds - INFO - Trial 44 - Epoch 1/200, Train Loss: 1.2356, Val Loss: 1782585229312.0000, Direction Acc: 0.513
+2026-01-01 22:13:56,171 - financial_kg_ds - INFO - Trial 44 - Epoch 11/200, Train Loss: 2.5488, Val Loss: 4094.1357, Direction Acc: 0.513
+2026-01-01 22:19:59,047 - financial_kg_ds - INFO - Trial 44 - Epoch 21/200, Train Loss: 0.9917, Val Loss: 12.1253, Direction Acc: 0.513
+2026-01-01 22:26:02,388 - financial_kg_ds - INFO - Trial 44 - Epoch 31/200, Train Loss: 1.0339, Val Loss: 1.3631, Direction Acc: 0.394
+2026-01-01 22:32:05,184 - financial_kg_ds - INFO - Trial 44 - Epoch 41/200, Train Loss: 0.9850, Val Loss: 1.0618, Direction Acc: 0.514
+2026-01-01 22:38:07,731 - financial_kg_ds - INFO - Trial 44 - Epoch 51/200, Train Loss: 0.9737, Val Loss: 1.0471, Direction Acc: 0.479
+2026-01-01 22:39:57,214 - financial_kg_ds - INFO - Trial 44 - Early stopping triggered at epoch 53
+2026-01-01 22:39:57,409 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 22:39:57,409 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 22:39:57,430 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 23:24:45,708 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\models\base_gnn.yaml
+2026-01-01 23:24:45,711 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\training\default_training.yaml
+2026-01-01 23:24:45,711 - financial_kg_ds - INFO - Configuration loaded successfully:
+2026-01-01 23:24:45,711 - financial_kg_ds - INFO - Model: HeteroGNN
+2026-01-01 23:24:45,712 - financial_kg_ds - INFO - Loss function: asymmetric
+2026-01-01 23:24:45,712 - financial_kg_ds - INFO - Training epochs: 200
+2026-01-01 23:24:45,712 - financial_kg_ds - INFO - Optuna trials: 10
+2026-01-01 23:26:09,176 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/models/base_gnn.yaml
+2026-01-01 23:26:09,179 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/training/default_training.yaml
+2026-01-01 23:26:09,179 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 23:26:09,179 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 23:26:12,101 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Financial_Training
+2026-01-01 23:26:12,415 - financial_kg_ds - INFO - === Data Path Verification ===
+2026-01-01 23:26:12,415 - financial_kg_ds - INFO - TRAIN: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-09-06
+2026-01-01 23:26:12,416 - financial_kg_ds - INFO - EVAL: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15
+2026-01-01 23:26:12,416 - financial_kg_ds - INFO - TEST: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2025-01-02
+2026-01-01 23:26:12,435 - financial_kg_ds - INFO - === Stage 1: Hyperparameter Optimization on Training Data ===
+2026-01-01 23:26:12,435 - financial_kg_ds - INFO - Running optimization with 10 trials...
+2026-01-01 23:26:12,435 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 23:26:12,435 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 23:26:12,452 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 23:26:30,900 - financial_kg_ds - INFO - Trial 0 - Epoch 1/200, Train Loss: 1.2959, Val Loss: 49244.2305, Direction Acc: 0.431
+2026-01-01 23:29:29,271 - financial_kg_ds - INFO - Trial 0 - Epoch 11/200, Train Loss: 1.2516, Val Loss: 3.2774, Direction Acc: 0.387
+2026-01-01 23:32:34,699 - financial_kg_ds - INFO - Trial 0 - Epoch 21/200, Train Loss: 1.0079, Val Loss: 1.0902, Direction Acc: 0.426
+2026-01-01 23:35:40,453 - financial_kg_ds - INFO - Trial 0 - Epoch 31/200, Train Loss: 0.9793, Val Loss: 1.1026, Direction Acc: 0.528
+2026-01-01 23:38:46,033 - financial_kg_ds - INFO - Trial 0 - Epoch 41/200, Train Loss: 0.9522, Val Loss: 1.0556, Direction Acc: 0.533
+2026-01-01 23:41:52,653 - financial_kg_ds - INFO - Trial 0 - Epoch 51/200, Train Loss: 0.9507, Val Loss: 1.0519, Direction Acc: 0.520
+2026-01-01 23:44:58,257 - financial_kg_ds - INFO - Trial 0 - Epoch 61/200, Train Loss: 0.9275, Val Loss: 1.0719, Direction Acc: 0.459
+2026-01-01 23:44:58,257 - financial_kg_ds - INFO - Trial 0 - Early stopping triggered at epoch 60
+2026-01-01 23:44:58,430 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 23:44:58,430 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 23:44:58,450 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 23:45:06,010 - financial_kg_ds - INFO - Trial 1 - Epoch 1/200, Train Loss: 1.2493, Val Loss: 1.0830, Direction Acc: 0.402
+2026-01-01 23:46:19,499 - financial_kg_ds - INFO - Trial 1 - Epoch 11/200, Train Loss: 0.9607, Val Loss: 1.0531, Direction Acc: 0.486
+2026-01-01 23:47:32,892 - financial_kg_ds - INFO - Trial 1 - Epoch 21/200, Train Loss: 0.9020, Val Loss: 1.0579, Direction Acc: 0.514
+2026-01-01 23:47:55,000 - financial_kg_ds - INFO - Trial 1 - Early stopping triggered at epoch 23
+2026-01-01 23:47:55,104 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 23:47:55,104 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 23:47:55,124 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 23:48:01,777 - financial_kg_ds - INFO - Trial 2 - Epoch 1/200, Train Loss: 1.4434, Val Loss: 4551.5396, Direction Acc: 0.516
+2026-01-01 23:49:08,008 - financial_kg_ds - INFO - Trial 2 - Epoch 11/200, Train Loss: 1.0502, Val Loss: 1.7190, Direction Acc: 0.401
+2026-01-01 23:50:14,331 - financial_kg_ds - INFO - Trial 2 - Epoch 21/200, Train Loss: 0.9578, Val Loss: 1.0916, Direction Acc: 0.525
+2026-01-01 23:51:20,444 - financial_kg_ds - INFO - Trial 2 - Epoch 31/200, Train Loss: 0.9429, Val Loss: 1.0662, Direction Acc: 0.513
+2026-01-01 23:52:26,546 - financial_kg_ds - INFO - Trial 2 - Epoch 41/200, Train Loss: 0.9553, Val Loss: 1.0924, Direction Acc: 0.542
+2026-01-01 23:53:12,882 - financial_kg_ds - INFO - Trial 2 - Early stopping triggered at epoch 47
+2026-01-01 23:53:13,012 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-01 23:53:13,012 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-01 23:53:13,032 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-01 23:53:41,859 - financial_kg_ds - INFO - Trial 3 - Epoch 1/200, Train Loss: 1.2338, Val Loss: 51.7575, Direction Acc: 0.394
+2026-01-01 23:58:24,817 - financial_kg_ds - INFO - Trial 3 - Epoch 11/200, Train Loss: 1.2506, Val Loss: 6.7409, Direction Acc: 0.513
+2026-01-02 00:03:07,954 - financial_kg_ds - INFO - Trial 3 - Epoch 21/200, Train Loss: 0.9869, Val Loss: 1.5725, Direction Acc: 0.492
+2026-01-02 00:03:07,954 - financial_kg_ds - INFO - Trial 3 - Early stopping triggered at epoch 20
+2026-01-02 00:03:08,149 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 00:03:08,149 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 00:03:08,168 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 00:03:20,397 - financial_kg_ds - INFO - Trial 4 - Epoch 1/200, Train Loss: 1.2857, Val Loss: 1.0455, Direction Acc: 0.522
+2026-01-02 00:05:23,408 - financial_kg_ds - INFO - Trial 4 - Epoch 11/200, Train Loss: 0.9374, Val Loss: 1.0864, Direction Acc: 0.513
+2026-01-02 00:06:25,002 - financial_kg_ds - INFO - Trial 4 - Early stopping triggered at epoch 15
+2026-01-02 00:06:25,157 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 00:06:25,157 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 00:06:25,176 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 00:06:34,863 - financial_kg_ds - INFO - Trial 5 - Epoch 1/200, Train Loss: 1.1539, Val Loss: 1.6480, Direction Acc: 0.409
+2026-01-02 00:08:12,894 - financial_kg_ds - INFO - Trial 5 - Epoch 11/200, Train Loss: 1.0228, Val Loss: 1.0889, Direction Acc: 0.513
+2026-01-02 00:09:49,647 - financial_kg_ds - INFO - Trial 5 - Epoch 21/200, Train Loss: 0.9657, Val Loss: 1.0416, Direction Acc: 0.524
+2026-01-02 00:11:26,951 - financial_kg_ds - INFO - Trial 5 - Epoch 31/200, Train Loss: 0.9364, Val Loss: 1.0479, Direction Acc: 0.512
+2026-01-02 00:12:25,267 - financial_kg_ds - INFO - Trial 5 - Early stopping triggered at epoch 36
+2026-01-02 00:12:25,417 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 00:12:25,418 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 00:12:25,436 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 00:12:38,831 - financial_kg_ds - INFO - Trial 6 - Epoch 1/200, Train Loss: 1.6221, Val Loss: 1.0510, Direction Acc: 0.521
+2026-01-02 00:14:50,207 - financial_kg_ds - INFO - Trial 6 - Epoch 11/200, Train Loss: 1.0099, Val Loss: 1.0674, Direction Acc: 0.508
+2026-01-02 00:15:56,048 - financial_kg_ds - INFO - Trial 6 - Early stopping triggered at epoch 15
+2026-01-02 00:15:56,187 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 00:15:56,187 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 00:15:56,207 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 00:16:27,973 - financial_kg_ds - INFO - Trial 7 - Epoch 1/200, Train Loss: 1.1608, Val Loss: 212.1966, Direction Acc: 0.444
+2026-01-02 00:21:21,249 - financial_kg_ds - INFO - Trial 7 - Epoch 11/200, Train Loss: 2.0650, Val Loss: 1.8412, Direction Acc: 0.506
+2026-01-02 00:26:13,253 - financial_kg_ds - INFO - Trial 7 - Epoch 21/200, Train Loss: 1.7482, Val Loss: 1.2580, Direction Acc: 0.513
+2026-01-02 00:31:05,217 - financial_kg_ds - INFO - Trial 7 - Epoch 31/200, Train Loss: 1.3082, Val Loss: 1.3883, Direction Acc: 0.513
+2026-01-02 00:35:57,261 - financial_kg_ds - INFO - Trial 7 - Epoch 41/200, Train Loss: 0.9987, Val Loss: 1.1625, Direction Acc: 0.513
+2026-01-02 00:40:49,973 - financial_kg_ds - INFO - Trial 7 - Epoch 51/200, Train Loss: 0.9880, Val Loss: 1.0413, Direction Acc: 0.514
+2026-01-02 00:42:17,653 - financial_kg_ds - INFO - Trial 7 - Early stopping triggered at epoch 53
+2026-01-02 00:42:17,903 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 00:42:17,904 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 00:42:17,926 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 00:42:20,511 - financial_kg_ds - INFO - Trial 8 - Epoch 1/200, Train Loss: 1.2911, Val Loss: 1.8093, Direction Acc: 0.420
+2026-01-02 00:42:44,980 - financial_kg_ds - INFO - Trial 8 - Epoch 11/200, Train Loss: 1.0335, Val Loss: 1.5321, Direction Acc: 0.514
+2026-01-02 00:43:09,533 - financial_kg_ds - INFO - Trial 8 - Epoch 21/200, Train Loss: 0.9765, Val Loss: 1.1195, Direction Acc: 0.509
+2026-01-02 00:43:33,972 - financial_kg_ds - INFO - Trial 8 - Epoch 31/200, Train Loss: 0.9477, Val Loss: 1.0509, Direction Acc: 0.493
+2026-01-02 00:43:58,345 - financial_kg_ds - INFO - Trial 8 - Epoch 41/200, Train Loss: 0.9132, Val Loss: 1.0482, Direction Acc: 0.532
+2026-01-02 00:44:17,891 - financial_kg_ds - INFO - Trial 8 - Early stopping triggered at epoch 48
+2026-01-02 00:44:17,975 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 00:44:17,975 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 00:44:17,994 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 00:44:22,499 - financial_kg_ds - INFO - Trial 9 - Epoch 1/200, Train Loss: 1.4158, Val Loss: 1.2489, Direction Acc: 0.421
+2026-01-02 00:45:08,213 - financial_kg_ds - INFO - Trial 9 - Epoch 11/200, Train Loss: 0.9969, Val Loss: 1.0616, Direction Acc: 0.513
+2026-01-02 00:45:54,985 - financial_kg_ds - INFO - Trial 9 - Epoch 21/200, Train Loss: 0.9465, Val Loss: 1.0532, Direction Acc: 0.478
+2026-01-02 00:46:41,885 - financial_kg_ds - INFO - Trial 9 - Epoch 31/200, Train Loss: 0.8852, Val Loss: 1.0707, Direction Acc: 0.492
+2026-01-02 00:46:55,774 - financial_kg_ds - INFO - Trial 9 - Early stopping triggered at epoch 33
+2026-01-02 00:46:55,922 - financial_kg_ds - INFO - Optimization completed!
+2026-01-02 00:46:55,945 - financial_kg_ds - INFO - Best trial: 7
+2026-01-02 00:46:55,967 - financial_kg_ds - INFO - Best validation loss: 1.040309
+2026-01-02 00:46:55,987 - financial_kg_ds - INFO - Best parameters: {'hidden_channels': 244, 'num_layers': 6, 'gnn_aggr': 'max', 'learning_rate': 0.008687811684244581}
+2026-01-02 00:46:56,461 - financial_kg_ds - WARNING - Failed to load from trial attributes: Error(s) in loading state_dict for HeteroGNN:
+	Unexpected key(s) in state_dict: "input_projections.ticker.weight", "input_projections.ticker.bias", "input_projections.mutual_fund.weight", "input_projections.mutual_fund.bias", "input_projections.institution.weight", "input_projections.institution.bias", "input_projections.news.weight", "input_projections.news.bias", "input_projections.insider_holder.weight", "input_projections.insider_holder.bias", "input_projections.insider_transaction.weight", "input_projections.insider_transaction.bias". 
+2026-01-02 00:46:56,474 - financial_kg_ds - WARNING - Failed to load from global storage: Error(s) in loading state_dict for HeteroGNN:
+	Unexpected key(s) in state_dict: "input_projections.ticker.weight", "input_projections.ticker.bias", "input_projections.mutual_fund.weight", "input_projections.mutual_fund.bias", "input_projections.institution.weight", "input_projections.institution.bias", "input_projections.news.weight", "input_projections.news.bias", "input_projections.insider_holder.weight", "input_projections.insider_holder.bias", "input_projections.insider_transaction.weight", "input_projections.insider_transaction.bias". 
+2026-01-02 00:46:56,475 - financial_kg_ds - WARNING - No saved model state found. Re-training best configuration...
+2026-01-02 00:46:56,499 - financial_kg_ds - INFO - Re-training best model for 20 epochs...
+2026-01-02 00:47:25,994 - financial_kg_ds - INFO -   Epoch 1: Train Loss = 1.060895, Val Loss = 3.310011, Dir Acc = 0.513
+2026-01-02 00:49:52,746 - financial_kg_ds - INFO -   Epoch 6: Train Loss = 1.185399, Val Loss = 1.696895, Dir Acc = 0.513
+2026-01-02 00:52:19,330 - financial_kg_ds - INFO -   Epoch 11: Train Loss = 1.156098, Val Loss = 1.301810, Dir Acc = 0.398
+2026-01-02 00:54:45,688 - financial_kg_ds - INFO -   Epoch 16: Train Loss = 1.007227, Val Loss = 1.092381, Dir Acc = 0.375
+2026-01-02 00:58:26,950 - financial_kg_ds - INFO - Stage 2 completed - Key metrics:
+2026-01-02 00:58:26,950 - financial_kg_ds - INFO -   train_to_eval_direction_accuracy: 0.5068493150684932
+2026-01-02 01:00:04,663 - financial_kg_ds - INFO - Stage 3 completed - Key metrics:
+2026-01-02 01:00:04,663 - financial_kg_ds - INFO -   eval_to_test_direction_accuracy: 0.5384615384615384
+2026-01-02 01:00:29,474 - financial_kg_ds - INFO - Model saved to: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\financial_kg_ds/data/best_model_max_6_244_2026-01-02.pth
+2026-01-02 01:00:29,474 - financial_kg_ds - INFO - All results logged to MLflow experiment: GNN_Financial_Training
+2026-01-02 01:00:29,474 - financial_kg_ds - INFO - === TRAINING SUMMARY ===
+2026-01-02 01:00:30,036 - financial_kg_ds - INFO - Best model validation loss: 1.040309
+2026-01-02 09:45:03,989 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\models\base_gnn.yaml
+2026-01-02 09:45:03,992 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs\training\default_training.yaml
+2026-01-02 09:45:03,992 - financial_kg_ds - INFO - Configuration loaded successfully:
+2026-01-02 09:45:03,993 - financial_kg_ds - INFO - Model: HeteroGNN
+2026-01-02 09:45:03,993 - financial_kg_ds - INFO - Loss function: asymmetric
+2026-01-02 09:45:03,993 - financial_kg_ds - INFO - Training epochs: 200
+2026-01-02 09:45:03,993 - financial_kg_ds - INFO - Optuna trials: 20
+2026-01-02 09:46:25,301 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/models/base_gnn.yaml
+2026-01-02 09:46:25,306 - financial_kg_ds - INFO - Loaded config from: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\configs/training/default_training.yaml
+2026-01-02 09:46:25,306 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 09:46:25,306 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 09:46:28,146 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Financial_Training
+2026-01-02 09:46:28,448 - financial_kg_ds - INFO - === Data Path Verification ===
+2026-01-02 09:46:28,448 - financial_kg_ds - INFO - TRAIN: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-09-06
+2026-01-02 09:46:28,448 - financial_kg_ds - INFO - EVAL: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2024-11-15
+2026-01-02 09:46:28,449 - financial_kg_ds - INFO - TEST: C:/Users/Admin/Desktop/FINANCIAL_KG/data/data_2025-01-02
+2026-01-02 09:46:28,468 - financial_kg_ds - INFO - === Stage 1: Hyperparameter Optimization on Training Data ===
+2026-01-02 09:46:28,468 - financial_kg_ds - INFO - Running optimization with 20 trials...
+2026-01-02 09:46:28,469 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 09:46:28,469 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 09:46:28,485 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 09:46:32,993 - financial_kg_ds - INFO - Trial 0 - Epoch 1/200, Train Loss: 1.2116, Val Loss: 33.6504, Direction Acc: 0.382
+2026-01-02 09:47:18,207 - financial_kg_ds - INFO - Trial 0 - Epoch 11/200, Train Loss: 1.0557, Val Loss: 1.2633, Direction Acc: 0.529
+2026-01-02 09:48:02,767 - financial_kg_ds - INFO - Trial 0 - Epoch 21/200, Train Loss: 0.9796, Val Loss: 1.0628, Direction Acc: 0.512
+2026-01-02 09:48:34,148 - financial_kg_ds - INFO - Trial 0 - Early stopping triggered at epoch 27
+2026-01-02 09:48:34,268 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 09:48:34,268 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 09:48:34,288 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 09:49:10,854 - financial_kg_ds - INFO - Trial 1 - Epoch 1/200, Train Loss: 1.2349, Val Loss: 296.4855, Direction Acc: 0.394
+2026-01-02 09:54:38,398 - financial_kg_ds - INFO - Trial 1 - Epoch 11/200, Train Loss: 1.7626, Val Loss: 1.4999, Direction Acc: 0.394
+2026-01-02 10:00:03,007 - financial_kg_ds - INFO - Trial 1 - Epoch 21/200, Train Loss: 1.0169, Val Loss: 1.0498, Direction Acc: 0.513
+2026-01-02 10:05:26,994 - financial_kg_ds - INFO - Trial 1 - Epoch 31/200, Train Loss: 0.9924, Val Loss: 1.0488, Direction Acc: 0.533
+2026-01-02 10:10:52,003 - financial_kg_ds - INFO - Trial 1 - Epoch 41/200, Train Loss: 0.9762, Val Loss: 1.0544, Direction Acc: 0.513
+2026-01-02 10:14:38,673 - financial_kg_ds - INFO - Trial 1 - Early stopping triggered at epoch 47
+2026-01-02 10:14:38,864 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 10:14:38,864 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 10:14:38,883 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 10:14:48,490 - financial_kg_ds - INFO - Trial 2 - Epoch 1/200, Train Loss: 1.2748, Val Loss: 1.6957, Direction Acc: 0.397
+2026-01-02 10:16:24,185 - financial_kg_ds - INFO - Trial 2 - Epoch 11/200, Train Loss: 1.0636, Val Loss: 1.0924, Direction Acc: 0.410
+2026-01-02 10:17:59,757 - financial_kg_ds - INFO - Trial 2 - Epoch 21/200, Train Loss: 0.9415, Val Loss: 1.0609, Direction Acc: 0.513
+2026-01-02 10:19:25,716 - financial_kg_ds - INFO - Trial 2 - Early stopping triggered at epoch 29
+2026-01-02 10:19:25,877 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 10:19:25,877 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 10:19:25,896 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 10:19:32,652 - financial_kg_ds - INFO - Trial 3 - Epoch 1/200, Train Loss: 1.3275, Val Loss: 14892.0889, Direction Acc: 0.389
+2026-01-02 10:20:39,686 - financial_kg_ds - INFO - Trial 3 - Epoch 11/200, Train Loss: 1.0408, Val Loss: 1.2950, Direction Acc: 0.494
+2026-01-02 10:21:46,550 - financial_kg_ds - INFO - Trial 3 - Epoch 21/200, Train Loss: 1.0004, Val Loss: 1.1479, Direction Acc: 0.403
+2026-01-02 10:22:53,438 - financial_kg_ds - INFO - Trial 3 - Epoch 31/200, Train Loss: 0.9553, Val Loss: 1.1471, Direction Acc: 0.407
+2026-01-02 10:24:00,117 - financial_kg_ds - INFO - Trial 3 - Epoch 41/200, Train Loss: 0.9102, Val Loss: 1.1202, Direction Acc: 0.417
+2026-01-02 10:25:06,915 - financial_kg_ds - INFO - Trial 3 - Epoch 51/200, Train Loss: 0.8773, Val Loss: 1.0693, Direction Acc: 0.503
+2026-01-02 10:25:06,915 - financial_kg_ds - INFO - Trial 3 - Early stopping triggered at epoch 50
+2026-01-02 10:25:07,052 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 10:25:07,052 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 10:25:07,071 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 10:25:19,666 - financial_kg_ds - INFO - Trial 4 - Epoch 1/200, Train Loss: 1.1322, Val Loss: 1.0840, Direction Acc: 0.390
+2026-01-02 10:27:25,406 - financial_kg_ds - INFO - Trial 4 - Epoch 11/200, Train Loss: 1.0366, Val Loss: 1.0498, Direction Acc: 0.524
+2026-01-02 10:29:30,682 - financial_kg_ds - INFO - Trial 4 - Epoch 21/200, Train Loss: 0.9663, Val Loss: 1.0505, Direction Acc: 0.525
+2026-01-02 10:29:30,683 - financial_kg_ds - INFO - Trial 4 - Early stopping triggered at epoch 20
+2026-01-02 10:29:30,837 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 10:29:30,838 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 10:29:30,857 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 10:29:35,394 - financial_kg_ds - INFO - Trial 5 - Epoch 1/200, Train Loss: 1.3102, Val Loss: 1.0802, Direction Acc: 0.538
+2026-01-02 10:30:20,308 - financial_kg_ds - INFO - Trial 5 - Epoch 11/200, Train Loss: 1.0172, Val Loss: 1.0641, Direction Acc: 0.521
+2026-01-02 10:30:47,048 - financial_kg_ds - INFO - Trial 5 - Early stopping triggered at epoch 16
+2026-01-02 10:30:47,202 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 10:30:47,203 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 10:30:47,238 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 10:30:50,892 - financial_kg_ds - INFO - Trial 6 - Epoch 1/200, Train Loss: 1.1056, Val Loss: 15.0231, Direction Acc: 0.511
+2026-01-02 10:31:26,710 - financial_kg_ds - INFO - Trial 6 - Epoch 11/200, Train Loss: 0.9596, Val Loss: 1.2943, Direction Acc: 0.406
+2026-01-02 10:32:02,352 - financial_kg_ds - INFO - Trial 6 - Epoch 21/200, Train Loss: 0.9235, Val Loss: 1.1034, Direction Acc: 0.419
+2026-01-02 10:32:38,219 - financial_kg_ds - INFO - Trial 6 - Epoch 31/200, Train Loss: 0.8975, Val Loss: 1.0596, Direction Acc: 0.529
+2026-01-02 10:32:45,361 - financial_kg_ds - INFO - Trial 6 - Early stopping triggered at epoch 32
+2026-01-02 10:32:45,498 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 10:32:45,498 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 10:32:45,518 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 10:33:45,806 - financial_kg_ds - INFO - Trial 7 - Epoch 1/200, Train Loss: 1.4261, Val Loss: 13.6778, Direction Acc: 0.513
+2026-01-02 10:43:18,551 - financial_kg_ds - INFO - Trial 7 - Epoch 11/200, Train Loss: 1.3897, Val Loss: 1.2852, Direction Acc: 0.513
+2026-01-02 10:52:43,794 - financial_kg_ds - INFO - Trial 7 - Epoch 21/200, Train Loss: 1.0440, Val Loss: 1.0964, Direction Acc: 0.437
+2026-01-02 10:59:20,011 - financial_kg_ds - INFO - Trial 7 - Early stopping triggered at epoch 27
+2026-01-02 10:59:20,618 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 10:59:20,621 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 10:59:20,676 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 10:59:26,318 - financial_kg_ds - INFO - Trial 8 - Epoch 1/200, Train Loss: 1.2752, Val Loss: 1.0936, Direction Acc: 0.434
+2026-01-02 11:00:19,616 - financial_kg_ds - INFO - Trial 8 - Epoch 11/200, Train Loss: 0.9809, Val Loss: 1.0507, Direction Acc: 0.523
+2026-01-02 11:01:12,846 - financial_kg_ds - INFO - Trial 8 - Epoch 21/200, Train Loss: 0.8942, Val Loss: 1.0493, Direction Acc: 0.485
+2026-01-02 11:01:28,720 - financial_kg_ds - INFO - Trial 8 - Early stopping triggered at epoch 23
+2026-01-02 11:01:28,824 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 11:01:28,824 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 11:01:28,846 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 11:01:47,261 - financial_kg_ds - INFO - Trial 9 - Epoch 1/200, Train Loss: 1.1441, Val Loss: 1.1322, Direction Acc: 0.387
+2026-01-02 11:04:49,413 - financial_kg_ds - INFO - Trial 9 - Epoch 11/200, Train Loss: 1.0185, Val Loss: 1.0793, Direction Acc: 0.513
+2026-01-02 11:07:52,269 - financial_kg_ds - INFO - Trial 9 - Epoch 21/200, Train Loss: 0.9596, Val Loss: 1.0630, Direction Acc: 0.513
+2026-01-02 11:10:18,197 - financial_kg_ds - INFO - Trial 9 - Early stopping triggered at epoch 28
+2026-01-02 11:10:18,432 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 11:10:18,432 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 11:10:18,455 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 11:10:27,221 - financial_kg_ds - INFO - Trial 10 - Epoch 1/200, Train Loss: 1.1992, Val Loss: 2.6356, Direction Acc: 0.513
+2026-01-02 11:11:52,334 - financial_kg_ds - INFO - Trial 10 - Epoch 11/200, Train Loss: 1.0015, Val Loss: 1.0505, Direction Acc: 0.500
+2026-01-02 11:13:17,684 - financial_kg_ds - INFO - Trial 10 - Epoch 21/200, Train Loss: 0.9735, Val Loss: 1.0577, Direction Acc: 0.513
+2026-01-02 11:14:42,801 - financial_kg_ds - INFO - Trial 10 - Epoch 31/200, Train Loss: 0.9462, Val Loss: 1.0463, Direction Acc: 0.527
+2026-01-02 11:16:07,772 - financial_kg_ds - INFO - Trial 10 - Epoch 41/200, Train Loss: 0.9103, Val Loss: 1.0459, Direction Acc: 0.528
+2026-01-02 11:17:33,091 - financial_kg_ds - INFO - Trial 10 - Epoch 51/200, Train Loss: 0.8585, Val Loss: 1.0477, Direction Acc: 0.527
+2026-01-02 11:18:24,380 - financial_kg_ds - INFO - Trial 10 - Early stopping triggered at epoch 56
+2026-01-02 11:18:24,521 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 11:18:24,522 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 11:18:24,540 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 11:19:00,247 - financial_kg_ds - INFO - Trial 11 - Epoch 1/200, Train Loss: 1.1674, Val Loss: 1.0922, Direction Acc: 0.383
+2026-01-02 11:24:51,002 - financial_kg_ds - INFO - Trial 11 - Epoch 11/200, Train Loss: 0.9703, Val Loss: 1.0567, Direction Acc: 0.536
+2026-01-02 11:30:42,082 - financial_kg_ds - INFO - Trial 11 - Epoch 21/200, Train Loss: 0.9822, Val Loss: 1.0464, Direction Acc: 0.528
+2026-01-02 11:36:32,445 - financial_kg_ds - INFO - Trial 11 - Epoch 31/200, Train Loss: 0.8653, Val Loss: 1.0537, Direction Acc: 0.532
+2026-01-02 11:42:24,460 - financial_kg_ds - INFO - Trial 11 - Epoch 41/200, Train Loss: 0.7722, Val Loss: 1.0604, Direction Acc: 0.541
+2026-01-02 11:43:34,762 - financial_kg_ds - INFO - Trial 11 - Early stopping triggered at epoch 42
+2026-01-02 11:43:34,923 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 11:43:34,923 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 11:43:34,943 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 11:44:01,104 - financial_kg_ds - INFO - Trial 12 - Epoch 1/200, Train Loss: 1.1309, Val Loss: 263.2007, Direction Acc: 0.513
+2026-01-02 11:48:21,550 - financial_kg_ds - INFO - Trial 12 - Epoch 11/200, Train Loss: 2.7689, Val Loss: 2.3797, Direction Acc: 0.513
+2026-01-02 11:52:41,728 - financial_kg_ds - INFO - Trial 12 - Epoch 21/200, Train Loss: 0.9778, Val Loss: 1.1093, Direction Acc: 0.513
+2026-01-02 11:57:01,399 - financial_kg_ds - INFO - Trial 12 - Epoch 31/200, Train Loss: 1.0675, Val Loss: 1.1717, Direction Acc: 0.395
+2026-01-02 11:58:45,190 - financial_kg_ds - INFO - Trial 12 - Early stopping triggered at epoch 34
+2026-01-02 11:58:45,368 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 11:58:45,368 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 11:58:45,388 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 11:59:45,687 - financial_kg_ds - INFO - Trial 13 - Epoch 1/200, Train Loss: 1.2989, Val Loss: 1.0624, Direction Acc: 0.512
+2026-01-02 12:09:29,836 - financial_kg_ds - INFO - Trial 13 - Epoch 11/200, Train Loss: 0.9987, Val Loss: 1.0464, Direction Acc: 0.513
+2026-01-02 12:19:03,921 - financial_kg_ds - INFO - Trial 13 - Epoch 21/200, Train Loss: 0.9762, Val Loss: 1.0594, Direction Acc: 0.513
+2026-01-02 12:21:00,199 - financial_kg_ds - INFO - Trial 13 - Early stopping triggered at epoch 22
+2026-01-02 12:21:00,883 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 12:21:00,885 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 12:21:00,928 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 12:21:11,454 - financial_kg_ds - INFO - Trial 14 - Epoch 1/200, Train Loss: 1.1452, Val Loss: 1.4409, Direction Acc: 0.513
+2026-01-02 12:22:50,717 - financial_kg_ds - INFO - Trial 14 - Epoch 11/200, Train Loss: 1.0150, Val Loss: 1.0501, Direction Acc: 0.513
+2026-01-02 12:24:30,325 - financial_kg_ds - INFO - Trial 14 - Epoch 21/200, Train Loss: 0.9313, Val Loss: 1.0621, Direction Acc: 0.513
+2026-01-02 12:26:10,151 - financial_kg_ds - INFO - Trial 14 - Epoch 31/200, Train Loss: 0.8698, Val Loss: 1.0663, Direction Acc: 0.535
+2026-01-02 12:26:30,005 - financial_kg_ds - INFO - Trial 14 - Early stopping triggered at epoch 32
+2026-01-02 12:26:30,114 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 12:26:30,114 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 12:26:30,136 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 12:26:50,953 - financial_kg_ds - INFO - Trial 15 - Epoch 1/200, Train Loss: 1.1890, Val Loss: 9.3187, Direction Acc: 0.521
+2026-01-02 12:30:17,727 - financial_kg_ds - INFO - Trial 15 - Epoch 11/200, Train Loss: 1.0261, Val Loss: 1.8514, Direction Acc: 0.410
+2026-01-02 12:33:44,148 - financial_kg_ds - INFO - Trial 15 - Epoch 21/200, Train Loss: 0.9713, Val Loss: 1.0454, Direction Acc: 0.506
+2026-01-02 12:37:11,767 - financial_kg_ds - INFO - Trial 15 - Epoch 31/200, Train Loss: 0.9250, Val Loss: 1.0616, Direction Acc: 0.523
+2026-01-02 12:38:55,465 - financial_kg_ds - INFO - Trial 15 - Early stopping triggered at epoch 35
+2026-01-02 12:38:55,624 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 12:38:55,624 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 12:38:55,644 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 12:39:40,585 - financial_kg_ds - INFO - Trial 16 - Epoch 1/200, Train Loss: 1.4936, Val Loss: 1.1431, Direction Acc: 0.374
+2026-01-02 12:46:39,668 - financial_kg_ds - INFO - Trial 16 - Epoch 11/200, Train Loss: 1.0488, Val Loss: 1.0688, Direction Acc: 0.513
+2026-01-02 12:53:30,841 - financial_kg_ds - INFO - Trial 16 - Epoch 21/200, Train Loss: 0.9554, Val Loss: 1.0417, Direction Acc: 0.530
+2026-01-02 13:00:24,889 - financial_kg_ds - INFO - Trial 16 - Epoch 31/200, Train Loss: 0.9146, Val Loss: 1.0434, Direction Acc: 0.538
+2026-01-02 13:03:09,227 - financial_kg_ds - INFO - Trial 16 - Early stopping triggered at epoch 34
+2026-01-02 13:03:09,596 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 13:03:09,596 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 13:03:09,627 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 13:03:58,553 - financial_kg_ds - INFO - Trial 17 - Epoch 1/200, Train Loss: 1.2250, Val Loss: 1.0484, Direction Acc: 0.513
+2026-01-02 13:12:15,719 - financial_kg_ds - INFO - Trial 17 - Epoch 11/200, Train Loss: 1.0274, Val Loss: 1.0558, Direction Acc: 0.513
+2026-01-02 13:16:29,803 - financial_kg_ds - INFO - Trial 17 - Early stopping triggered at epoch 15
+2026-01-02 13:16:30,299 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 13:16:30,301 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 13:16:30,345 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 13:16:56,620 - financial_kg_ds - INFO - Trial 18 - Epoch 1/200, Train Loss: 1.3102, Val Loss: 122.8305, Direction Acc: 0.394
+2026-01-02 13:21:11,371 - financial_kg_ds - INFO - Trial 18 - Epoch 11/200, Train Loss: 2.2090, Val Loss: 22.8945, Direction Acc: 0.394
+2026-01-02 13:25:26,338 - financial_kg_ds - INFO - Trial 18 - Epoch 21/200, Train Loss: 1.1467, Val Loss: 1.1091, Direction Acc: 0.533
+2026-01-02 13:29:41,370 - financial_kg_ds - INFO - Trial 18 - Epoch 31/200, Train Loss: 1.0037, Val Loss: 1.0479, Direction Acc: 0.507
+2026-01-02 13:33:55,840 - financial_kg_ds - INFO - Trial 18 - Epoch 41/200, Train Loss: 0.9751, Val Loss: 1.0410, Direction Acc: 0.547
+2026-01-02 13:38:10,373 - financial_kg_ds - INFO - Trial 18 - Epoch 51/200, Train Loss: 0.9706, Val Loss: 1.0486, Direction Acc: 0.546
+2026-01-02 13:40:17,990 - financial_kg_ds - INFO - Trial 18 - Early stopping triggered at epoch 55
+2026-01-02 13:40:18,222 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow tracking URI: http://localhost:5001
+2026-01-02 13:40:18,222 - financial_kg_ds.utils.mlflow_utils - INFO - MLflow registry URI: sqlite:///mlruns.db
+2026-01-02 13:40:18,259 - financial_kg_ds.utils.mlflow_utils - INFO - Using existing MLflow experiment: GNN_Optimization
+2026-01-02 13:41:08,924 - financial_kg_ds - INFO - Trial 19 - Epoch 1/200, Train Loss: 1.4364, Val Loss: 80928317440.0000, Direction Acc: 0.513
+2026-01-02 13:49:25,085 - financial_kg_ds - INFO - Trial 19 - Epoch 11/200, Train Loss: 1.6604, Val Loss: 1051.1201, Direction Acc: 0.513
+2026-01-02 13:57:40,986 - financial_kg_ds - INFO - Trial 19 - Epoch 21/200, Train Loss: 1.0536, Val Loss: 2.6842, Direction Acc: 0.516
+2026-01-02 14:05:56,763 - financial_kg_ds - INFO - Trial 19 - Epoch 31/200, Train Loss: 1.0025, Val Loss: 1.1478, Direction Acc: 0.531
+2026-01-02 14:14:12,326 - financial_kg_ds - INFO - Trial 19 - Epoch 41/200, Train Loss: 0.9782, Val Loss: 1.0799, Direction Acc: 0.520
+2026-01-02 14:22:28,674 - financial_kg_ds - INFO - Trial 19 - Epoch 51/200, Train Loss: 0.9551, Val Loss: 1.0816, Direction Acc: 0.528
+2026-01-02 14:30:44,452 - financial_kg_ds - INFO - Trial 19 - Epoch 61/200, Train Loss: 0.9451, Val Loss: 1.0556, Direction Acc: 0.524
+2026-01-02 14:32:23,570 - financial_kg_ds - INFO - Trial 19 - Early stopping triggered at epoch 62
+2026-01-02 14:32:23,832 - financial_kg_ds - INFO - Optimization completed!
+2026-01-02 14:32:23,855 - financial_kg_ds - INFO - Best trial: 1
+2026-01-02 14:32:23,876 - financial_kg_ds - INFO - Best validation loss: 1.040273
+2026-01-02 14:32:23,898 - financial_kg_ds - INFO - Best parameters: {'hidden_channels': 247, 'num_layers': 6, 'gnn_aggr': 'max', 'learning_rate': 0.0056471734562297815}
+2026-01-02 14:32:25,870 - financial_kg_ds - WARNING - Failed to load from trial attributes: Error(s) in loading state_dict for HeteroGNN:
+	Unexpected key(s) in state_dict: "input_projections.ticker.weight", "input_projections.ticker.bias", "input_projections.mutual_fund.weight", "input_projections.mutual_fund.bias", "input_projections.institution.weight", "input_projections.institution.bias", "input_projections.news.weight", "input_projections.news.bias", "input_projections.insider_holder.weight", "input_projections.insider_holder.bias", "input_projections.insider_transaction.weight", "input_projections.insider_transaction.bias". 
+2026-01-02 14:32:25,884 - financial_kg_ds - WARNING - Failed to load from global storage: Error(s) in loading state_dict for HeteroGNN:
+	Unexpected key(s) in state_dict: "input_projections.ticker.weight", "input_projections.ticker.bias", "input_projections.mutual_fund.weight", "input_projections.mutual_fund.bias", "input_projections.institution.weight", "input_projections.institution.bias", "input_projections.news.weight", "input_projections.news.bias", "input_projections.insider_holder.weight", "input_projections.insider_holder.bias", "input_projections.insider_transaction.weight", "input_projections.insider_transaction.bias". 
+2026-01-02 14:32:25,884 - financial_kg_ds - WARNING - No saved model state found. Re-training best configuration...
+2026-01-02 14:32:25,907 - financial_kg_ds - INFO - Re-training best model for 20 epochs...
+2026-01-02 14:32:58,922 - financial_kg_ds - INFO -   Epoch 1: Train Loss = 0.983352, Val Loss = 2.220145, Dir Acc = 0.513
+2026-01-02 14:35:41,846 - financial_kg_ds - INFO -   Epoch 6: Train Loss = 0.986423, Val Loss = 1.152605, Dir Acc = 0.513
+2026-01-02 14:38:24,286 - financial_kg_ds - INFO -   Epoch 11: Train Loss = 1.020325, Val Loss = 1.088259, Dir Acc = 0.409
+2026-01-02 14:41:07,996 - financial_kg_ds - INFO -   Epoch 16: Train Loss = 1.000290, Val Loss = 1.116612, Dir Acc = 0.513
+2026-01-02 14:43:17,409 - financial_kg_ds - INFO - === Stage 2: Evaluation on EVAL Data (Train->Eval) ===
+2026-01-02 14:45:09,856 - financial_kg_ds - INFO - Stage 2 completed - Key metrics:
+2026-01-02 14:45:09,856 - financial_kg_ds - INFO -   train_to_eval_direction_accuracy: 0.5556715379262352
+2026-01-02 14:45:09,857 - financial_kg_ds - INFO - === Stage 3: Final Evaluation on TEST Data (Eval->Test) ===
+2026-01-02 14:46:50,982 - financial_kg_ds - INFO - Stage 3 completed - Key metrics:
+2026-01-02 14:46:50,982 - financial_kg_ds - INFO -   eval_to_test_direction_accuracy: 0.4819569743233865
+2026-01-02 14:47:21,640 - financial_kg_ds - INFO - Model saved to: C:\Users\Admin\Desktop\FINANCIAL_KG_DS\financial_kg_ds/data/best_model_max_6_247_2026-01-02.pth
+2026-01-02 14:47:21,640 - financial_kg_ds - INFO - All results logged to MLflow experiment: GNN_Financial_Training
+2026-01-02 14:47:21,640 - financial_kg_ds - INFO - === TRAINING SUMMARY ===
+2026-01-02 14:47:22,060 - financial_kg_ds - INFO - Best model validation loss: 1.040273
+2026-01-02 14:47:22,060 - financial_kg_ds - INFO - Train->Eval direction accuracy: 0.556
+2026-01-02 14:47:22,060 - financial_kg_ds - INFO - Eval->Test direction accuracy: 0.482

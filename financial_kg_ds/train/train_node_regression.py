@@ -12,6 +12,7 @@ from financial_kg_ds.models.GNN_hetero_sage_conv import HeteroGNN
 from financial_kg_ds.utils.mlflow_utils import MLflowTracker
 from financial_kg_ds.utils.evaluate_gnn import ModelEvaluator
 from financial_kg_ds.utils.losses import LossFactory
+from financial_kg_ds.utils.logging import get_logger
 from datetime import datetime
 import mlflow
 import optuna
@@ -20,6 +21,9 @@ import pandas as pd
 
 # Load environment variables
 load_dotenv()
+
+# Initialize logger
+logger = get_logger()
 
 def parse_arguments():
     """Parse command line arguments for training configuration."""
@@ -114,7 +118,7 @@ def load_and_override_configs(args):
     if args.quick:
         train_config.setdefault('training', {})['num_epochs'] = min(train_config['training'].get('num_epochs', 50), 10)
         train_config.setdefault('training', {}).setdefault('optuna', {})['n_trials'] = min(train_config['training']['optuna'].get('n_trials', 10), 3)
-        print("🏃 Quick mode enabled - reduced epochs and trials")
+        logger.info("Quick mode enabled - reduced epochs and trials")
     
     return model_config, train_config
 
@@ -127,13 +131,14 @@ def load_yaml_config(path):
     try:
         with open(path, "r") as f:
             config = yaml.safe_load(f)
-        print(f"✓ Loaded config from: {path}")
+        logger.info(f"Loaded config from: {path}")
         return config
     except yaml.YAMLError as e:
         raise ValueError(f"Error parsing YAML file {path}: {e}")
 
 # Use relative paths for config files from project root
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = PROJECT_ROOT
 MODEL_CONFIG_PATH = os.path.join(PROJECT_ROOT, "configs", "models", "base_gnn.yaml")
 TRAIN_CONFIG_PATH = os.path.join(PROJECT_ROOT, "configs", "training", "default_training.yaml")
 
@@ -141,11 +146,11 @@ print("Loading configuration files...")
 model_config = load_yaml_config(MODEL_CONFIG_PATH)
 train_config = load_yaml_config(TRAIN_CONFIG_PATH)
 
-print("Configuration loaded successfully:")
-print(f"Model: {model_config['model']['name']}")
-print(f"Loss function: {model_config['loss']['name']}")
-print(f"Training epochs: {train_config['training']['num_epochs']}")
-print(f"Optuna trials: {train_config['training']['optuna']['n_trials']}")
+logger.info("Configuration loaded successfully:")
+logger.info(f"Model: {model_config['model']['name']}")
+logger.info(f"Loss function: {model_config['loss']['name']}")
+logger.info(f"Training epochs: {train_config['training']['num_epochs']}")
+logger.info(f"Optuna trials: {train_config['training']['optuna']['n_trials']}")
 
 # --- Data loading ---
 data = GraphLoaderRegresion.get_data()
@@ -325,13 +330,13 @@ def objective(trial):
 
             save_checkpoint(model, trial.number, val_loss, trial_params)
             
-            if epoch % 10 == 0:  # Print every 10 epochs
-                print(f"Trial {trial.number} - Epoch {epoch+1}/{num_epochs}, "
+            if epoch % 10 == 0:  # Log every 10 epochs
+                logger.info(f"Trial {trial.number} - Epoch {epoch+1}/{num_epochs}, "
                       f"Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, "
                       f"Direction Acc: {direction_accuracy:.3f}")
 
             if patience_counter >= patience:
-                print(f"Trial {trial.number} - Early stopping triggered at epoch {epoch}")
+                logger.info(f"Trial {trial.number} - Early stopping triggered at epoch {epoch}")
                 break
 
         # Log final trial metrics
@@ -346,7 +351,7 @@ def objective(trial):
         return float(val_loss_min)
 
     except Exception as e:
-        print(f"Trial {trial.number} failed with error: {e}")
+        logger.error(f"Trial {trial.number} failed with error: {e}")
         mlflow_tracker.log_metrics({"trial_failed": 1.0})
         return float('inf')
     finally:
@@ -380,7 +385,7 @@ def evaluate_financial_performance(model, data_path_start, data_path_end, stage_
         return stage_metrics, eval_df, eval_plots
         
     except Exception as e:
-        print(f"Warning: Financial evaluation failed for {stage_name}: {e}")
+        logger.warning(f"Financial evaluation failed for {stage_name}: {e}")
         # Return basic metrics as fallback
         return {
             f"{stage_name}_prediction_count": len(predictions),
@@ -417,44 +422,58 @@ def main():
         eval_data_path = args.eval_data or os.getenv("EVAL_DATA_PATH") 
         test_data_path = args.test_data or os.getenv("TEST_DATA_PATH")
         
-        data_paths = {
-            "train": train_data_path,
-            "eval": eval_data_path, 
-            "test": test_data_path
-        }
+        # Check which data paths are available
+        run_evaluation = True
+        if not eval_data_path or not test_data_path:
+            logger.warning("EVAL_DATA_PATH or TEST_DATA_PATH not provided. Skipping evaluation stages.")
+            run_evaluation = False
+        elif not os.path.exists(eval_data_path if eval_data_path else "") or not os.path.exists(test_data_path if test_data_path else ""):
+            logger.warning("Evaluation data paths do not exist. Skipping evaluation stages.")
+            run_evaluation = False
         
-        print("\n=== Data Path Verification ===")
-        for stage, path in data_paths.items():
-            if not os.path.exists(path):
-                raise FileNotFoundError(f"{stage.upper()} data path not found: {path}")
-            print(f"✓ {stage.upper()}: {path}")
+        if args.no_eval:
+            logger.info("--no-eval flag set. Skipping evaluation stages.")
+            run_evaluation = False
+        
+        logger.info("=== Data Path Verification ===")
+        if train_data_path and os.path.exists(train_data_path):
+            logger.info(f"TRAIN: {train_data_path}")
+        if eval_data_path and os.path.exists(eval_data_path):
+            logger.info(f"EVAL: {eval_data_path}")
+        if test_data_path and os.path.exists(test_data_path):
+            logger.info(f"TEST: {test_data_path}")
 
         # Log configuration
-        mlflow_tracker.log_params({
+        config_params = {
             "model_config": model_config,
             "train_config": train_config,
-            "train_data_path": train_data_path,
-            "eval_data_path": eval_data_path,
-            "test_data_path": test_data_path
-        })
+            "run_evaluation": run_evaluation
+        }
+        if train_data_path:
+            config_params["train_data_path"] = train_data_path
+        if eval_data_path:
+            config_params["eval_data_path"] = eval_data_path
+        if test_data_path:
+            config_params["test_data_path"] = test_data_path
+        mlflow_tracker.log_params(config_params)
 
-        print("\n=== Stage 1: Hyperparameter Optimization on Training Data ===")
+        logger.info("=== Stage 1: Hyperparameter Optimization on Training Data ===")
         # Use CLI args or config defaults
         optuna_trials = args.trials or train_config['training']['optuna']['n_trials']
-        print(f"Running optimization with {optuna_trials} trials...")
+        logger.info(f"Running optimization with {optuna_trials} trials...")
         
         # Quick mode: single trial with current best params
         if args.quick:
-            print("⚡ Quick mode: Running single trial with default parameters")
+            logger.info("Quick mode: Running single trial with default parameters")
             optuna_trials = 1
         
         study = optuna.create_study(direction=train_config['training']['optuna']['direction'])
         study.optimize(objective, n_trials=optuna_trials)
 
-        print(f"\n✓ Optimization completed!")
-        print(f"Best trial: {study.best_trial.number}")
-        print(f"Best validation loss: {study.best_value:.6f}")
-        print(f"Best parameters: {study.best_trial.params}")
+        logger.info("Optimization completed!")
+        logger.info(f"Best trial: {study.best_trial.number}")
+        logger.info(f"Best validation loss: {study.best_value:.6f}")
+        logger.info(f"Best parameters: {study.best_trial.params}")
 
         # Log optimization results
         mlflow_tracker.log_metrics({
@@ -477,84 +496,99 @@ def main():
         if "best_model_state" in study.best_trial.user_attrs:
             try:
                 best_model.load_state_dict(study.best_trial.user_attrs["best_model_state"])
-                print("✓ Best model state loaded from trial user attributes")
+                logger.info("Best model state loaded from trial user attributes")
                 model_loaded = True
             except Exception as e:
-                print(f"⚠ Failed to load from trial attributes: {e}")
+                logger.warning(f"Failed to load from trial attributes: {e}")
         
         # Option 2: From global best model state
         if not model_loaded and best_global_model_state is not None:
             try:
                 best_model.load_state_dict(best_global_model_state)
-                print("✓ Best model state loaded from global storage")
+                logger.info("Best model state loaded from global storage")
                 model_loaded = True
             except Exception as e:
-                print(f"⚠ Failed to load from global storage: {e}")
+                logger.warning(f"Failed to load from global storage: {e}")
         
         # Option 3: Retrain the best configuration
         if not model_loaded:
-            print("⚠ Warning: No saved model state found. Re-training best configuration...")
+            logger.warning("No saved model state found. Re-training best configuration...")
             loss_fn = LossFactory.create_loss(model_config)
             optimizer = torch.optim.Adam(best_model.parameters(), lr=study.best_trial.params.get('learning_rate', 0.001))
             
-            print("Re-training best model for 20 epochs...")
+            logger.info("Re-training best model for 20 epochs...")
             for epoch in range(20):
                 train_loss = train(best_model, data, optimizer, loss_fn)
                 val_loss, direction_accuracy, mae = validate(best_model, data, loss_fn)
                 if epoch % 5 == 0:
-                    print(f"  Epoch {epoch+1}: Train Loss = {train_loss:.6f}, Val Loss = {val_loss:.6f}, Dir Acc = {direction_accuracy:.3f}")
+                    logger.info(f"  Epoch {epoch+1}: Train Loss = {train_loss:.6f}, Val Loss = {val_loss:.6f}, Dir Acc = {direction_accuracy:.3f}")
         
-        print(f"\n=== Stage 2: Evaluation on EVAL Data (Train→Eval) ===")
-        stage2_metrics, stage2_df, stage2_plots = evaluate_financial_performance(
-            best_model, train_data_path, eval_data_path, "train_to_eval"
-        )
-        mlflow_tracker.log_metrics(stage2_metrics)
+        # Initialize empty metrics for cases where evaluation is skipped
+        stage2_metrics = {}
+        stage3_metrics = {}
         
-        if stage2_df is not None:
-            # Save evaluation results - use CLI output dir if specified
-            save_dir = args.output_dir or os.path.join(BASE_DIR, "financial_kg_ds/experiments/evaluations")
-            os.makedirs(save_dir, exist_ok=True)
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        if run_evaluation:
+            logger.info("=== Stage 2: Evaluation on EVAL Data (Train->Eval) ===")
+            stage2_metrics, stage2_df, stage2_plots = evaluate_financial_performance(
+                best_model, train_data_path, eval_data_path, "train_to_eval"
+            )
+            mlflow_tracker.log_metrics(stage2_metrics)
+        
+            if stage2_df is not None:
+                # Save evaluation results - use CLI output dir if specified
+                save_dir = args.output_dir or os.path.join(BASE_DIR, "financial_kg_ds/experiments/evaluations")
+                os.makedirs(save_dir, exist_ok=True)
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                
+                stage2_csv_path = f"{save_dir}/train_to_eval_{timestamp}.csv"
+                stage2_df.to_csv(stage2_csv_path, index=False)
+                mlflow_tracker.log_artifact(stage2_csv_path)
+                
+                if stage2_plots is not None:
+                    stage2_plot_path = f"{save_dir}/train_to_eval_plots_{timestamp}.html"
+                    stage2_plots.write_html(stage2_plot_path)
+                    mlflow_tracker.log_artifact(stage2_plot_path)
             
-            stage2_csv_path = f"{save_dir}/train_to_eval_{timestamp}.csv"
-            stage2_df.to_csv(stage2_csv_path, index=False)
-            mlflow_tracker.log_artifact(stage2_csv_path)
-            
-            if stage2_plots is not None:
-                stage2_plot_path = f"{save_dir}/train_to_eval_plots_{timestamp}.html"
-                stage2_plots.write_html(stage2_plot_path)
-                mlflow_tracker.log_artifact(stage2_plot_path)
-        
-        print(f"✓ Stage 2 completed - Key metrics:")
-        for key, value in stage2_metrics.items():
-            if 'direction_accuracy' in key or 'total_return' in key or 'win_rate' in key:
-                print(f"  {key}: {value}")
+            logger.info("Stage 2 completed - Key metrics:")
+            for key, value in stage2_metrics.items():
+                if 'direction_accuracy' in key or 'total_return' in key or 'win_rate' in key:
+                    logger.info(f"  {key}: {value}")
 
-        print(f"\n=== Stage 3: Final Evaluation on TEST Data (Eval→Test) ===")  
-        stage3_metrics, stage3_df, stage3_plots = evaluate_financial_performance(
-            best_model, eval_data_path, test_data_path, "eval_to_test"
-        )
-        mlflow_tracker.log_metrics(stage3_metrics)
-        
-        if stage3_df is not None:
-            stage3_csv_path = f"{save_dir}/eval_to_test_{timestamp}.csv"
-            stage3_df.to_csv(stage3_csv_path, index=False)
-            mlflow_tracker.log_artifact(stage3_csv_path)
+            logger.info("=== Stage 3: Final Evaluation on TEST Data (Eval->Test) ===")  
+            stage3_metrics, stage3_df, stage3_plots = evaluate_financial_performance(
+                best_model, eval_data_path, test_data_path, "eval_to_test"
+            )
+            mlflow_tracker.log_metrics(stage3_metrics)
             
-            if stage3_plots is not None:
-                stage3_plot_path = f"{save_dir}/eval_to_test_plots_{timestamp}.html"
-                stage3_plots.write_html(stage3_plot_path)
-                mlflow_tracker.log_artifact(stage3_plot_path)
-        
-        print(f"✓ Stage 3 completed - Key metrics:")
-        for key, value in stage3_metrics.items():
-            if 'direction_accuracy' in key or 'total_return' in key or 'win_rate' in key:
-                print(f"  {key}: {value}")
+            if stage3_df is not None:
+                stage3_csv_path = f"{save_dir}/eval_to_test_{timestamp}.csv"
+                stage3_df.to_csv(stage3_csv_path, index=False)
+                mlflow_tracker.log_artifact(stage3_csv_path)
+                
+                if stage3_plots is not None:
+                    stage3_plot_path = f"{save_dir}/eval_to_test_plots_{timestamp}.html"
+                    stage3_plots.write_html(stage3_plot_path)
+                    mlflow_tracker.log_artifact(stage3_plot_path)
+            
+            logger.info("Stage 3 completed - Key metrics:")
+            for key, value in stage3_metrics.items():
+                if 'direction_accuracy' in key or 'total_return' in key or 'win_rate' in key:
+                    logger.info(f"  {key}: {value}")
+        else:
+            logger.info("Evaluation stages skipped - no eval/test data paths provided")
 
         # Save final model - use CLI output dir if specified
         model_save_dir = args.output_dir or os.path.join(BASE_DIR, "financial_kg_ds/data")
         os.makedirs(model_save_dir, exist_ok=True)
-        model_name = f"best_model_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        
+        # Create informative model name with architecture details
+        best_params = study.best_trial.params
+        gnn_aggr = best_params.get('gnn_aggr', 'mean')
+        num_layers = best_params.get('num_layers', 2)
+        hidden_channels = best_params.get('hidden_channels', 64)
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        
+        model_name = f"best_model_{gnn_aggr}_{num_layers}_{hidden_channels}_{date_str}"
         model_path = f"{model_save_dir}/{model_name}.pth"
         
         torch.save({
@@ -569,21 +603,21 @@ def main():
         mlflow_tracker.log_model(model=best_model, name=model_name, data=data)
         mlflow_tracker.log_artifact(model_path)
         
-        print(f"\n✓ Model saved to: {model_path}")
-        print(f"✓ All results logged to MLflow experiment: {mlflow_tracker.experiment_name}")
+        logger.info(f"Model saved to: {model_path}")
+        logger.info(f"All results logged to MLflow experiment: {mlflow_tracker.experiment_name}")
         
         # Final summary
-        print(f"\n=== TRAINING SUMMARY ===")
-        print(f"Best model validation loss: {study.best_value:.6f}")
+        logger.info("=== TRAINING SUMMARY ===")
+        logger.info(f"Best model validation loss: {study.best_value:.6f}")
         if 'train_to_eval_direction_accuracy' in stage2_metrics:
-            print(f"Train→Eval direction accuracy: {stage2_metrics['train_to_eval_direction_accuracy']:.3f}")
+            logger.info(f"Train->Eval direction accuracy: {stage2_metrics['train_to_eval_direction_accuracy']:.3f}")
         if 'eval_to_test_direction_accuracy' in stage3_metrics:
-            print(f"Eval→Test direction accuracy: {stage3_metrics['eval_to_test_direction_accuracy']:.3f}")
+            logger.info(f"Eval->Test direction accuracy: {stage3_metrics['eval_to_test_direction_accuracy']:.3f}")
         
         return best_model, study, stage2_metrics, stage3_metrics
 
     except Exception as e:
-        print(f"Training failed with error: {e}")
+        logger.error(f"Training failed with error: {e}")
         mlflow_tracker.log_metrics({"training_failed": 1.0})
         raise
     finally:
