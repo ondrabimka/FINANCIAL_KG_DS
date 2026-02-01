@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from typing import Optional
 from torch_geometric.data import Data, HeteroData
 
-from financial_kg_ds.datasets.encoders import IdentityEncoder, OneHotEncoder, SentimentAnalysisEncoder, TimeSeriesEncoder
+from financial_kg_ds.datasets.encoders import IdentityEncoder, OneHotEncoder, SentimentAnalysisEncoder, TimeSeriesEncoder, OpenAIEmbeddingEncoder
 
 from financial_kg_ds.utils.utils import ALL_TICKERS
 
@@ -311,7 +311,8 @@ class GraphLoaderBase:
         return loader.load_full_graph()
 
 class GraphLoaderRegresion(GraphLoaderBase):
-    def __init__(self, data_path=os.getenv("TRAIN_DATA_PATH"), eval_data_path=os.getenv("EVAL_DATA_PATH")):
+    def __init__(self, data_path=os.getenv("TRAIN_DATA_PATH"), eval_data_path=os.getenv("EVAL_DATA_PATH"),
+                 news_encoder_type="sentiment", news_openai_model="text-embedding-3-small"):
         """
         Parameters
         ----------
@@ -320,9 +321,20 @@ class GraphLoaderRegresion(GraphLoaderBase):
 
         eval_data_path : str
             Path to the data from which the labels are computed.
+            
+        news_encoder_type : str, optional
+            Type of encoder for news features: "sentiment", "openai", or "onehot"
+            Default is "sentiment"
+            
+        news_openai_model : str, optional
+            OpenAI model when news_encoder_type="openai"
+            Options: "text-embedding-3-small", "text-embedding-3-large"
+            Default is "text-embedding-3-small"
         """
         super().__init__(data_path)
         self.eval_data_path = eval_data_path
+        self.news_encoder_type = news_encoder_type
+        self.news_openai_model = news_openai_model
 
     # Upadate hetero data with node and edge data
     def add_ticker_node(self):
@@ -361,10 +373,40 @@ class GraphLoaderRegresion(GraphLoaderBase):
         if node_names is not None:
             self.data["ticker"].name = node_names
 
-    def add_news_node(self):
-        print("loading news")
+    def add_news_node(self, encoder_type="sentiment", openai_model="text-embedding-3-small"):
+        """Add news node with configurable encoder.
+        
+        Parameters
+        ----------
+        encoder_type : str, optional
+            Type of encoder to use for news features:
+            - "sentiment": SentimentAnalysisEncoder (FinBERT sentiment)
+            - "openai": OpenAIEmbeddingEncoder (OpenAI embeddings)
+            - "onehot": OneHotEncoder (simple one-hot encoding)
+            Default is "sentiment"
+        openai_model : str, optional
+            OpenAI model to use if encoder_type="openai".
+            Options: "text-embedding-3-small", "text-embedding-3-large"
+            Default is "text-embedding-3-small"
+        """
+        print(f"loading news with {encoder_type} encoder")
+        
+        # Select encoder based on type
+        if encoder_type == "sentiment":
+            encoder = SentimentAnalysisEncoder()
+        elif encoder_type == "openai":
+            encoder = OpenAIEmbeddingEncoder(model=openai_model)
+        elif encoder_type == "onehot":
+            encoder = OneHotEncoder()
+        else:
+            raise ValueError(
+                f"Unknown encoder_type: {encoder_type}. "
+                f"Choose from: 'sentiment', 'openai', 'onehot'"
+            )
+        
         news_x, news_mapping, node_names = self.load_node_csv(
-            self.data_path + "/news.csv", "title", node_name_col="title", encoders={"title": SentimentAnalysisEncoder()}
+            self.data_path + "/news.csv", "title", node_name_col="title", 
+            encoders={"title": encoder}
         )
         self.data["news"].x = news_x.float()
         self.news_mapping = news_mapping
@@ -409,7 +451,7 @@ class GraphLoaderRegresion(GraphLoaderBase):
         self.add_ticker_node()
         self.add_mutual_fund_node()
         self.add_institution_node()
-        self.add_news_node()
+        self.add_news_node(encoder_type=self.news_encoder_type, openai_model=self.news_openai_model)
         self.add_insider_holder_node()
         self.add_insider_transaction_node()
         self.add_holds_it_rel()
@@ -426,9 +468,21 @@ class GraphLoaderRegresion(GraphLoaderBase):
         return self.data
     
     @classmethod
-    def get_data(cls, data_path=os.getenv("TRAIN_DATA_PATH"), eval_data_path=os.getenv("EVAL_DATA_PATH")):
+    def get_data(cls, data_path=os.getenv("TRAIN_DATA_PATH"), eval_data_path=os.getenv("EVAL_DATA_PATH"),
+                 news_encoder_type="sentiment", news_openai_model="text-embedding-3-small"):
         """
         Get the graph data.
+        
+        Parameters
+        ----------
+        data_path : str
+            Path to the training data directory
+        eval_data_path : str  
+            Path to the evaluation data directory
+        news_encoder_type : str, optional
+            Type of encoder for news: "sentiment", "openai", or "onehot"
+        news_openai_model : str, optional
+            OpenAI model if using openai encoder
         """
-        loader = cls(data_path, eval_data_path)
+        loader = cls(data_path, eval_data_path, news_encoder_type, news_openai_model)
         return loader.load_full_graph()

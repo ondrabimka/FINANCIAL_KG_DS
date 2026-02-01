@@ -66,11 +66,23 @@ model:
       max: 256
     # ...more parameters...
 
+# News encoder configuration (NEW!)
+news_encoder:
+  type: "sentiment"  # Options: sentiment (FinBERT), openai (OpenAI embeddings), onehot
+  openai_model: "text-embedding-3-small"  # Used when type="openai"
+
 loss:
   name: "asymmetric"  # Options: mse, asymmetric, huber, quantile
   params:
     alpha: 1.5
 ```
+
+**News Encoder Options:**
+- `sentiment`: FinBERT sentiment analysis (default) - 2D features
+- `openai`: OpenAI embeddings - 1536 or 3072D rich semantic features
+- `onehot`: One-hot encoding - baseline
+
+For detailed news encoder configuration, see [docs/NEWS_ENCODER_GUIDE.md](docs/NEWS_ENCODER_GUIDE.md)
 
 ### Training Configuration
 ```yaml
@@ -86,7 +98,28 @@ training:
 ## Training
 To train a model:
 ```bash
+# With default sentiment encoder
 python -m financial_kg_ds.train.train_node_regression
+
+# With OpenAI embeddings (requires OPENAI_API_KEY env var)
+python -m financial_kg_ds.train.train_node_regression --news-encoder openai
+
+# With custom configuration
+python -m financial_kg_ds.train.train_node_regression \
+  --news-encoder openai \
+  --openai-model text-embedding-3-large \
+  --epochs 200 \
+  --trials 30
+```
+
+**Using OpenAI Embeddings:**
+```bash
+# Set your OpenAI API key
+export OPENAI_API_KEY='your-api-key-here'  # Linux/Mac
+set OPENAI_API_KEY=your-api-key-here       # Windows
+
+# Or add to .env file
+echo "OPENAI_API_KEY=your-api-key-here" >> .env
 ```
 
 Note: MLFlow needs to be running to track experiments. You can start it with: [MLflow Integration](#mlflow-integration)

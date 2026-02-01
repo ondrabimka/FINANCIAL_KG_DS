@@ -66,6 +66,119 @@ class SentimentAnalysisEncoder(object):
     def __call__(self, df: pd.DataFrame):
         return torch.tensor([self.encode_news(title) for title in list(set(df.values))]).to(self.dtype)
 
+
+class OpenAIEmbeddingEncoder(object):
+    """Encodes news text using OpenAI embeddings API.
+    
+    Parameters
+    ----------
+    dtype : torch.dtype, optional
+        Data type for the output tensor
+    model : str, optional
+        OpenAI embedding model to use (default: "text-embedding-3-small")
+    api_key : str, optional
+        OpenAI API key. If None, reads from OPENAI_API_KEY environment variable
+    cache_dir : str, optional
+        Directory to cache embeddings (default: "financial_kg_ds/data")
+    cache_name : str, optional
+        Cache file name (default: "openai_embeddings_cache")
+        
+    Example
+    -------
+    >>> import os
+    >>> os.environ['OPENAI_API_KEY'] = 'your-api-key'
+    >>> encoder = OpenAIEmbeddingEncoder(model="text-embedding-3-small")
+    >>> df = pd.DataFrame({'title': ['Stock market rises', 'Company reports earnings']})
+    >>> embeddings = encoder(df['title'])
+    """
+
+    def __init__(self, dtype=None, model="text-embedding-3-small", api_key=None, 
+                 cache_dir="financial_kg_ds/data", cache_name="openai_embeddings_cache"):
+        self.dtype = dtype
+        self.model = model
+        
+        try:
+            from openai import OpenAI
+        except ImportError:
+            raise ImportError(
+                "OpenAI package not installed. Install it with: pip install openai"
+            )
+        
+        # Initialize OpenAI client
+        if api_key is None:
+            api_key = os.getenv("OPENAI_API_KEY")
+            if api_key is None:
+                raise ValueError(
+                    "OpenAI API key not provided. Set OPENAI_API_KEY environment variable "
+                    "or pass api_key parameter."
+                )
+        
+        self.client = OpenAI(api_key=api_key)
+        self.cache = Cache(cache_dir, cache_name)
+        
+    def encode_news(self, title):
+        """Encode a single news title using OpenAI embeddings.
+        
+        Parameters
+        ----------
+        title : str
+            News title to encode
+            
+        Returns
+        -------
+        list
+            Embedding vector
+        """
+        # Check cache first
+        cache_key = f"{self.model}:{title}"
+        if cache_key in self.cache.cache:
+            print(f"cache hit: {title}")
+            return self.cache.cache[cache_key]
+        
+        try:
+            # Get embedding from OpenAI
+            response = self.client.embeddings.create(
+                input=title,
+                model=self.model
+            )
+            embedding = response.data[0].embedding
+            
+            # Cache the result
+            self.cache.cache[cache_key] = embedding
+            self.cache.save_cache()
+            
+            return embedding
+        except Exception as e:
+            print(f"Error encoding with OpenAI: {e}: {title}")
+            # Return zero vector with appropriate dimension
+            # text-embedding-3-small: 1536 dims, text-embedding-3-large: 3072 dims
+            if "large" in self.model:
+                return [0.0] * 3072
+            else:
+                return [0.0] * 1536
+    
+    def __call__(self, df: pd.DataFrame):
+        """Encode a dataframe of news titles.
+        
+        Parameters
+        ----------
+        df : pd.DataFrame or pd.Series
+            News titles to encode
+            
+        Returns
+        -------
+        torch.Tensor
+            Tensor of embeddings with shape (n_titles, embedding_dim)
+        """
+        # Handle both DataFrame and Series
+        if isinstance(df, pd.Series):
+            titles = df.unique()
+        else:
+            titles = list(set(df.values.flatten()))
+        
+        embeddings = [self.encode_news(title) for title in titles]
+        return torch.tensor(embeddings, dtype=self.dtype if self.dtype else torch.float32)
+
 # %%
 from financial_kg_ds.models.BiRNN_autoencoder import LSTMAutoencoderBidi
 from sklearn.preprocessing import StandardScaler

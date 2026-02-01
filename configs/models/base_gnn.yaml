@@ -14,6 +14,11 @@ model:
     gnn_aggr:
       choices: ["add", "mean", "max"]
 
+# News encoder configuration
+news_encoder:
+  type: "sentiment"  # Options: "sentiment" (FinBERT), "openai" (OpenAI embeddings), "onehot"
+  openai_model: "text-embedding-3-small"  # Options: "text-embedding-3-small", "text-embedding-3-large" (only used when type="openai")
+
 loss:
   name: "asymmetric"  # Options: "mse", "asymmetric", "huber", "quantile"
   params:

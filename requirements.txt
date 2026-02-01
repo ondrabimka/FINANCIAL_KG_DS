@@ -9,3 +9,4 @@ torch==2.6.0+cu124
 torch-geometric==2.6.1
 transformers==4.48.1
 yfinance==0.2.52
+openai>=1.0.0

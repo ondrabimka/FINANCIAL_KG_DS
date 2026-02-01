@@ -50,6 +50,14 @@ def parse_arguments():
                       choices=["mse", "asymmetric", "huber", "quantile"],
                       help="Loss function to use (overrides config)")
     
+    # News encoder configuration
+    parser.add_argument("--news-encoder", type=str, default=None,
+                      choices=["sentiment", "openai", "onehot"],
+                      help="News encoder type (overrides config)")
+    parser.add_argument("--openai-model", type=str, default=None,
+                      choices=["text-embedding-3-small", "text-embedding-3-large"],
+                      help="OpenAI model for news encoding (overrides config)")
+    
     # Training modes
     parser.add_argument("--quick", action="store_true",
                       help="Quick training mode (fewer epochs and trials)")
@@ -105,6 +113,12 @@ def load_and_override_configs(args):
     if args.loss is not None:
         model_config.setdefault('loss', {})['name'] = args.loss
     
+    # Override news encoder config with command line args
+    if args.news_encoder is not None:
+        model_config.setdefault('news_encoder', {})['type'] = args.news_encoder
+    if args.openai_model is not None:
+        model_config.setdefault('news_encoder', {})['openai_model'] = args.openai_model
+    
     # Override training config with command line args
     if args.epochs is not None:
         train_config.setdefault('training', {})['num_epochs'] = args.epochs
@@ -152,8 +166,19 @@ logger.info(f"Loss function: {model_config['loss']['name']}")
 logger.info(f"Training epochs: {train_config['training']['num_epochs']}")
 logger.info(f"Optuna trials: {train_config['training']['optuna']['n_trials']}")
 
+# Get news encoder configuration from model config
+news_encoder_config = model_config.get('news_encoder', {})
+news_encoder_type = news_encoder_config.get('type', 'sentiment')
+news_openai_model = news_encoder_config.get('openai_model', 'text-embedding-3-small')
+logger.info(f"News encoder type: {news_encoder_type}")
+if news_encoder_type == 'openai':
+    logger.info(f"OpenAI model: {news_openai_model}")
+
 # --- Data loading ---
-data = GraphLoaderRegresion.get_data()
+data = GraphLoaderRegresion.get_data(
+    news_encoder_type=news_encoder_type,
+    news_openai_model=news_openai_model
+)
 data = ToUndirected()(data)
 
 # --- Model definition ---
@@ -360,8 +385,17 @@ def objective(trial):
 def evaluate_financial_performance(model, data_path_start, data_path_end, stage_name=""):
     """Comprehensive financial evaluation on specific data period"""
     
+    # Get news encoder configuration
+    news_encoder_config = model_config.get('news_encoder', {})
+    news_encoder_type = news_encoder_config.get('type', 'sentiment')
+    news_openai_model = news_encoder_config.get('openai_model', 'text-embedding-3-small')
+    
     # Load data for evaluation
-    eval_data = GraphLoaderRegresion(data_path=data_path_start).get_data()
+    eval_data = GraphLoaderRegresion(
+        data_path=data_path_start,
+        news_encoder_type=news_encoder_type,
+        news_openai_model=news_openai_model
+    ).get_data()
     eval_data = ToUndirected()(eval_data)
     
     # Get model predictions
